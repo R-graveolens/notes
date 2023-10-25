@@ -9,7 +9,7 @@ First, initialize Git in the folder where we want to keep a record.
 ```
 Write or edit a file ( ex. readme.md ) in the folder, then
 
-* use `git add` to tell Git to add the doc into repo.
+* use `git add` to tell Git to add the modifitions (= staged) into repo.
     ```
     > git add <file>
     ```
