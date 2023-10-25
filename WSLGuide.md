@@ -59,4 +59,10 @@ After deleting files in the working directory, `git status` can inform you about
 
 1. To permanently delete these files: Use git rm followed by git commit.
 2. To recover: `git checkout -- <file>`.
-   
+
+### Remote Repository
+
+```git remote add origin git@github.com:R-graveolens/<repos>.git```
+
+* for first time ```git push -u origin main```
+* then ```git push origin main```
