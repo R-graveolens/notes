@@ -1,0 +1,3 @@
+\contentsline {section}{\numberline {1}Note 1 -- {Classical BS model}}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}First subsection}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Second subsection}{2}{subsection.1.2}%

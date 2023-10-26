@@ -1,4 +1,10 @@
-# How to Dev on WSL 2
+# Dev on WSL 2
+
+## Python Environment Control
+
+```zsh
+
+```
 
 ## Git
 
