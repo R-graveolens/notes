@@ -1,10 +1,69 @@
 # Dev on WSL 2
+Set up the fondamental Linux system,
 
-## Python Environment Control
+**reference**: https://dowww.spencerwoo.com/
+## cuda and cudnn
+
+Delete old cuda, reference: 
+https://cloud.tencent.com/developer/article/2133210
+
+Download cuda:
+https://developer.nvidia.com/cuda-toolkit-archive
+
+add to PATH: 
+```
+vim ~/.zshrc
+export PATH="usr/local/cuda-xx.x/bin:$PATH
+export LD_LIBRARY_PATH="usr/local/cuda-xx.x/lib64:$LD_LIBRARY_PATH"
+```
+
+Download cudnn (Deb):
+https://developer.nvidia.com/rdp/cudnn-archive
+```zsh
+# eg
+sudo dpkg -i cudnn-local-repo-ubuntu2204-8.6.0.163_1.0-1_amd64.deb
+# the second command appear at the end of runing the first
+sudo cp /var/cudnn-local-repo-ubuntu2204-8.6.0.163/cudnn-local-A3837CDF-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get install libcudnn8=8.6.0.163-1+cuda11.8
+sudo apt-get install libcudnn8-dev=8.6.0.163-1+cuda11.8
+sudo apt-get install libcudnn8-samples=8.6.0.163-1+cuda11.8
+```
+## Pyenv + Poetry for python environment control
+
+**reference**：https://blog.kyomind.tw/poetry-pyenv-practical-tips/
+
+## install JAX and Pytorch with Poetry
+
+Pytorch:
+```zsh
+poetry source add -p explicit pytorch https://download.pytorch.org/whl/cpu
+
+poetry add --source pytorch torch
+```
+
+JAX:
+after ensuring the correct version of cuda and cudnn. 
+
+Edit the `pyproject.toml` as:
 
 ```zsh
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
 
+[[tool.poetry.source]]
+name = "jorenham/jax_pep503"
+url = "https://jorenham.github.io/jax_pep503/"
+priority = "supplemental"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+jax = {extras = ["cuda"], version = "0.4.19"}
 ```
+In terminal: run
+`poetry lock` then
+`poetry install`
 
 ## Git
 
