@@ -1,9 +1,9 @@
 # Dev on WSL 2
-Set up the fondamental Linux system,
+Set up the fundamental Linux system in Windows11,
 
 **reference**: https://dowww.spencerwoo.com/1-preparations/1-1-installation.html
 
-move to D disk: 
+Move the virtual disk to D:/ disk: 
 
 **reference**: https://zhuanlan.zhihu.com/p/621873601
 
@@ -20,7 +20,7 @@ Remote WSL dev, Code Runner, C++, latex, markdown
 
 What's more:
 for markdown, search `markdown copy` in setting, add edit the key `**/*.md` and value `/image/${documentBaseName}/` can set the destination of the copy files.
-### python and AI dev
+### Python and AI dev
 
 #### cuda and cudnn
 
