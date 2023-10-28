@@ -9,7 +9,7 @@ Move the virtual disk to D:/ disk:
 
 **Remark**: shrink WSL2 disk: https://stephenreescarter.net/how-to-shrink-a-wsl2-virtual-disk/
 
-## Set the terminal and shell
+## Set up the terminal and shell
 
 **reference**: https://dowww.spencerwoo.com/2-cli/2-1-terminal.html
 
