@@ -1,8 +1,28 @@
 # Dev on WSL 2
 Set up the fondamental Linux system,
 
-**reference**: https://dowww.spencerwoo.com/
-## cuda and cudnn
+**reference**: https://dowww.spencerwoo.com/1-preparations/1-1-installation.html
+
+move to D disk: 
+
+**reference**: https://zhuanlan.zhihu.com/p/621873601
+
+**Remark**: shrink WSL2 disk: https://stephenreescarter.net/how-to-shrink-a-wsl2-virtual-disk/
+
+## Set the terminal and shell
+
+**reference**: https://dowww.spencerwoo.com/2-cli/2-1-terminal.html
+
+## Set up the VSCode
+Remote WSL dev, Code Runner, C++, latex, markdown
+
+**reference**: https://dowww.spencerwoo.com/3-vscode/3-0-intro.html
+
+What's more:
+for markdown, search `markdown copy` in setting, add edit the key `**/*.md` and value `/image/${documentBaseName}/` can set the destination of the copy files.
+### python and AI dev
+
+#### cuda and cudnn
 
 Delete old cuda, reference: 
 https://cloud.tencent.com/developer/article/2133210
@@ -29,11 +49,11 @@ sudo apt-get install libcudnn8=8.6.0.163-1+cuda11.8
 sudo apt-get install libcudnn8-dev=8.6.0.163-1+cuda11.8
 sudo apt-get install libcudnn8-samples=8.6.0.163-1+cuda11.8
 ```
-## Pyenv + Poetry for python environment control
+#### Pyenv + Poetry for python environment control
 
 **reference**：https://blog.kyomind.tw/poetry-pyenv-practical-tips/
 
-## install JAX and Pytorch with Poetry
+#### install JAX and Pytorch with Poetry
 
 Pytorch:
 ```zsh
