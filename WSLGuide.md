@@ -57,7 +57,7 @@ sudo apt-get install libcudnn8-samples=8.6.0.163-1+cuda11.8
 
 Pytorch:
 ```zsh
-poetry source add -p explicit pytorch https://download.pytorch.org/whl/cpu
+poetry source add -p explicit pytorch https://download.pytorch.org/whl/cu118
 
 poetry add --source pytorch torch
 ```
