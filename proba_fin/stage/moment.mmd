@@ -1,0 +1,401 @@
+# The Moment Formula for Implied Volatility at Extreme Strikes
+
+Roger W. Lee
+
+Department of Mathematics, Stanford University
+
+Courant Institute of Mathematical Sciences, NYU
+
+First version: March 27, 2002
+
+This version: August 11, 2003
+
+Forthcoming in _Mathematical Finance_
+
+This work was partially supported by an NSF Mathematical Sciences Postdoctoral Fellowship. I thank Marco Avellaneda, Peter Carr, Amir Dembo, Darrell Duffie, Jim Gatheral, Alan Lewis, George Papanicolaou, and seminar participants at Banc of America. Securities, the Courant Institute, Stanford University, and the SIAM 50 conference. Email: rogerlee@math.stanford.eduIntroduction
+
+This section outlines briefly the contribution of this paper, deferring to sections 2 and 3 the explicit definitions of some terminology.
+
+Let us write the squared Black-Scholes implied volatility \(I^{2}\) as a coefficient times \(|x|/T\), the ratio of absolute-log-moneyness to maturity. In Section 3, we show that as \(x\to\infty\), the limsup of this coefficient is a number \(\beta_{R}\in[0,2]\), which can be termed the right-hand or OTM-call or large-strike _tail slope_. Similarly, we show that as \(x\to-\infty\), the limsup is a number \(\beta_{L}\in[0,2]\), which can be termed the left-hand or OTM-put or small-strike _tail slope_.
+
+Then we establish the explicit one-to-one correspondence
+
+\[\text{large-strike tail slope}\quad\longleftrightarrow\quad\text{ number of finite moments of the underlying $S_{T}$}.\]
+
+In particular, \(\beta_{R}=2\) if and only if the underlying has _no_ finite moments of order greater than \(1\); at the opposite extreme, \(\beta_{R}=0\) if and only if the underlying has finite moments of _all_ positive orders. In general, we prove the _moment formula for implied volatility_ at large strikes:
+
+\[\frac{1}{2\beta_{R}}+\frac{\beta_{R}}{8}-\frac{1}{2}=\sup\{p:\mathbb{E}S_{T}^{ 1+p}<\infty\}. \tag{1.1}\]
+
+In the opposite tail, we establish the reciprocal relationship:
+
+\[\text{small-strike tail slope}\quad\longleftrightarrow\quad\text{ number of finite moments of $1/S_{T}$},\]
+
+by proving the _moment formula for implied volatility_ at small strikes:
+
+\[\frac{1}{2\beta_{L}}+\frac{\beta_{L}}{8}-\frac{1}{2}=\sup\{q:\mathbb{E}S_{T}^{ -q}<\infty\}. \tag{1.2}\]
+
+Note that the right-hand sides of (1.1) and (1.2) are real numbers or infinity; the phrase "number of finite moments" does not necessarily refer to an integer.
+
+Section 4 exhibits the symmetry between the large-strike and small-strike moment formulas.
+
+Section 5 presents some applications. For extrapolating the volatility skew with splines, the moment formula raises warnings against spline functions that grow faster than \(|x|^{1/2}\), _and_ against those that grow _slower_ than \(|x|^{1/2}\). For calibrating models to the volatility skew, note that each moment formula's left-hand side is, in principle, observable from options data; while the right-hand side is, in a wide class of models, easily calculated from the parameters. By building this direct link between data and parameters, the moment formula can facilitate the calibration procedure.
+
+The moment formula assumes only the existence of a martingale measure. The underlying, a nonnegative random variable, is required to have positive and finite expectation; but this is no restriction because the concepts of "moneyness" and "implied volatility" each already entail this condition. Beyond this, we make _no assumptions_ on the distribution of \(S_{T}\).
+
+### Related work
+
+Hodges (1996) and Gatheral (1999) provide arbitrage bounds on the slope \(\partial I/\partial x\) of the implied volatility skew, bounds derived from the strike-monotonicity of call and put prices. These \(\partial I/\partial x\) bounds depend on \(I\), so bounds on \(I\) itself would follow by solving ODEs; and Lipton (2001) mentions that the resulting \(I\) bounds are \(O(|x|^{1/2})\) for large \(|x|\). Our approach and our results differ from theirs in significant ways. First, our direct concise proof of the \(O(|x|^{1/2})\) bound avoids ODEs and indeed avoids differentiability assumptions altogether; second, we give the _best possible constant_ in that bound; third, and most importantly, our moment formula shows explicitly how the best constant depends only on the _number of finite moments_ in the underlying distribution; and fourth, our model-calibration application and part of our skew-extrapolation application will depend on the moment formula, not merely on the \(O(|x|^{1/2})\) bound.
+
+We take note of two other papers, which have used steepest-descent/saddle-point methods (instead of moment analysis) to calculate implied volatility asymptotics far-from-the-money. Each assumes a specific diffusion model for volatility: Avellaneda-Zhu (1998) use a non-mean-reverting model for instantaneous volatility, and Gatheral-Matytsin-Youssfi (2000) use the Heston square-root model. In contrast, our formula is distinguished by its full _model-independent_ generality and its explication of the fundamental correspondence between _moments_ and implied volatility tails.
+
+## 2 Call and Put Prices
+
+Let \(V_{t}\) be the time-\(t\) price of a claim paying at some fixed time \(T>0\) the random variable \(V_{T}\).
+
+Let \(B_{t}\) be the time-\(t\) price of a discount bond maturing at \(T\).
+
+Assuming that the prices (of \(B\), \(V\), and any other assets under consideration) admit no arbitrage, there must exist a probability measure \(\mathbb{P}\), called the (\(T\)_-)forward_ measure, under which all \(B_{t}\)-discounted asset prices are martingales. For definitions of "admit no arbitrage" that make this statement true, see for example Delbaen and Schachermayer (1994).
+
+Let \(\mathbb{E}\) denote expectation with respect to \(\mathbb{P}\). Then the price of the claim satisfies
+
+\[V_{0}=B_{0}\mathbb{E}V_{T}.\]Under deterministic interest rates, the forward measure is identical to the usual risk-neutral measure; but under stochastic interest rates, the forward measure has the advantage that the discounting takes place outside the expectation.
+
+In the cases of interest here, \(V_{T}\) is the payoff of a call or put on a nonnegative underlying randomness \(S_{T}\). Write \(C\) and \(P\) for the time-0 call and put prices as a function of strike:
+
+\[C(K) =B_{0}\mathbb{E}(S_{T}-K)^{+}\] \[P(K) =B_{0}\mathbb{E}(K-S_{T})^{+}\]
+
+for \(K>0\).
+
+### Upper Bounds
+
+The standard conventions about \(\infty\) are in force, so each of the following bounds holds automatically if the expectation on the right-hand side is infinite. Also, for \(q>0\), the random variable \(S_{T}^{-q}\) is understood to take the value \(\infty\) in the event that \(S_{T}=0\).
+
+The following theorem is nearly identical to results obtained in Broadie-Cvitanic-Soner (1998). The differences, though minor, make it appropriate to present briefly a full proof. Then, in the subsequent remarks, we investigate its implications for the extreme-strike behavior of option prices.
+
+**Theorem 2.1**.: _For each \(p>0\) we have for all \(K>0\) the call price bound_
+
+\[C(K)\leqslant\frac{B_{0}\mathbb{E}S_{T}^{p+1}}{p+1}\left(\frac{p}{p+1}\right) ^{p}\frac{1}{K^{p}}. \tag{2.1}\]
+
+_For each \(q>0\) we have for all \(K>0\) the put price bound_
+
+\[P(K)\leqslant\frac{B_{0}\mathbb{E}S_{T}^{-q}}{1+q}\left(\frac{q}{1+q}\right) ^{q}K^{1+q}. \tag{2.2}\]
+
+Proof.: For all \(s\geqslant 0\) we have
+
+\[s-K\leqslant\frac{s^{p+1}}{p+1}\left(\frac{p}{p+1}\right)^{p}\frac{1}{K^{p}},\]
+
+because the left-hand side and right-hand side, as functions of \(s\), have equal values and first derivatives at \(s=(p+1)K/p\), but the right-hand side has positive second derivative. Moreover, since the right-hand side is nonnegative, the left-hand side can be improved to \((s-K)^{+}\). Now substitute \(S_{T}\) for \(s\), take expectations, and multiply by \(B_{0}\) to obtain (2.1).
+
+Similarly, a convexity argument shows that for all \(s>0\),
+
+\[(K-s)^{+}\leqslant\frac{s^{-q}}{1+q}\left(\frac{q}{1+q}\right)^{q}K^{1+q}\]
+
+which implies (2.2).
+
+_Remark 2.1_.: Although both (2.1) and (2.2) are true for all \(K\), the bound (2.1) is useful mainly for \(K\) large, while (2.2) is useful mainly for \(K\) small.
+
+_Remark 2.2_.: By put-call parity, the call price bound (2.1) leads to a large-\(K\) put price bound, and the put price bound (2.2) leads to a small-\(K\) call price bound.
+
+_Remark 2.3_.: Taking \(p\downarrow 0\) in (2.1) recovers the familiar bound \(C(K)\leqslant B_{0}\mathbb{E}S_{T}\). Taking \(q\downarrow 0\) in (2.2) recovers the familiar bound \(P(K)\leqslant B_{0}K\).
+
+_Remark 2.4_.: In a wide class of specifications for the underlying dynamics, \(\log S_{T}\) has a distribution whose characteristic function \(f\) is explicitly known. In such cases, one calculates \(\mathbb{E}S_{T}^{p+1}\) simply by extending \(f\) analytically to a strip in \(\mathbb{C}\) containing \(-i(p+1)\), and evaluating \(f\) there; if no such extension exists, then \(\mathbb{E}S_{T}^{p+1}=\infty\).
+
+_Remark 2.5_.: Extreme-strike option price bounds are useful in controlling the error, at _all_ strikes, in discrete Fourier transform methods for option pricing. See Lee (2001).
+
+**Corollary 2.2**.: _If \(\mathbb{E}S_{T}^{p+1}<\infty\), then \(C(K)=O(K^{-p})\) as \(K\to\infty\)._
+
+_If \(\mathbb{E}S_{T}^{-q}<\infty\), then \(P(K)=O(K^{1+q})\) as \(K\to 0\)._
+
+Proof.: This follows immediately. 
+
+## 3 Implied Volatility and the Moment Formula
+
+Define
+
+\[F_{0}=\mathbb{E}S_{T},\]
+
+which one interprets as today's \(T\)-forward price of the payoff \(S_{T}\). For example, if \(S\) is a stock paying no dividends, then \(F_{0}=S_{0}/B_{0}\).
+
+Since we intend to study how implied volatility relates to moneyness, we assume \(0<F_{0}<\infty\). This assumption is innocuous, because the very concepts of "implied volatility" and "moneyness" would both degenerate, if the forward price were to be zero or infinite. Moreover, if \(S\) is the price of a traded asset, then no-arbitrage dictates that \(\mathbb{E}S_{T}<\infty\) must hold.
+
+Fixing \(F_{0}\), the (log-)_moneyness_\(x\) is related to strike by the definition
+
+\[x\equiv\log(K/F_{0}), \tag{3.1}\]
+
+so let \(K(x):=F_{0}e^{x}\) be the strike at moneyness \(x\). Note that we have chosen the sign convention such that \(K\) increases as \(x\) increases.
+
+The Black-Scholes _implied volatility_ at moneyness \(x\) is defined as the \(I(x)\) that uniquely solves
+
+\[C(K(x))=C^{BS}(x,I(x)), \tag{3.2}\]
+
+where
+
+\[C^{BS}(x,\sigma):=B_{0}(F_{0}\Phi(d_{+})-K(x)\Phi(d_{-})),\qquad d_{\pm}:=\frac {-x}{\sigma\sqrt{T}}\pm\frac{\sigma\sqrt{T}}{2},\]
+
+and \(\Phi\) is the normal cumulative distribution function.
+
+Equivalently, it is the \(I(x)\) that uniquely solves
+
+\[P(K(x))=P^{BS}(x,I(x)), \tag{3.3}\]
+
+where
+
+\[P^{BS}(x,\sigma):=B_{0}(K(x)\Phi(-d_{-})-F_{0}\Phi(-d_{+})).\]
+
+So, using bond and forward prices, we have defined implied volatility in a general way which allows stochastic interest rates and dividends. This definition of \(I(x)\) could also be described as a "Black (1976)" implied volatility. In the special case of constant interest rates and dividends, \(I(x)\) coincides with the usual Black-Scholes (1973) implied volatility.
+
+The terminology "[implied] volatility _skew_" will refer to the function \(I\).
+
+The following pair of identities will be useful. For any \(\beta>0\) and \(x>0\),
+
+\[C^{BS}(x,\sqrt{\beta|x|/T})=B_{0}F_{0}\Phi(-\sqrt{f_{-}(\beta)|x|})-B_{0}F_{0 }e^{x}\Phi(-\sqrt{f_{+}(\beta)|x|}),\]
+
+and for any \(\beta>0\) and \(x<0\),
+
+\[P^{BS}(x,\sqrt{\beta|x|/T})=B_{0}F_{0}e^{x}\Phi(-\sqrt{f_{-}(\beta)|x|})-B_{0} F_{0}\Phi(-\sqrt{f_{+}(\beta)|x|}),\]
+
+where
+
+\[f_{\pm}(\beta):=\frac{1}{\beta}+\frac{\beta}{4}\pm 1.\]
+
+### The Large-Strike Tail
+
+Consider the right-hand (or large-\(K\) or positive-\(x\) or OTM-call) tail of the square of implied volatility. First we show that this tail slope is no larger than 2.
+
+**Lemma 3.1**.: _There exists \(x^{*}>0\) such that for all \(x>x^{*}\),_
+
+\[I(x)<\sqrt{2|x|/T}.\]Proof.: By the strict monotonicity of \(C^{BS}\) in its second argument, we need only establish that
+
+\[C^{BS}(x,I(x))<C^{BS}(x,\sqrt{2|x|/T}), \tag{3.4}\]
+
+whenever \(x>x^{*}\). On the left-hand side of (3.4), we have
+
+\[\lim_{x\to\infty}C(K(x))=\lim_{K\to\infty}B_{0}\mathbb{E}(S_{T}-K)^{+}=0\]
+
+by dominated convergence, because \(\mathbb{E}S_{T}<\infty\). On the right-hand side,
+
+\[\lim_{x\to\infty}C^{BS}(x,\sqrt{2|x|/T})=B_{0}F_{0}[\Phi(0)-\lim_{x\to\infty}e ^{x}\Phi(-\sqrt{2|x|})]=B_{0}F_{0}/2\]
+
+by L'Hopital's rule. This proves (3.4). 
+
+Now we prove the explicit formula relating the right-hand tail slope to how many finite moments the underlying possesses.
+
+**Theorem 3.2** (The Moment Formula, part 1).: _Let_
+
+\[\tilde{p}:=\sup\{p:\mathbb{E}S_{T}^{1+p}<\infty\}\qquad\qquad\beta_{R}:=\limsup _{x\to\infty}\frac{I^{2}(x)}{|x|/T}.\]
+
+_Then \(\beta_{R}\in[0,2]\) and_
+
+\[\tilde{p}=\frac{1}{2\beta_{R}}+\frac{\beta_{R}}{8}-\frac{1}{2},\]
+
+_where \(1/0:=\infty\). Equivalently,_
+
+\[\beta_{R}=2-4(\sqrt{\tilde{p}^{2}+\tilde{p}}-\tilde{p}),\]
+
+_where the right-hand expression is to be read as zero, in the case \(\tilde{p}=\infty\)._
+
+Proof.: Lemma 3.1 implies \(\beta_{R}\in[0,2]\). We need to show that \(\tilde{p}=f_{-}(\beta_{R})/2\).
+
+For any \(\beta\in(0,2)\), L'Hopital's rule implies that
+
+\[\lim_{x\to\infty}\frac{e^{-cx}}{C^{BS}(x,\sqrt{\beta|x|/T})}=\left\{\begin{array} []{ll}0&\mbox{for }c>f_{-}(\beta)/2\\ \infty&\mbox{for }c\leqslant f_{-}(\beta)/2,\end{array}\right.\]
+
+which we will use in both stages of the proof.
+
+To prove \(\tilde{p}\leqslant f_{-}(\beta_{R})/2\), note that \(f_{-}:(0,2)\xrightarrow{\mathrm{onto}}(0,\infty)\) is strictly decreasing. So it suffices to show that for any \(\beta\in(0,2)\) with \(f_{-}(\beta)/2<\tilde{p}\), we have \(\beta_{R}\leqslant\beta\). Choose \(p\in(f_{-}(\beta)/2,\tilde{p})\). By Corollary 2.2, as \(x\to\infty\),
+
+\[\frac{C^{BS}(x,I(x))}{C^{BS}(x,\sqrt{\beta|x|/T})}=\frac{O(e^{-px})}{C^{BS}(x,\sqrt{\beta|x|/T})}\longrightarrow 0.\]The result follows from the monotonicity of \(C^{BS}\) in its second argument.
+
+To prove \(\tilde{p}\geqslant f_{-}(\beta_{R})/2\), it suffices to show that for any \(p\in(0,f_{-}(\beta_{R})/2)\), we have \(\mathbb{E}S_{T}^{1+p}<\infty\). Choose \(\beta\) such that \(Q:=f_{-}(\beta)/2\in(p,f_{-}(\beta_{R})/2)\). For \(x\) sufficiently large,
+
+\[\frac{C(K(x))}{e^{-Qx}}\leqslant\frac{C^{BS}(x,\sqrt{\beta|x|/T})}{e^{-Qx}} \longrightarrow 0\qquad\text{as }x\to\infty,\]
+
+so there exists \(K_{*}\) such that for all \(K>K_{*}\), we have \(C(K)<K^{-Q}\). Then, as claimed,
+
+\[\mathbb{E}S_{T}^{1+p} =\mathbb{E}\int_{0}^{\infty}(p+1)pK^{p-1}(S_{T}-K)^{+}dK\] \[\leqslant p(p+1)B_{0}^{-1}\bigg{[}\int_{0}^{K_{*}}K^{p-1}C(K)dK+ \int_{K_{*}}^{\infty}K^{p-Q-1}dK\bigg{]}<\infty,\]
+
+where the first step uses a mixture of calls to span the twice-differentiable payoff \(S^{1+p}\); see the appendix of Carr-Madan (1998). 
+
+### The Small-Strike Tail
+
+Consider the left-hand (or small-\(K\) or negative-\(x\) or OTM-put) tail of the square of implied volatility. First we show that this tail slope is no larger than \(2\).
+
+**Lemma 3.3**.: _For any \(\beta>2\) there exists \(x^{*}\) such that for all \(x<x^{*}\),_
+
+\[I(x)<\sqrt{\beta|x|/T}.\]
+
+_For \(\beta=2\), the same conclusion holds, if and only if \(S_{T}\) satisfies \(\mathbb{P}(S_{T}=0)<1/2\)._
+
+Proof.: For case \(\beta>2\) and the "if" part of case \(\beta=2\): There exists \(x^{*}\) such that for all \(x<x^{*}\),
+
+\[\mathbb{P}(S_{T}<F_{0}e^{x})<\Phi(-\sqrt{f_{-}(\beta)|x|})-e^{-x}\Phi(-\sqrt{ f_{+}(\beta)|x|})\]
+
+because as \(x\to-\infty\), the left-hand side approaches \(\mathbb{P}(S_{T}=0)\), while the right-hand side approaches either \(1\) (in case \(\beta>2\)) or \(1/2\) (in case \(\beta=2\)). So
+
+\[P^{BS}(x,I(x))=B_{0}\mathbb{E}(K(x)-S_{T})^{+}\leqslant B_{0}K(x)\mathbb{P}(S _{T}<F_{0}e^{x})<P^{BS}(x,\sqrt{\beta|x|/T})\]
+
+for all \(x<x^{*}\). The result follows from strict monotonicity of \(P^{BS}\) in its second argument.
+
+For the "only if" part of case \(\beta=2\): By monotonicity of \(P^{BS}\), we have
+
+\[B_{0}K(x)/2>P^{BS}(x,\sqrt{2|x|/T})>B_{0}\mathbb{E}(K(x)-S_{T})^{+}\geqslant B _{0}K(x)\mathbb{P}(S_{T}=0)\]
+
+for arbitrary \(x>x^{*}\). Divide by \(B_{0}K(x)\) to obtain the result.
+
+Now we prove the explicit formula relating the left-hand tail slope to how many finite moments the underlying's reciprocal possesses.
+
+**Theorem 3.4** (The Moment Formula, part 2).: _Let_
+
+\[\tilde{q}:=\sup\{q:\mathbb{E}S_{T}^{-q}<\infty\}\qquad\qquad\beta_{L}:=\limsup_{ x\to-\infty}\frac{I^{2}(x)}{|x|/T}.\]
+
+_Then \(\beta_{L}\in[0,2]\) and_
+
+\[\tilde{q}=\frac{1}{2\beta_{L}}+\frac{\beta_{L}}{8}-\frac{1}{2},\]
+
+_where \(1/0:=\infty\). Equivalently,_
+
+\[\beta_{L}=2-4(\sqrt{\tilde{q}^{2}+\tilde{q}}-\tilde{q}),\]
+
+_where the right-hand expression is to be read as zero, in the case \(\tilde{q}=\infty\)._
+
+Proof.: Lemma 3.3 implies \(\beta_{L}\in[0,2]\). We need to show that \(\tilde{q}=f_{-}(\beta_{L})/2\).
+
+For any \(\beta\in(0,2)\), L'Hopital's rule implies that
+
+\[\lim_{x\to-\infty}\frac{e^{(1+c)x}}{P^{BS}(x,\sqrt{\beta|x|/T})}=\left\{ \begin{array}{ll}0&\mbox{for }c>f_{-}(\beta_{L})/2\\ \infty&\mbox{for }c\leqslant f_{-}(\beta_{L})/2,\end{array}\right.\]
+
+which we will use in both stages of the proof.
+
+To prove \(\tilde{q}\leqslant f_{-}(\beta_{L})/2\), note that \(f_{-}:(0,2)\xrightarrow{\mathrm{onto}}(0,\infty)\) is strictly decreasing. So it suffices to show that for any \(\beta\in(0,2)\) with \(f_{-}(\beta)/2<\tilde{q}\), we have \(\beta_{L}\leqslant\beta\). Choose \(q\in(f_{-}(\beta)/2,\tilde{q})\). By Corollary 2.2, as \(x\to-\infty\),
+
+\[\frac{P^{BS}(x,I(x))}{P^{BS}(x,\sqrt{\beta|x|/T})}=\frac{O(e^{(1+q)x})}{P^{BS }(x,\sqrt{\beta|x|/T})}\longrightarrow 0.\]
+
+The result follows from the monotonicity of \(P^{BS}\) in its second argument.
+
+To prove \(\tilde{q}\geqslant f_{-}(\beta_{L})/2\), it suffices to show that for any \(q\in(0,f_{-}(\beta_{L})/2)\), we have \(\mathbb{E}S_{T}^{-q}<\infty\). Choose \(\beta\) such that \(Q:=f_{-}(\beta)/2\in(q,f_{-}(\beta_{L})/2)\). For \(|x|\) sufficiently large,
+
+\[\frac{P(K(x))}{e^{(1+Q)x}}\leqslant\frac{P^{BS}(x,\sqrt{\beta|x|/T})}{e^{(1+Q )x}}\longrightarrow 0\qquad\mbox{as }x\to-\infty,\]
+
+so there exists \(K_{*}\) such that for all \(K<K_{*}\), we have \(P(K)<K^{1+Q}\). Then, as claimed,
+
+\[\mathbb{E}S_{T}^{-q} =\mathbb{E}\int_{0}^{\infty}-q(-q-1)K^{-q-2}(K-S_{T})^{+}dK\] \[\leqslant q(q+1)B_{0}^{-1}\bigg{[}\int_{0}^{K_{*}}K^{Q-q-1}dK+ \int_{K_{*}}^{\infty}K^{-q-2}P(K)dK\bigg{]}<\infty,\]
+
+where the first step uses a mixture of puts to span the twice-differentiable payoff \(S^{-q}\); see the appendix of Carr-Madan (1998).
+
+_Remark 3.1_.: The proofs of Theorems 3.2 and 3.4 make rigorous the following idea. By the Black-Scholes formula, the tail behavior of the implied volatility skew carries the same information as the tail behavior of option prices. In turn, the tail behavior of option prices carries the same information as the number of finite moments - intuitively, option prices are bounded by moments, according to Theorem 2.1; on the other hand, moments are bounded by option prices, because power payoffs are mixtures, across a continuum of strikes, of call or put payoffs.
+
+_Remark 3.2_.: In a wide class of specifications for the state dynamics, as discussed in Remark 2.4, the maximal moment exponents \(\tilde{p}\) and \(\tilde{q}\) are readily computable functions of the model's parameters. Examples include Levy processes and affine jump-diffusion processes popular in financial modelling.
+
+## 4 The Symmetry of the Small-Strike and Large-Strike Formulas
+
+Section 3.2 gave a stand-alone proof of the small-strike moment formula. An alternative approach is to deduce the small-strike formula from the large-strike formula, proved in Section 3.1, together with a symmetry argument, which will be proved in this section. The symmetry argument explains, moreover, why the definition of \(\tilde{q}\) is "missing a factor of \(S_{T}\)" compared to \(\tilde{p}\). We give this alternative proof in three steps.
+
+First we exhibit the symmetry.
+
+**Theorem 4.1**.: _Assume \(\mathbb{P}(S_{T}=0)=0\). Define the probability measure \(\mathbb{S}\) by the likelihood ratio \(d\mathbb{S}/d\mathbb{P}=S_{T}/F_{0}\). Let \(\mathbb{E}_{\mathbb{S}}\) denote expectation with respect to \(\mathbb{S}\). Then for each moneyness \(x\),_
+
+\[\mathbb{E}_{\mathbb{S}}(S_{T}^{-1}-K^{-1})^{+}=\mathbb{E}_{\mathbb{S}}(S_{T}^ {-1})\Phi\bigg{(}\frac{\log(\mathbb{E}_{\mathbb{S}}(S_{T}^{-1})/K^{-1})}{I \sqrt{T}}+\frac{I\sqrt{T}}{2}\bigg{)}-K^{-1}\Phi\bigg{(}\frac{\log(\mathbb{E} _{\mathbb{S}}(S_{T}^{-1})/K^{-1})}{I\sqrt{T}}-\frac{I\sqrt{T}}{2}\bigg{)},\]
+
+_where \(K:=K(x)\) and \(I:=I(x)\) are defined as in (3.1)-(3.3)._
+
+Proof.: By the definition (3.3) of \(I\), and then the definition of \(\mathbb{S}\), we have
+
+\[B_{0}\bigg{[}K\Phi\bigg{(}\frac{\log(K/F_{0})}{I\sqrt{T}}+\frac {I\sqrt{T}}{2}\bigg{)}-F_{0}\Phi\bigg{(}\frac{\log(K/F_{0})}{I\sqrt{T}}-\frac {I\sqrt{T}}{2}\bigg{)}\bigg{]}\] \[=B_{0}\mathbb{E}(K-S_{T})^{+}=B_{0}K\mathbb{E}S_{T}(S_{T}^{-1}-K^ {-1})^{+}=B_{0}F_{0}K\mathbb{E}_{\mathbb{S}}(S_{T}^{-1}-K^{-1})^{+}.\]
+
+Dividing both sides by \(B_{0}F_{0}K\) shows that
+
+\[\mathbb{E}_{\mathbb{S}}(S_{T}^{-1}-K^{-1})^{+}=\frac{1}{F_{0}}\Phi\bigg{(} \frac{\log(F_{0}^{-1}/K^{-1})}{I\sqrt{T}}+\frac{I\sqrt{T}}{2}\bigg{)}-\frac{1} {K}\Phi\bigg{(}\frac{\log(F_{0}^{-1}/K^{-1})}{I\sqrt{T}}-\frac{I\sqrt{T}}{2} \bigg{)}.\]
+
+Since \(\mathbb{E}_{\mathbb{S}}(S_{T}^{-1})=F_{0}^{-1}\), this completes the proof.
+
+_Remark 4.1_.: This proves that a Dollar-denominated \(K\)-strike option on the Euro has the same implied volatility as a Euro-denominated \(1/K\)-strike option on the Dollar.
+
+_Remark 4.2_.: Depending on the context, \(\mathbb{S}\) is sometimes called "foreign" risk-neutral measure or "share" measure; it is the appropriate pricing measure if one takes as numeraire a claim on \(S_{T}\). See El Karoui, Geman, Rochet (1995).
+
+Now we restate Theorem 3.2 in a way which makes explicit the role of the probability measure.
+
+**Theorem 4.2**.: _Let \(T>0\). Let \(U\) be a nonnegative random variable with finite positive expectation \(\mathbb{E}_{\mathbb{Q}}U\) with respect to some probability measure \(\mathbb{Q}\). For each \(z\in\mathbb{R}\), let \(k(z):=(\mathbb{E}_{\mathbb{Q}}U)e^{z}\), and assume there exists a unique \(I_{\mathbb{Q}}(z)\) satisfying_
+
+\[\mathbb{E}_{\mathbb{Q}}(U-k(z))^{+}=(\mathbb{E}_{\mathbb{Q}}U)\Phi\bigg{(} \frac{-z}{I_{\mathbb{Q}}(z)\sqrt{T}}+\frac{I_{\mathbb{Q}}(z)\sqrt{T}}{2} \bigg{)}-k(z)\Phi\bigg{(}\frac{-z}{I_{\mathbb{Q}}(z)\sqrt{T}}-\frac{I_{ \mathbb{Q}}(z)\sqrt{T}}{2}\bigg{)}.\]
+
+_Then the moment formula holds for large \(z\). Specifically, with \(\tilde{p}_{\mathbb{Q}}:=\sup\{p:\mathbb{E}_{\mathbb{Q}}U^{1+p}<\infty\}\),_
+
+\[\limsup_{z\to\infty}\frac{I_{\mathbb{Q}}^{2}(z)}{|z|/T}=2-4\Big{(}\sqrt{ \tilde{p}_{\mathbb{Q}}^{2}+\tilde{p}_{\mathbb{Q}}}-\tilde{p}_{\mathbb{Q}} \Big{)},\]
+
+_where the right-hand expression is to be read as zero, in the case \(\tilde{p}_{\mathbb{Q}}=\infty\)._
+
+Proof.: This just restates what was already established by the proof of Theorem 3.2. 
+
+Finally, we combine these two results to produce the alternative proof of Theorem 3.4.
+
+**Theorem 4.3**.: _The small-strike moment formula holds. Specifically, with \(\tilde{q}:=\sup\{q:\mathbb{E}S_{T}^{-q}<\infty\}\),_
+
+\[\beta_{L}:=\limsup_{x\to-\infty}\frac{I^{2}(x)}{|x|/T}=2-4(\sqrt{\tilde{q}^{2} +\tilde{q}}-\tilde{q}),\]
+
+_where the right-hand expression is to be read as zero, in the case \(\tilde{q}=\infty\)._
+
+Proof.: If \(\mathbb{P}(S_{T}=0)=0\), then let \(\mathbb{Q}:=\mathbb{S}\) and \(U:=S_{T}^{-1}\). We have \(\tilde{p}_{\mathbb{Q}}=\tilde{q}\), because for each \(p\),
+
+\[\mathbb{E}_{\mathbb{Q}}U^{1+p}=\mathbb{E}_{\mathbb{S}}S_{T}^{-1-p}=\frac{1}{F _{0}}\mathbb{E}S_{T}^{-p}.\]
+
+By Theorem 4.1, taking \(I_{\mathbb{Q}}(z):=I(-z)\) satisfies the hypotheses of Theorem 4.2. Hence, as claimed,
+
+\[\limsup_{x\to-\infty}\frac{I^{2}(x)}{|x|/T}=\limsup_{z\to\infty}\frac{I_{ \mathbb{Q}}^{2}(z)}{|z|/T}=2-4\Big{(}\sqrt{\tilde{p}_{\mathbb{Q}}^{2}+\tilde{ p}_{\mathbb{Q}}}-\tilde{p}_{\mathbb{Q}}\Big{)}=2-4(\sqrt{\tilde{q}^{2}+ \tilde{q}}-\tilde{q}).\]
+
+If \(\mathbb{P}(S_{T}=0)>0\), then \(\tilde{q}=0\), so we need to prove \(\beta_{L}=2\). Lemma 3.1 implies \(\beta_{L}\leqslant 2\). To show that \(\beta_{L}\geqslant 2\), note that for any \(\beta<2\), there exists \(x^{*}\) such that for all \(x<x^{*}\),
+
+\[P^{BS}(x,I(x))=B_{0}\mathbb{E}(K(x)-S_{T})^{+}\geqslant B_{0}K( x)\mathbb{P}(S_{T}=0)\\ >B_{0}K(x)[\Phi(-\sqrt{f_{-}(\beta)|x|})-e^{-x}\Phi(-\sqrt{f_{+} (\beta)|x|})]=P^{BS}(x,\sqrt{\beta|x|/T}),\]
+
+because the second line approaches \(0\) as \(x\to-\infty\). By monotonicity of \(P^{BS}\), we are done.
+
+_Remark 4.3_.: Therefore the "factor of \(S_{T}\) missing from \(\vec{q}\)" compared to \(\tilde{p}\) can be explained as follows: It was consumed in the measure change from "domestic" measure \(\mathbb{P}\) to "foreign" measure \(\mathbb{S}\).
+
+## 5 Applications
+
+Applications of the moment formula include skew extrapolation and model calibration.
+
+### Skew extrapolation
+
+By the \(O(|x|^{1/2})\) bound, the linear or convex skews sometimes observed in near-the-money implied volatility cannot persist into the away-from-the-money tails. Likewise, any approximation of near-the-money implied volatility as linear or quadratic in \(x\) (such as in Fouque-Papanicolaou-Sircar (2000)) may be accurate in its intended domain, but must fail for \(K\) sufficiently large or small. So, when using splines to parametrically extrapolate volatility skews beyond the actively traded strikes, we do _not_ recommend functional forms which allow either tail to grow _faster_ than \(|x|^{1/2}\). Moreover, unless the underlying has finite moments of all orders, we do _not_ recommend functional forms which allow either tail to grow _slower_ than \(|x|^{1/2}\), because the moment formula rejects such functions.
+
+### Model calibration
+
+The moment formula facilitates the calibration of model parameters to observed volatility skews. By observing the tail slopes of the skew, and applying the moment formula, one obtains \(\tilde{p}\) and \(\tilde{q}\). Combined with analysis of the characteristic function, as discussed in Remarks 2.4 and 3.2, this produces two identifying restrictions on the model's parameters. Indeed, in models such as the examples below, the \(\tilde{p}\) and \(\tilde{q}\) values _determine_ two of the parameters. We do not propose that the moment formula alone should replace a full optimization algorithm, but it can facilitate the process by providing justifiable initial "guesses" for some or all of the parameters.
+
+_Example 5.1_.: In the double-exponential jump-diffusion model of Kou (2002), the asset price follows a geometric Brownian motion between jumps, which occur at event times of a Poisson process. The sizes of the up-jumps and down-jumps in returns are exponentially distributed with the parameters \(\eta_{1}\) and \(\eta_{2}\) respectively, and hence the means \(1/\eta_{1}\) and \(1/\eta_{2}\) respectively. Using the explicitly known characteristic function, one finds that
+
+\[\tilde{q}=\eta_{2}\qquad\tilde{p}=\eta_{1}-1. \tag{5.1}\]So \(\eta_{1}\) and \(\eta_{2}\) can be inferred from \(\tilde{p}\) and \(\tilde{q}\), and hence (via the moment formula) from the tail slopes \(\beta_{L}\) and \(\beta_{R}\) of the volatility skew, which are in principle observable.
+
+The intuition of (5.1) is as follows: the larger the expected size of an up-jump, the fatter the \(S_{T}\) distribution's right-hand tail, and the fewer the finite moments of positive order; similar intuition relates down-jumps and moments of negative order. Note that the jump _frequency_ parameters have no effect on the tail slopes, by (5.1) and the moment formula.
+
+_Example 5.2_.: In the normal inverse Gaussian model of Barndorff-Nielsen (1998), returns have the NIG distribution, which can be described as follows. Consider two dimensional Brownian motion starting at \((a,0)\), with drift vector \((b,c)\) where \(c>0\). The \(\operatorname{NIG}(a,b,c,d)\) law is the distribution of the first coordinate of the Brownian motion at the stopping time when the second coordinate hits a barrier \(d>0\). Using the explicitly known characteristic function, one finds that
+
+\[\tilde{q}=\sqrt{b^{2}+c^{2}}+b\qquad\tilde{p}=\sqrt{b^{2}+c^{2}}-b-1. \tag{5.2}\]
+
+So \(b\) and \(c\) can be inferred from \(\tilde{p}\) and \(\tilde{q}\), and hence (via the moment formula) from the tail slopes \(\beta_{L}\) and \(\beta_{R}\).
+
+The intuition of (5.2) is as follows: increasing the \(c\) brings earlier stopping, hence thinner tails and more moments (of both positive and negative order) in the distribution of \(S_{T}\); increasing the drift \(b\) fattens the right-hand tail and thins the left-hand tail, decreasing the number of positive-order moments and increasing the number of negative-order moments. Note that the parameters \(a\) and \(d\) have no effect on the tail slopes, by (5.2) and the moment formula.
+
+## 6 Conclusions
+
+Lemmas 3.1 and 3.3 give an \(O(|x|^{1/2})\) bound on the tails of the volatility skew. Then the _moment formula_, established in Theorems 3.2 and 3.4, makes precise how small the constant in that bound can be chosen for each \(T\): in one tail, it depends only on \(\sup\{q:\mathbb{E}S_{T}^{-q}<\infty\}\); in the other, it depends only on \(\sup\{p:\mathbb{E}S_{T}^{1+p}<\infty\}\). This fundamental linkage between moments and tail slopes is model-independent: it assumes only that a martingale measure exists, and that \(0<\mathbb{E}S_{T}<\infty\), a condition already implicit in the concepts of moneyness and implied volatility. Then Theorems 4.1-4.3 show that a "domestic/foreign" symmetry relates the large-strike and the small-strike formulas.
+
+The moment formula has implications for skew extrapolation: it rejects functions that grow faster than \(|x|^{1/2}\), and unless \(S_{T}\) has finite moments of all orders, it rejects those that grow slower than \(|x|^{1/2}\). The moment formula also has application to model calibration: given a tractable characteristic function and sufficient options data, it relates explicitly the observable tail slopes to known functions of the model's parameters, yielding two identifying restrictions on those parameters; moreover, in models such as Examples 5.1 and 5.2, these restrictions indeed determine two of the parameters, with minimal computational effort.
+
+## References
+
+* [Avellaneda and ZhuAvellaneda and Zhu1998] Avellaneda, M. and Y. Zhu (1998). A risk-neutral stochastic volatility model. _International Journal of Theoretical and Applied Finance__1_(2), 289-310.
+* [Barndorff-NielsenBarndorff-Nielsen1998] Barndorff-Nielsen, O. (1998). Processes of normal inverse Gaussian type. _Finance and Stochastics__2_, 41-68.
+* [BlackBlack1976] Black, F. (1976). The pricing of commodity contracts. _Journal of Financial Economics__3_, 167-179.
+* [Black and ScholesBlack and Scholes1973] Black, F. and M. Scholes (1973). The pricing of options and corporate liabilities. _Journal of Political Economy__81_, 637-659.
+* [Broadie, Cvitanic, and SonerBroadie et al.1998] Broadie, M., J. Cvitanic, and H. M. Soner (1998). Optimal replication of contingent claims under portfolio constraints. _Review of Financial Studies__11_(1), 59-79.
+* [Carr and MadanCarr and Madan1998] Carr, P. and D. Madan (1998). Towards a theory of volatility trading. In R. Jarrow (Ed.), _Volatility_, pp. 417-427. Risk Publications.
+* [Delbaen and SchachermayerDelbaen and Schachermayer1994] Delbaen, F. and W. Schachermayer (1994). A general version of the fundamental theorem of asset pricing. _Mathematische Annalen__2_(4), 61-73.
+* [El Karoui, Geman, and RochetEl Karoui et al.1995] El Karoui, N., H. Geman, and J.-C. Rochet (1995). Changes of numeraire, changes of probability measure, and option pricing. _Journal of Applied Probability__32_, 443-458.
+* [Fouque, Papanicolaou, and SircarFouque et al.2000] Fouque, J.-P., G. Papanicolaou, and K. R. Sircar (2000). _Derivatives in Financial Markets with Stochastic Volatility_. Cambridge University Press.
+* [GatheralGatheral1999] Gatheral, J. (1999). The volatility skew: Arbitrage constraints and asymptotic behaviour. Merrill Lynch.
+* [Gatheral, Matytsin, and YoussfiGatheral et al.2000] Gatheral, J., A. Matytsin, and C. Youssfi (2000). Rational shapes of the volatility surface. Merrill Lynch.
+* [HodgesHodges1996] Hodges, H. (1996). Arbitrage bounds on the implied volatility strike and term structures of European-style options. _Journal of Derivatives_, 23-35.
+* [KouKou2002] Kou, S. (2002). A jump diffusion model for option pricing. _Management Science__48_(8), 1086-1101.
+* [LeeLee2001] Lee, R. (2001). Option pricing by transform methods: Extensions, unification, and error control. Stanford University and Courant Institute.
+* [LevLipton, A. (2001). _Mathematical Methods for Foreign Exchange_. World Scientific.

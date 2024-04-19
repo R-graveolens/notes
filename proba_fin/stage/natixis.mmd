@@ -1,0 +1,1131 @@
+# Model Free Arbitrability Bounds for the Implied Volatility
+
+Gourion Bernard and Houssard Alexis
+
+Head of Quant Watch Team, BPCE S.A, Bernard.gourion@natixis.comPhd Student in Applied Mathematics, Universite Paris-Diderot, alexis.houssard@natixis.com
+
+###### Abstract
+
+New arbitrability bounds derived for the quotations of the vanilla option's market are exposed here for the implied volatility, its skew and its convexity. First, exploiting preceding theoretical results from (Fukasawa [11]), the implied volatility for any strike is shown to be comprised between finite lower and upper bounds that are derived from the existing implied volatilities derived from market quotes. These bounds are then proved to be narrower than other existing ones in the litterature. Moreover any model not perfectly calibrated to each market quote is shown to expose its user to arbitages not only on the quoted strike but in a compact interval around any such quoted range, this interval being as wide as the error of calibration is big. Second, the skew of implied volatility at quoted strike is also shown to be comprised between two levels shaping an interval narrower than other ones exposed in preceding theoretical papers as these two bounds are derived from market quotes too. These results enforce the Durrleman condition existing on the convexity of the implied volatility and bring strong constraints for a model to be arbitrage free as they provide bounds for any finite level of strike. A practical example with the SVI parametric shape calibrated to SX5E market data is given for illustration of the method at the end of the paper.
+
+Warm thanks to Lucie-Marie Boschian-Campaner1 for careful proofreading and typo spotting
+
+Footnote 1: Master’s degree student in internship, BPCE S.A.
+
+## Introduction:
+
+The Black-Scholes model [5] doesn't owe its success to the relevancy of its hypothesis of constant volatility but to its famous option pricing formula allowing a meaningful quotation of European Vanilla via its volatility parameter \(\sigma\). Thus for a strike level \(K\) and a maturity date \(T\), assuming null dividends and interest rates from now on, according to the Black-Scholes (BS) formula, the price at the current date \(t_{0}\) of the corresponding European option written on an underlying which the current price is \(X_{0}\) equals:
+
+\[C_{t_{0}}\left(K,\sigma,T\right)=X_{0}N\left(d_{1}\right)-KN\left(d_{2}\right)\]
+
+with \(d_{1}\left(k,\sigma\right)=\frac{-k}{\sigma\sqrt{\tau}}+\frac{\sigma\sqrt{\tau }}{2}\), \(d_{2}\left(k,\sigma\right)=d_{1}-\sigma\sqrt{\tau}\), \(k=\ln\left(K/X_{0}\right)\) and \(\tau=T-t_{0}\). Three years after the publication of this formula, assuming that the call has a quoted price \(C_{t_{0}}\left(K,\sigma,T\right)\), Latane & Rendleman [17] established in 1976 \(\sigma\) can be inferred from the market allowing a bijection between the market price of a European option and this volatility coefficient. As the BS formula is strictly increasing and continuous for fixed strike, there exists an inverse function which can be defined like
+
+\[Y_{BS}\left(k,.\right):\left[\left(1-e^{k}\right)^{+};1\right[ \rightarrow\left[0;+\infty[\] \[c \mapsto Y_{BS}\left(k,c\right)\] \[\text{with }c =C\left(K,Y_{BS}\left(c,K\right),T\right)\]
+
+The implied volatility of the call option is then defined to be
+
+\[\sigma\left(K\right)=Y_{BS}\left(\ln\left(\frac{K}{X_{0}}\right),c\right)\]Since then, additonal studies [6], [34], [36], [14], [29], [38] and [28] improved our knowledge of the implied volatility function: a first kind of studies like the ones of [6] and [34] give first approximations of the function \(\sigma\left(K\right)\) as no explicit formula is known for it (See [14]). More recent developments ([39] and [23]) identifying tight bounds framing the \(\sigma\left(K\right)\)and combined with accurate expansion technics based upon Chebyshev polynoms or rational approximations (resp. [25] and [24]) allow a fast and very precise inversion of the BS formula.
+
+Another kind of studies focus on the ways to design arbitrage free dynamics of the implied volatility following the seminal paper of [37] and [1]. The main difficulty of this approach is to deal with strong constraints weighting on the drift function of the implied volatility under the risk neutral probability (See [35], [2], [17] and more recently [33]). Other authors focus on the static properties of the implied volatility and have delivered approximations of this implied volatility usually only valid for either small and large maturities, or extreme strikes. Lee [26] was the most important work as it proves to be useful to extrapolate calibrated data in an arbitrage free way. This first key result was then extended by Benaim and Friz [3] and by Gulisashvili ([15], [16]) who studies the impact of the risk of ruin on the volatility smile asymptotics. Last, in the same vein, [29] identifies a non-trivial lower bound for at-the-money implied volatility.
+
+Still on the static properties of the implied volatility \(\sigma\left(K\right)\), another branch of research studies focus on the conditions for this function to be arbitrage free when it is also considered to be a surface while the corresponding time-to-maturity varies too. These studies are either model free (like [36]) or rather make additional assumptions on the shape of the implied volatility functions. This way of research is very abundant and covers implied volatility parametric models like those from the SVI family ([12], [13], [22], [19], [31], and [30]), those from the SABR one ([18] and [21] for common expansions) or more recent developments ([38] and [9]). The main issue of these approaches is the need to accept these models may not fit perfectly the market implied volatility. One of the purposes of this paper is to prove this issue is not only a matter of precision but also one of arbitrage as it will be proved below such models necessarily generate arbitrage at quoted strike levels and around them as soon as they accept to not perfectly fit the market.
+
+A last way of research initiated by [11] is the one focus on the studies of the so-called normalizing volatility transforms (NVTs) \(d_{1}\) and \(d_{2}\) of the implied volatility which link a log-strike level \(k\) and its corresponding implied volatility level \(\sigma\left(k\right)\). This comes down to studying the \(d_{1}\) and \(d_{2}\) appearing the BS formula like functions of \(k\) such that:
+
+\[d_{1,2}:\mathbb{R} \rightarrow\mathbb{R}\] \[k \mapsto d_{1,2}\left(k,\sigma\left(k\right)\right)=-\frac{k}{ \sigma\left(k\right)\sqrt{\tau}}\pm\frac{\sigma\left(k\right)\sqrt{\tau}}{2}\]
+
+The most important result from [11] is its theorem 2.8: a necessary no butterfly arbitrage condition is that the market \(d_{1}\) and \(d_{2}\) must be monotone decreasing functions of \(k\). After a first section dedicated to defining properly the modelling context, our work in the second section exploits this theorem and additional lemmas and results from [11], [27] and [38] to ultimately exhibit new arbitrability lower and upper bounds for the implied volatility. These lower and upper bounds are generated by assuming the existence of a finite set of quoted strikes of any given quoted maturity. The first consequence of the existence of these bounds is to prove that any arbitrage free implied volatility \(\sigma\left(K\right)\) must be a continuous function of \(K\) while its is continuous for any strike corresponding to a vanilla option's quoted strike. Second, we prove this property on \(d_{1}\) and \(d_{2}\) is a necessary but not sufficient condition for the volatility modelling to be arbitrage free in terms of butterflies. Indeed, the bounds resulting from the monotonicity of \(d_{1}\) and \(d_{2}\) for any given set of quoted options do not guarantee that any implied volatility \(\sigma\left(K\right)\) between these lower and upper bounds are arbitrage free as they may correspond to non convex call pricing function when \(\sigma\left(K\right)\) is injected into the BS formula. This result confirms the first proof from [28] which proves the decreasing monotonicity of \(d_{1,2}\) to be a necessary but not sufficient arbitrage free condition.
+
+Then in this second section, new arbitrage free lower and upper bounds for the implied volatility derived directly from the existing market quotes are proved to respect the convexity of the call pricing function and the decreasing monotonicity of \(d_{1}\) and \(d_{2}\) altogether. These bounds are obtained using arbitrage barycentric strategies exhibited first by Vladimir Lucic [28] for studying the implied volatility skew. For any given quoted maturity, given the finite set \(\mathbb{K}\) of the \(n\) quoted strikes \(\left\{K_{j}\right\}_{j=1,\ldots,n}\) of vanilla options, by setting up three barycentric portfolios of quoted options, each one being a weighted average of two options with neighbor strikes, an arbitrage free triangle is defined in the space \(\left(K,C\left(K\right)\right)\). The bounds of this triangular zone are then necessary and sufficient arbitrage free bounds according to the available market data. These limits reveal to be much narrower than any previously existing ones.
+
+In a third section, using the same logic, we develop lower and upper bounds for the implied volatility skew and then we study how the bounds on the implied volatility and the ones on the skew interact altogether. It helps to generate even more narrower bounds for the implied volatility and helps to deliver unconditional arbitrable lower and upper bounds for the skew, the latter giving a necessary but not sufficient arbitrage free condition for the implied volatility skew \(s\left(K\right)\equiv\frac{\mathrm{d}\sigma\left(K\right)}{\mathrm{d}K}\). Last a general arbitrage free theorem is provided which tells us what conditions a function \(\sigma\left(K\right)\) and its two derivatives, the skew \(s\left(K\right)\) and the convexity \(c\left(K\right)\equiv\frac{\mathrm{d}^{2}\sigma\left(K\right)}{\mathrm{d}K^{2}}\) must respect to be arbitrage free given the existence of \(n\) quoted strikes in the market for any given quoted maturity.
+
+The main consequence of the derived theorems is that a model may no longer really afford to get calibration error on the implied volatility at the quoted strikes as it means it is not arbitrage free not only at the strike level but also in an identifiable interval around the quoted strike. It also means arbitrage strategy can be set up to earn money by exploiting the calibration failure of the calibrated model. In the last section, by calibrating on real market data of the SX5E, we illustrate how a SVI parametric shape is found to fail avoiding arbitrage.
+
+## 1 The modelling framework
+
+To alleviate all the formulas, without loss of generality, we assume all sort of rate (interest rate, repo, foreign rate, contango,etc.) potentially intervening in the drift of SDE of the underlying to be null. It is equivalent to consider all prices to behave like undiscounted prices. This comes down to consider the SDE of the underlying to be the one of an exponential martingale such that:
+
+\[dX_{t}=X_{t}\left(\sigma_{t}dW_{t}+J_{t}dN_{t}\right)\text{~{}~{}with~{}}X_{t _{0}}=X_{0}\]
+
+with \(\sigma_{t}\) an instant volatility process and \(J_{t}dN_{t}\) a jump component both free choice as long as \(X_{t}\) remains a semimartingale process respecting the classic hypothesis of martingality. For any given maturity \(T\), assuming the existence of a market of \(n\) quotes of vanilla options with \(\mathbb{K}\) being the set of quoted strike levels, differents bounds of arbitrability may be built upon these market data using the properties of the BS formula and its normalizing transforms of the volatility \(d_{1}\) and \(d_{2}\). Next the normalizing transforms of the volatility used afterward are presented and their main properties useful to the following are detailed.
+
+### Key notations
+
+Given the potential complexity of some formulas below, we adopt the following notations to alleviate the notations when needed and to eliminate any possible ambiguity: the Call price function \(C\left(X_{0},K,T,\sigma\left(K\right)\right)\), the undiscounted price in fact, depending on the maturity \(T\), the strike level \(K\), the current spot \(X_{0}=1\) and the implied volatility \(\sigma\left(K\right)\) will be noted \(C\left(K\right)\) as long as its volatility argument equals the market implied volatility \(\sigma\left(K\right)\) i.e \(C\left(K\right)\equiv C\left(X_{0},K,T,\sigma\left(K\right)\right)\). Likewise we will note its corresponding delta Strike like \(\delta\left(K\right)\equiv\frac{\mathrm{d}C\left(X_{0},K,T,\sigma\left(K\right) \right)}{\mathrm{d}K}\) and its Vega like \(v\left(K\right)=\frac{\mathrm{d}C\left(X_{0},K,T,\sigma\left(K\right)\right) }{\mathrm{d}\sigma}\)2. Its implied volatility skew is noted \(s\left(K\right)\equiv\frac{\mathrm{d}\sigma\left(K\right)}{\mathrm{d}K}\) whereas the corresponding implied convexity is defined like \(c\left(K\right)\equiv\frac{\mathrm{d}^{2}\sigma\left(K\right)}{\mathrm{d}K^{2}}\).
+
+Footnote 2: This means no confusion must be made with the classic delta Black which equals \(\frac{\mathrm{d}C}{\mathrm{d}K\delta}\)
+
+### The normalizing transforms of the volatility
+
+The normalizing volatility transforms (NVTs) \(d_{1}\) and \(d_{2}\) are defined like:
+
+\[d_{1}:\mathbb{R}\rightarrow\mathbb{R}\] \[k\mapsto d_{1}\left(k,\sigma\left(k\right)\right)=-\frac{k}{ \sigma\left(k\right)\sqrt{\tau}}+\frac{\sigma\left(k\right)\sqrt{\tau}}{2}\]
+
+\[d_{2}:\mathbb{R}\rightarrow\mathbb{R}\] \[k\mapsto d_{2}\left(k,\sigma\left(k\right)\right)=-\frac{k}{ \sigma\left(k\right)\sqrt{\tau}}-\frac{\sigma\left(k\right)\sqrt{\tau}}{2}\]
+
+For sake of implicity, except when the dependance of \(d_{1}\) and \(d_{2}\) in \(\tau\), \(k\) and \(\sigma\left(k\right)\) is needed for deeper understanding, the writing \(d_{1}\left(k\right)\) and \(d_{2}\left(k\right)\) are assumed to alleviate the two above formulas. Then we have the following theorem:
+
+**Theorem 1**.: _(Theorem from [11])_The proof is given in [11] and [28]. Studying these two papers show that the limit behavior of the NVTs:
+
+\[\lim_{k\rightarrow+\infty}d_{1/2}\left(k\right)=-\infty\ \ \lim_{k\rightarrow-\infty}d_{1/2} \left(k\right)=+\infty\]
+
+Moreover the lemmas 3.2 and 3.5 from [11] state:
+
+**Lemma 2**.: _(Lemma 3.2 from [11] ) \(\forall k\geq 0\), \(-d_{2}\left(k\right)\geq\sqrt{2k}\)_
+
+**Lemma 3**.: _(Lemma 3.5 from [11] ) \(\forall k\leq 0\), \(-d_{1}\left(k\right)\leq-\sqrt{2\left|k\right|}\)_
+
+Then from these two lemmas, we get the following lemma:
+
+**Lemma 4**.: \(-\frac{d_{1}^{2}\left(k\right)}{2}\leq k\leq\frac{d_{2}^{2}\left(k\right)}{2} \ \forall k\in\mathbb{R}\)__
+
+Because of the theorem (1), these limits imply the two NVTs values crosses zero for specific values of \(k\) that are the Zero-Delta-Straddle log-strike levels.
+
+### The Zero-Delta-Straddle log-strikes
+
+Fundamental to the understanding of the behavior of the NVTs are the two levels of log-strike \(k_{+}\)and \(k_{-}\), the Zero-Delta-Straddle log-strikes. The level \(k_{+}\) is the value of strike at which the market delta of a straddle cancels. Indeed, the delta of a straddle equals
+
+\[\Leftrightarrow N\left(d_{1}\left(k_{+}\right)\right)=\frac{1}{2} \Leftrightarrow d_{1}\left(k_{+}\right)=0\]
+
+\[\Leftrightarrow k_{+}\coloneqq\frac{\sigma^{2}\left(k_{+}\right)\tau}{2} \tag{1.1}\]
+
+with \(N\left(x\right)\) and \(n\left(x\right)\) referring to the cdf and the pdf of the standard normal law. The level \(k_{-}\) is the value of log-strike at which the market "delta minus premium" cancels; the delta minus premium being the delta of a straddle diminished by the market value of the straddle expressed in terms of quantity of stocks. More formally \(k_{-}\) is such that:
+
+\[\frac{\mathrm{d}Straddle}{\mathrm{d}S_{0}}-\frac{Straddle}{S_{0}} =2N\left(d_{1}\left(k_{-}\right)\right)-1-\left(2N\left(d_{1} \left(k_{-}\right)\right)-1-2\frac{K}{S_{0}}N\left(d_{2}\left(k_{-}\right) \right)+\frac{K}{S_{0}}\right)\] \[=\frac{K}{S_{0}}\left(2N\left(d_{2}\left(k_{-}\right)\right)-1 \right)=0\]
+
+\[\Leftrightarrow k_{-}=-\frac{\sigma^{2}\left(k_{-}\right)\tau}{2} \tag{1.2}\]
+
+Then combined to the theorem (1), we have:
+
+\[d_{1}\left(k_{+}\right)=0\text{ with }d_{1}\left(k\right)>0\ \ \forall k<k_{+}\text{ and }d_{1}\left(k\right)<0\text{ otherwise.}\]
+
+\[d_{2}\left(k_{-}\right)=0\text{ with }d_{2}\left(k\right)>0\ \ \forall k<k_{-}\text{ and }d_{1}\left(k\right)<0\text{ otherwise}\]
+
+In the following developments, the strike level \(K_{-}\) and \(K_{+}\) are respectively the exponentials of \(k_{-}\) and \(k_{+}\) such that \(K_{-}=\exp\left(k_{-}\right)<1\) and \(K_{+}=\exp\left(k_{+}\right)>1\).
+
+### The d-bounds functions and their properties
+
+Four bi-dimensional functions \(l_{1}^{-},l_{1}^{+},l_{2}^{-}\) and \(l_{2}^{+}\) play a key role in the following development. For two levels of log-strike \(k\) and \(x\), the value of \(l_{1}^{+}\) (resp. \(l_{2}^{+}\)) is defined as the greatest real number such that \(d_{1}\left(x,l_{1}^{+}(k,x)\right)=d_{1}(k)\) (resp. \(d_{2}\left(x,l_{2}^{+}(k,x)\right)=d_{2}(k)\)). In the same manner, \(l_{1}^{-}\) (resp. \(l_{2}^{-}\)) is defined as the lowest real number such that \(d_{1}\left(x,l_{1}^{-}(k,x)\right)=d_{1}(k)\) (resp. \(d_{2}\left(x,l_{2}^{-}(k,x)\right)=d_{2}(k)\)). Analytically, it writes
+
+\[l_{1}^{\pm}: \mathcal{D}_{1}\rightarrow\mathbb{R}\] \[(k,x)\mapsto\frac{d_{1}(k)\pm\sqrt{d_{1}^{2}\left(k\right)+2x}}{ \sqrt{\tau}}\]
+
+\[l_{2}^{\pm}:\mathcal{D}_{2}\rightarrow\mathbb{R}\] \[(k,x)\mapsto\frac{-d_{2}(k)\pm\sqrt{d_{2}^{2}\left(k\right)-2x }}{\sqrt{\tau}}\]
+
+with \(\mathcal{D}_{1}=\left\{(k,x)\in\mathbb{R}^{2},\;x\geq\frac{-d_{1}(k)^{2}}{2}\right\}\) and \(\mathcal{D}_{2}=\left\{(k,x)\in\mathbb{R}^{2},\;x\leq\frac{d_{2}(k)^{2}}{2}\right\}\).
+
+_Remark 5_.: The respective functions \(l_{1}^{-}\), \(l_{1}^{+}\), \(l_{2}^{-}\) and \(l_{2}^{+}\) are defined for any \(k\in\mathbb{R}\) because of the lemma (4). Following [23], one may also note \(l_{1}^{+}\) and \(l_{2}^{+}\) are also respectively inverse functions of \(d_{1}\) and \(d_{2}\) when these two are considered like functions of \(\sigma\left(k\right)\sqrt{\tau}\).
+
+_Remark 6_.: On the contrary, the set of values for \(x\) is limited respectively to the half-lines \(\left[-\frac{d_{1}(k)^{2}}{2};+\infty\right[\) and \(\left[-\infty;\frac{d_{2}(k)^{2}}{2}\right[\) because of the square roots.
+
+Besides the preceding \(l_{1}^{\pm}\) and \(l_{2}^{\pm}\) functions, the two square roots functionals \(\sqrt{d_{1}^{2}\left(k\right)+2x}\) and \(\sqrt{d_{2}^{2}\left(k\right)-2x}\) play a key role in the next section, especially by their asymptotical behaviors.
+
+**Proposition 7**.: _We have the following asymptotical behaviors_
+
+\[\lim_{x\to 0}\sqrt{d_{1}^{2}\left(k\right)+2x}=|d_{1}(k)|\;\text{ and }\;\lim_{x\to k}\sqrt{d_{1}^{2}\left(k\right)+2x}=|d_{2}(k)|\;\; \forall k\in\mathbb{R}\] \[\lim_{x\to 0}\sqrt{d_{2}^{2}\left(k\right)-2x}=|d_{2}(k)|\;\text{ and }\;\lim_{x\to k}\sqrt{d_{2}^{2}\left(k\right)-2x}=|d_{1}(k)|\;\; \forall k\in\mathbb{R}\]
+
+This proposition implies the following lemma about the limit behavior of \(l_{1}^{-}\), \(l_{1}^{+}\), \(l_{2}^{-}\) and \(l_{2}^{+}\):
+
+**Lemma 8**.: _The functionals \(l_{1}^{-}\), \(l_{1}^{+}\), \(l_{2}^{-}\) and \(l_{2}^{+}\) to have the following limits behavior:_
+
+\[\lim_{x\to k}l_{1}^{-} =\frac{d_{1}(k)-|d_{2}(k)|}{\sqrt{\tau}}=\sigma\left(k\right)\; \forall k\leq k_{-}\] \[=-\frac{2k}{\sigma(k)\tau}\text{ otherwise}\]
+
+\[\lim_{x\to k}l_{1}^{+} =\frac{d_{1}(k)+|d_{2}(k)|}{\sqrt{\tau}}=d_{1}(k)+d_{2}(k)=\frac {-2k}{\sigma(k)\tau}\;\forall k\leq k_{-} \tag{1.3}\] \[=\sigma\left(k\right)\text{ otherwise}\]
+
+\[\lim_{x\to k}l_{2}^{-} =\frac{-d_{2}(k)-|d_{1}(k)|}{\sqrt{\tau}}=\frac{-d_{2}(k)-d_{1}(k )}{\sqrt{\tau}}=\frac{2k}{\sigma(k)\tau}\;\forall k\leq k_{+}\] \[=\sigma\left(k\right)\text{ otherwise}\]
+
+\[\lim_{x\to k}l_{2}^{+} =\frac{-d_{2}(k)+|d_{1}(k)|}{\sqrt{\tau}}=\frac{-d_{2}(k)+d_{1}( k)}{\sqrt{\tau}}=\sigma(k)\;\forall k\leq k_{+}\] \[=\frac{2k}{\sigma(k)\tau}\text{ otherwise} \tag{1.4}\]with \(\frac{-2k}{\sigma\left(k\right)^{T}}>\sigma\left(k\right)\ \ \forall k<k_{-}\) and \(\frac{2k}{\sigma\left(k\right)^{T}}>\sigma\left(k\right)\ \ \forall k>k_{+}\).
+
+These two last propositions are straightforward to prove, in particular because of the definition (1.2) and (1.1) of \(k_{-}\) and \(k_{+}\).
+
+Last, the following theorem is useful to the proofs of the next section.
+
+**Proposition 9**.: _The bounds functions \(l_{1}^{+}\left(k,x\right)\) and \(l_{2}^{+}\left(k,x\right)\) are such that for any log-strike \(x\), the NVTs \(d_{1}\left(x,\sigma\right)\) and \(d_{2}\left(x,\sigma\right)\) are constant and respectively equals \(d_{1}\left(k\right)\) and \(d_{2}\left(k\right)\) when the volatility argument \(\sigma\) is taken to equal respectively \(l_{1}^{+}\left(k,x\right)\) and \(l_{2}^{+}\left(k,x\right)\) with respectively \(\left\{k,x\right\}\in\mathcal{D}_{1}\) and \(\left\{k,x\right\}\in\mathcal{D}_{2}\)._
+
+Proof.: It is sufficent to unroll the calculus of \(d_{1}\left(x,l_{1}^{+}(k,x)\right)_{\left|x\in\mathcal{D}_{1}\right.}\) and \(d_{2}\left(x,l_{2}^{+}(k,x)\right)_{\left|x\in\mathcal{D}_{2}\right.}\) to recover respectively \(d_{1}\left(k\right)\) and \(d_{2}\left(k\right)\) 
+
+A direct consequence is:
+
+**Proposition 10**.: \(d_{1}\left(x,l_{1}^{+}\left(k_{+},x\right)\right)_{\left|x\in\mathcal{D}_{1} \right.}=0\ \forall x\leq k_{+}\) _and \(d_{2}\left(x,l_{2}^{+}\left(k_{-},x\right)\right)_{\left|x\in\mathcal{D}_{2} \right.}=0\ \forall x\leq k_{-}\)_
+
+## 2 The model free bounds for the implied volatility
+
+On the ground of the results exposed in the preceding section, we show the implied volatility when seen for a specific quoted maturity like a function \(\sigma\left(x\right)\) of the log-strike \(x\) has finite lower and upper bounds. Moreover we prove this function \(\sigma\left(x\right)\) is necessarily a continuous function of \(x\)\(\forall x\in\mathbb{R}\). A first set of bounds is derived from the results of the section 1. Last exploiting the monotonicity and convexity of the call and put pricing functions, thank to the Jensen's inequality we drive newer bounds for the implied volatility and then newer bounds for the implied volatility skew that extends the SharkJaw bounds derived in [4].
+
+A first set of bounds may be obtained exploiting the theorem (1) which states monotone decreasing \(d_{1}\left(k\right)\) and \(d_{2}\left(k\right)\) functions is a necessary condition to be free of butterflies arbitrage.
+
+### Model Free bounds coming from the monotonicity of NVTs
+
+**Theorem 11**.: _If there exists a quoted strike \(K\), for any log-strike \(x\), a necessary arbitrage free butterfly condition is the implied volatility \(\sigma\left(x\right)\) must have its value comprised between a finite lower level and a finite upper level which the values depend on the sign of \(x\) and the position of x related to k. This means, we must have_
+
+\[\sigma_{1,2}^{l}\left(k,x\right)\leq\sigma\left(x\right)\leq\sigma_{1,2}^{u} \left(k,x\right)\]
+
+_with_
+
+\[\sigma_{1,2}^{u}\left(k,x\right) =l_{2}^{+}\left(k,x\right)\ \ \forall x\leq\frac{d_{2}^{2}\left(k\right)}{2}\,andx<k\] \[=l_{1}^{+}\left(k,x\right)\ \ \forall x\geq-\frac{d_{1}^{2}\left(k \right)}{2}\text{ and }x>k\]
+
+\[\sigma_{1,2}^{l}\left(k,x\right) =0\text{ for }x\leq-\frac{d_{1}^{2}\left(k\right)}{2},\ x<k\text{ and any }k\] \[\text{ OR for }-\frac{d_{1}^{2}\left(k\right)}{2}\leq x\leq 0,\ x<k \text{ and any }k\notin\left[k_{-};k_{+}\right]\] \[\text{ OR for }x>\frac{d_{2}^{2}\left(k\right)}{2},\ x>k\text{ and any }k\] \[\text{ OR for }0<x<\frac{d_{2}^{2}\left(k\right)}{2},\ x>k\text{ and any }k\notin\left[k_{-};k_{+}\right]\] \[\sigma_{1,2}^{l}\left(k,x\right) =l_{1}^{+}\left(k,x\right)\text{ for }-\frac{d_{1}^{2}\left(k\right)}{2}\leq x\leq 0, \ x<k\text{ and any }k\in\left[k_{-};k_{+}\right]\] \[\text{ for }0\leq x\leq\frac{d_{2}^{2}\left(k\right)}{2},\ x<k \text{ and any }k\geq 0\] \[\sigma_{1,2}^{l}\left(k,x\right) =l_{2}^{+}\left(k,x\right)\text{ for }-\frac{d_{1}^{2}\left(k\right)}{2}\leq x\leq 0, \ x>k\text{ and any }k\leq 0\] \[\text{ for }0\leq x\leq\frac{d_{2}^{2}\left(k\right)}{2},\ x>k\text{ and any }k\in\left[k_{-};k_{+}\right]\]_In particular, when \(x=k\), a necessary arbitrage free condition is we must have \(\sigma\left(x\right)=\sigma\left(k\right)\)._
+
+Proof.: (The proof of the theorem is given in the Annex I (5) )
+
+_Remark 12_.: The price of a call of any strike \(X\) which the volatility equals one of the non-negative bounds is itself a corresponding (lower or upper) bound for any candidate price of the call of strike \(X\). In particular, when \(X\to 0\), we must have:
+
+\[\lim_{X\downarrow 0}C\left(X,\sigma=l_{2+}\left(k,x\right)\right)=\lim_{X \downarrow 0}X_{0}N\left(d_{1}\left(X,l_{2+}\left(k,x\right)\right)\right)-XN \left(d_{2}\left(X,l_{2+}\left(k,x\right)\right)\right)=X_{0}=1.0\]
+
+as \(\lim_{X\downarrow 0}d_{2}\left(X,l_{2+}\left(k,x\right)\right)=+\infty\).
+
+_Remark 13_.: This theorem delivers the following corollaire which was partially discovered by Lucic [27] (Only the upper bound was exhibited in it).
+
+**Corollary 14**.: _(Quoted ATM case) For \(k=0\), the implied volatility \(\sigma\left(x\right)\) for any log-strike \(x\) must be such that:_
+
+\[0\leq\sigma\left(x\right)\leq\frac{\sigma\left(0\right)}{2}+\sqrt{\frac{ \sigma\left(0\right)^{2}}{4}+2\frac{\left|x\right|}{\tau}}\ \ \forall\left|x\right|\geq\frac{\sigma\left(0\right)^{2}\tau}{8}\]
+
+The theorem (11) gives bounds determined by one quoted strike. As there may have several quoted strikes for a same maturity, all bounds coming from each strike may be combined so that there is a global maximum bound and a global minimum bound given by the market (aka the \(n_{K}\) quoted strikes).
+
+_Remark 15_.: Using the lemma (8), one may note the left and right limits of the two bounds do not always converge to the quoted level \(\sigma\left(K\right)\). However for any given quoted strike \(K\), we always have either \(\lim_{x\downarrow k}\sigma_{1,2}^{u}\left(k,x\right)=\sigma\left(k\right)\) and \(\lim_{x\uparrow k}\sigma_{1,2}^{l}\left(k,x\right)=\sigma\left(k\right)\), or \(\lim_{x\uparrow k}\sigma_{1,2}^{u}\left(k,x\right)=\sigma\left(k\right)\) and \(\lim_{x\downarrow k}\sigma_{1,2}^{l}\left(k,x\right)=\sigma\left(k\right)\). The following graphs expose the different behaviors of the lower and upper d-bounds according to the theorem (11):
+
+A last feature of these bounds is their absolut slope is the strongest when the quoted strike is near the ZDS strikes \(k_{-}\) and \(k_{+}\). It means we have:
+
+**Lemma 16**.: _The bounds functions \(l_{1}^{+}\) and \(l_{2}^{+}\) are such that:_
+
+\[\frac{d_{1}^{+}\left(k_{1};x\right)}{dx}>\frac{d_{1}^{+}\left(k_{2};x\right)} {dx}\ \forall k_{1},k_{2}\,\text{such that}\,0<k_{1}<k_{2}\]
+
+\[\left|\frac{d_{2}^{+}\left(k_{1};x\right)}{dx}\right|>\left|\frac{d_{2}^{+} \left(k_{2};x\right)}{dx}\right|\ \forall k_{1},k_{2}\,\text{such that}\,k_{2}<k_{1}<0\]
+
+Proof.: The two corresponding slopes equal \(\frac{\mathrm{d}l_{2}^{+}\left(k;x\right)}{\mathrm{d}x}=\frac{2}{\sqrt{\tau} \sqrt{d_{1}^{2}\left(k\right)+2x}}\) and \(\frac{\mathrm{d}l_{2}^{+}\left(k;x\right)}{\mathrm{d}x}=\frac{-2}{\sqrt{\tau} \sqrt{d_{1}^{2}\left(k\right)+2x}}\). Thank to the theorem (1) and because \(d_{1}\left(k_{+}\right)=0\) and \(d_{2}\left(k_{-}\right)=0\), the two derivative functions meets their maximum in absolute respectively for \(k_{+}\) and \(k_{-}\), and the result follows.
+
+**Corollary 17**.: _Given \(n_{K}\) quoted strike levels for a same maturity \(T\), a necessary arbitrage free butterfly condition is the implied volatility \(\sigma\left(x\right)\) must have its value comprised between a finite lower level and a finite upper level such that:_
+
+\[\sigma_{min\_d}\left(K\right)\leq\sigma\left(K\right)\leq\sigma_{max\_d}\left(K\right)\]
+
+_with \(K_{j}\in\mathbb{K}\), \(\sigma_{min\_d}\left(K\right)=\max_{j\in\left\{1;...;n_{K}\right\}}\sigma_{1, 2}^{\dagger}\left(k_{j};K\right)\) and \(\sigma_{max\_d}\left(K\right)=\min_{j\in\left\{1;...;n_{K}\right\}}\sigma_{1, 2}^{u}\left(k_{j};K\right)\)_
+
+The following graph illustrates the corollary (17) with example data and shows how the combination of the bounds generated by the theorem (11) may generate much narrower bounds. Specifically the higher \(n_{K}\) is, the tighter the bounds are. For example on simulated data, the two graphs below compare the situation when the two nearest strikes from the ATM strike are removed or not.
+
+As Vladimir Lucic proves it in its paper [28], the monotonicity of the NVTs are only a necessary arbitrage free condition as they do not enforce the convexity of the option prices. Indeed by basing our development on the convexity of the quoted prices of options, much narrower bounds may be obtained for the implied volatility for any strike level.
+
+### Model free bounds enforcing the monotonocity and convexity of pricing functions
+
+For any one strike level \(K\), let the nearest inferior quoted strike level be \(K_{j}\in\mathbb{K}\) while the nearest superior one is the strike \(K_{j+1}\). Similarly let \(K_{j-1}\in\mathbb{K}\) be the quoted strike immediately inferior to \(K_{j}\) and the \(K_{j+1}\in\mathbb{K}\) the quoted strike immediately superior to \(K_{j}\). Then let's define the following three portfolio of options:
+
+\[\overleftarrow{V}_{j}\coloneqq\left(1-\theta_{j-1}\right)C\left(K_{j-1} \right)+\theta_{j-1}C\left(K_{j}\right)\]
+
+\[\overrightarrow{V}_{j}\coloneqq\left(1-\theta_{j+1}\right)C\left(K_{j+1} \right)+\theta_{j+1}C\left(K_{j+2}\right)\]
+
+\[\overline{V}_{j}\coloneqq\left(1-\theta_{j}\right)C\left(K_{j}\right)+\theta _{j}C\left(K_{j+1}\right)\]
+
+with \(\theta_{i}\coloneqq\frac{K-K_{i}}{K_{i+1}-K_{i}}\), \(i\in[\left|0,n_{K}-1\right|]\). The graph below gives an ad-hoc example of values of these three different portfolios depending on \(K\):
+
+Then because of the convexity and monotonicity of the Calls, the implied volatility \(\sigma\left(K\right)\) for the strike level \(K\) is then such that:
+
+\[\max\left\{\overleftarrow{V}_{j},\overrightarrow{V}_{j}\right\}\leq C\left( K,\sigma\left(K\right)\right)\leq\overline{V}_{j}\]
+
+Following [39], there exists a positive monotone inverse function \(Y_{BS}\left(k,c\right)\) (with \(K=e^{k}\)) defined such that:
+
+\[Y_{BS}\left(k,.\right) :\left[\left(1-e^{k}\right)^{+};1\right[\rightarrow\left[0;+ \infty[\] \[\right.\] \[\left.c\mapsto Y_{BS}\left(k,c\right)\] \[\left.\text{with }\right.c=C\left(K,\frac{Y_{BS}\left(c,K\right)}{\sqrt{\tau}}\right)\]
+
+with \(C\left(K,\sigma\right)=X_{0}N\left(d_{1}\right)-KN\left(d_{2}\right)\) and \(d_{1}=\frac{-k}{\sigma\sqrt{\tau}}+\frac{\sigma\sqrt{\tau}}{2}\) and \(d_{2}=d_{1}-\sigma\sqrt{\tau}\), we have the following theorem defining the Gourion-Houssard "convex" bounds for the implied volatility for any strike level \(K\).
+
+**Theorem 18**.: _Given a set of \(n_{K}\) quoted options prices, the convexity of the options prices implies the implied volatility \(\sigma\left(K\right)\) for any strike level \(K\) is bounded by a lower and an upper "convex" bounds \(\sigma_{j,min}\) and \(\sigma_{j,max}\). The latter are given by the implied volatilities corresponding to linear portfolios of Call options priced on the neighboring strikes \(K_{j-1},K_{j},K_{j+1}\) and \(K_{j+2}\), in order that:_
+
+\[\sigma_{j,min}\leq\sigma\left(K\right)\leq\sigma_{j,max}\]
+
+_where \(\sigma_{j,min}=Y_{BS}\left(k;C_{j,min}\right)\) and \(\sigma_{j,max}=Y_{BS}\left(k;C_{j,max}\right)\) with extreme levels of price given by_
+
+\[C_{j,min} =\max\left(\left(1-e^{k}\right)^{+};\left(1-\theta_{j-1}\right)C \left(K_{j-1}\right)+\theta_{j-1}C\left(K_{j}\right)\right)\text{ when }K<\widehat{K}\] \[=\max\left(\left(1-e^{k}\right)^{+};\left(1-\theta_{j+1}\right)C \left(K_{j+1}\right)+\theta_{j+1}C\left(K_{j+2}\right)\right)\text{ otherwise }\]
+
+\[C_{j,max}=\left(1-\theta_{j}\right)C\left(K_{j}\right)+\theta_{j}C\left(K_{j+1}\right)\]
+
+\[\text{And }\widehat{K}=\frac{\left(\frac{K_{j}C\left(K_{j-1}\right)-K_{j-1}C\left(K _{j}\right)}{K_{j-1}}-\frac{K_{j+2}C\left(K_{j+1}\right)-K_{j+1}C\left(K_{j+2} \right)}{K_{j+2}-K_{j+1}}\right)}{\left(\frac{C\left(K_{j+2}\right)-C\left(K _{j+1}\right)}{K_{j+2}-K_{j+1}}-\frac{C\left(K_{j}\right)-C\left(K_{j-1}\right) }{K_{j}-K_{j-1}}\right)}\]Proof.: The proof is a direct consequence of the fact that the call function is a convex decreasing function of strike \(K\). The level \(\widehat{K}\) is the one for which the two portfolios \(\widehat{V}_{j}\) and \(\widehat{\overline{V}}_{j}\) levels are equals. 
+
+Q.E.D.
+
+An example illustration of the bounds generated by the theorems (11) and (18) is given in the following graph:
+
+Any candidate function \(\sigma\left(K\right)\) used to model the market implied volatility that passes between the orange and red line or between the light blue and the dark blue lines generate non-convex call prices (and so is not arbitrage free). Any \(\sigma\left(K\right)\) above the orange line or below the dark blue one does the same thing but also comes down to \(d_{1}\) and \(d_{2}\) functions which violates (1) implying these functions to be monotone decreasing.
+
+_Remark 19_.: Special cases arise for \(K\leq K_{1}\), \(K_{1}\leq K\leq K_{2}\), \(K_{n-1}\leq K\leq K_{n}\) and \(K\geq K_{n}\) (with \(K_{n}\) being the highest quoted strike and \(n\) being the number of quoted strikes for the considered quoted maturity). For \(K\leq K_{1}\), the formula of the lower price is changed into \(C_{j,min}=\max\left(\left(1-e^{k}\right)^{+};\left(1-\theta_{j+1}\right)C \left(K_{1}\right)+\theta_{j+1}C\left(K_{2}\right)\right)\). For \(K_{1}\leq K\leq K_{2}\), the formulas are the same except that we have \(K_{j-1}=0,\,\,C\left(K_{j-1}\right)=X_{0}\). This last value comes down to assume there is no risk or ruin for the underlying \(X_{t}\). An alternative is to set up a non-null probability mass in \(K=0\) such that (or \(C\left(K_{j-1}\right)=X_{0}\left(1-p\right)\) with \(p=P\left(X_{T}=0\right)\). The main issue is then to identify this probability \(p\). Several ways are possible, following [8] which assumes the underlying pays cash dividends, there exists a non null minimum strike for which the correspond put price is uniquely determined by this probability \(p\). Then if this strike or a lower one is quoted in the market, it becomes possible to estimate \(p\) only with market data. On the opposite case, additional modelling hypothesis are needed and we get out from our very general modelling context given in our first section 1. Following the pioneering paper of [32], the works of Stefano [29] and [16] provide more insight on this topic.
+
+For \(K_{n-1}\leq K\leq K_{n}\), there is an unknown level \(K_{j+2}=K_{u}\) for which \(C\left(K_{u}\right)\simeq 0\) but at first glance, this level is hardly identifiable. The corresponding portfolio equals \(\underline{C}\left(K\right)=\left(1-\theta_{n}\right)C\left(K_{n}\right)+ \theta_{n}C\left(K_{u}\right)\). As we necessarily have \(C\left(K_{u}\right)<C\left(K_{n}\right)\), the right line corresponding to \(\underline{C}\left(K\right)\) has a negative slope equalling \(\lim\limits_{K_{u}\rightarrow+\infty}\frac{\mathrm{d}\underline{C}\left(K \right)}{\mathrm{d}K}=\lim\limits_{K_{u}\rightarrow+\infty}\frac{-C\left(K_{u }\right)}{K_{u}-K_{n}}+\frac{C\left(K_{u}\right)}{K_{u}-K_{n}}=0^{-}\).
+
+In the end, a model-free lower limit is \(\lim_{K_{u}\rightarrow+\infty}\underline{C}\left(K\right)=C\left(K_{n}\right)\) (this comes down to only taking the monotonicity property into account on the right tail of the graph) and we have
+
+\[C_{j,min} =\max\left(\left(1-e^{k}\right)^{+};\left(1-\theta_{j-1}\right)C \left(K_{j-1}\right)+\theta_{j-1}C\left(K_{j}\right)\right)\,\,\,\text{when }K< \widehat{K}\] \[=\max\left(\left(1-e^{k}\right)^{+};C\left(K_{n}\right)\right)\, \,\,\text{otherwise}\]with \(\widehat{K}=\frac{C\left(K_{n-1}\right)-\frac{K_{n-1}\left(C\left(K_{n-2}\right) -K_{n-2}\right)}{K_{n-1}-K_{n-2}}}{\frac{C\left(K_{n-1}\right)-C\left(K_{n-2} \right)}{K_{n-1}-K_{n-2}}}\).
+
+Except in the case of the ATM, the calculus of \(Y_{BS}\) is not explicit and must rely on a numeric method like the Brent algorithm which will search for the correct volatility value between a low and high strike. At first glance, to avoid missing the solution, one may be tempted to take very small and very large values like respectively 0 and 400 %. However [39] and [23] shows much narrower bounds exist for the implied volatility when you know the corresponding market price \(c\) of the call:
+
+**Proposition 20**.: _(Proposition 4.3 from [39]): For any market value \(c\) of a call at a quoted log-strike \(k\in\mathbb{R}\), the corresponding implied volatility \(\sigma\) is such that:_
+
+\[\frac{-2}{\sqrt{\tau}}\Phi^{-1}\left(\frac{1-c}{2}\right)\leq\sigma\leq\frac {-2}{\sqrt{\tau}}\Phi^{-1}\left(\frac{1-c}{1+e^{k}}\right)\text{ for }k\geq 0\]
+
+\[\frac{-2}{\sqrt{\tau}}\Phi^{-1}\left(\frac{1-c}{2e^{k}}\right)\leq\sigma\leq \frac{-2}{\sqrt{\tau}}\Phi^{-1}\left(\frac{1-c}{1+e^{k}}\right)\text{ otherwise}\]
+
+_with \(\Phi\) being the cdf of the standard normal law._
+
+\(\mathrm{ds}\)
+
+**Proposition 21**.: _Proposition from [23] For any market value \(c\) of a call at a quoted log-strike \(k\in\mathbb{R}\), the corresponding implied volatility \(\sigma\) is such that:_
+
+\[G\left(H\left(\min\left(\frac{1+c}{2},c+e^{k}N\left(-\sqrt{2\left|k\right|} \right)\right)\right)\right)\leq\sigma\leq H\left(\min\left(\frac{1+c}{2},c+e ^{k}N\left(-\sqrt{2\left|k\right|}\right)\right)\right)\]
+
+_with \(H\left(x\right)=\Phi^{-1}\left(x\right)-\Phi^{-1}\left(\frac{x-c}{e^{k}}\right)\) defined for \(c<x<1\) and \(G\left(x\right)=d_{1}^{-1}\left(\Phi^{-1}\left(\frac{c}{1-\frac{c}{1-\frac{c} {1+d_{2}\left(x\right)}}{R\left(-d_{1}\left(x\right)}\right)}\right)\right)\) with \(R\left(x\right)\) being the Mill's ratio such that \(R\left(x\right)=\frac{\Phi\left(-x\right)}{n\left(x\right)}\)._
+
+Then using the bounds of the proposition (21), we may limit the research of the implied volatility to a much narrower space. The last question is to know whether the convex bounds are narrower than the "Fukasawa" ones.
+
+**Theorem 22**.: _For any strike level \(K\), assuming the immediately inferior and superior quoted strike level are noted \(K_{j}\) and \(K_{j+1}\), the corresponding lower and upper "Fukasawa" bounds generated for both \(K_{j}\) and \(K_{j+1}\) according to the theorem 11 and the "convex" bounds defined in Theorem 18 are such that:_
+
+\[\max\left(\sigma_{1,2}^{l}\left(k_{j};K\right);\sigma_{1,2}^{l}\left(k_{j+1}; K\right)\right)\leq\sigma_{j,min}\leq\sigma_{j,max}\leq\min\left(\sigma_{1,2}^{u} \left(k_{j};K\right);\sigma_{1,2}^{u}\left(k_{j+1};K\right)\right)\text{ }\forall K\in\left[K_{j},K_{j+1} \right],\text{ }\forall j \tag{2.1}\]
+
+Proof.: The proof is the anne (5). 
+
+The theorem (18) giving lower and upper bounds for \(\sigma\left(K\right)\) with \(K\in\left[K_{j};K_{j+1}\right]\) is based on the approximation of the slope \(\frac{\mathrm{d}C}{\mathrm{d}K}\) of the call pricing functions based upon the market quotes \(C\left(K_{j-1}\right)\) and \(C\left(K_{j}\right)\) on the left side of the market and based upon \(C\left(K_{j}\right)\) and \(C\left(K_{j+1}\right)\) on its right side. However this proxies may be enhanced if the corresponding values \(\frac{\mathrm{d}\sigma\left(K_{j}\right)}{\mathrm{d}K}\) and \(\frac{\mathrm{d}\sigma\left(K_{j+1}\right)}{\mathrm{d}K}\) of the market skew is known. This knowledge may come either from market quotes of European binaries at the corresponding quoted strikes or from your own parametric model of implied volatility. Whatever the case, this drives us to the following theorem giving us narrower bounds upon the exact knowledge of the skew. Indeed in the definition of \(\sigma_{min}\), it comes down to replacing the forward and backward estimations, \(\delta_{K}^{\text{fwd}}=\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1 }-K_{j}}\) and \(\delta_{K}^{\text{fwd}}=\frac{C\left(K_{j}\right)-C\left(K_{j-1}\right)}{K_{j}- K_{j-1}}\) of the delta strike in \(K_{j}\) and \(K_{j+1}\) by more accurate ones which are \(\delta_{j}=-N\left(d_{2}\left(k_{j}\right)\right)-\sqrt{\tau}n\left(d_{1}\left(k_ {j}\right)\right)s_{j}\) and \(\delta_{j+1}=-N\left(d_{2}\left(k_{j+1}\right)\right)-\sqrt{\tau}n\left(d_{1} \left(k_{j+1}\right)\right)s_{j+1}\) with \(s_{j}\) and \(s_{j+1}\) arbitrage free skew values within the SharkJaw bounds defined in the theorem (25).
+
+**Theorem 23**.: _Given a set of \(n_{K}\) quoted options prices, the convexity of the options prices implies the implied volatility \(\sigma\left(K\right)\) for any one strike level \(K\) is bounded by a lower and an upper "convex" bounds \(\sigma_{j,min}\) and \(\sigma_{j,max}\). The latter are given by the implied volatilities corresponding to linear portfolios of Call options priced on the neighboring strikes \(K_{j-1}\),\(K_{j}\),\(K_{j+1}\) and \(K_{j+2}\), in order that:_
+
+\[\widehat{\sigma}_{j,min}\leq\sigma\left(K\right)\leq\sigma_{j,max} \tag{2.2}\]_where \(\widehat{\sigma}_{j,min}=Y_{BS}\left(k;C_{j,min}\right)\) and \(\sigma_{j,max}=Y_{BS}\left(k;C_{j,max}\right)\)with extreme levels of price given by_
+
+\[C_{j,max}=\left(1-\theta_{j}\right)C\left(K_{j}\right)+\theta_{j}C\left(K_{j+1}\right)\]
+
+\[C_{j,min} =\max\left(\left(1-e^{k}\right)^{+};C\left(K_{j}\right)+\left(K-K_{j} \right)\delta_{j}\right)\text{ when }K<\widehat{\widehat{K}}\] \[=\max\left(\left(1-e^{k}\right)^{+};C\left(K_{j+1}\right)+\left(K -K_{j+1}\right)\delta_{j+1}\right)\text{ otherwise}\]
+
+_with \(\widehat{\widehat{K}}_{j}=\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)+K _{j}\delta_{j}-K_{j+1}\delta_{j+1}}{\left(\delta_{j}-\delta_{j+1}\right)}\)_
+
+The proof of this last theorem is linked to the following lemma:
+
+**Lemma 24**.: _On the interval \(\left[K_{j},K_{j+1}\right]\) if the implied volatility slice \(\sigma\left(K\right)\) is differentiable, in order to produce convex Call prices we must have_
+
+\[\boxed{\left(K,C\left(K\right)\right)\in\left(\left[K_{j},K_{j+1}\right], \mathbb{R}\right)\cap epi\left(t_{j}\right)\cap epi\left(t_{j+1}\right)\cap epi \left(b_{j}\right)^{C}} \tag{2.3}\]
+
+_with \(b\) the barycentre \(k\mapsto\frac{K-K_{j}}{K_{j+1}-K_{j}}C\left(K_{j+1}\right)+\frac{K_{j+1}-K}{K _{j+1}-K_{j}}C\left(K_{j}\right)\) and \(epi\left(f\right)\) being the epigraph of the curve \(f\) and \(epi\left(f\right)^{c}\) its complementary. The admissible region on \(\sigma\left(K\right)\) described by (2.3) (enhanced in grey on Figure (2.2)) is smaller than the admissibility region of theorem (18)._
+
+Proof.: From the convexity property of the Call function, we deduced bounds on IV level. Moreover the convexity of the Call prices implies the skew must be such that:
+
+\[\forall K\in\left[K_{j},K_{j+1}\right],\;\frac{\mathrm{d}C\left(K\right)}{ \mathrm{d}K}\in\left[\delta_{j}\equiv\frac{\mathrm{d}C\left(K_{j}\right)}{ \mathrm{d}K},\delta_{j+1}\equiv\frac{\mathrm{d}C\left(K_{j+1}\right)}{\mathrm{ d}K}\right] \tag{2.4}\]
+
+On the other hand, the bounds on IV level in terms of Call prices are such that \(\max\left\{b_{j+1}(K),b_{j-1}(K)\right\}\leq C\left(K,\sigma\left(K\right) \right)\leq b_{j}\left(K\right)\) where the notation \(b\) refers to barycentric functions defined by
+
+\[\forall j\in\llbracket 1,n_{K}-1\rrbracket,\;b_{j}\left(K\right)=\frac{K-K_{j}}{K _{j+1}-K_{j}}C\left(K_{j+1}\right)+\frac{K_{j+1}-K}{K_{j+1}-K_{j}}C\left(K_{j} \right).\]
+
+We will also take into account the tangents \(t_{j}\) and \(t_{j+1}\) of the Call on the quoted strikes \(K_{j}\) and \(K_{j+1}\)defined such that:
+
+\[t_{j}\left(K\right) =\delta_{j}\left(K-K_{j}\right)+C\left(K_{j}\right)\] \[t_{j+1}\left(K\right) =\delta_{j+1}\left(K-K_{j+1}\right)+C\left(K_{j+1}\right).\]
+
+Because of the convexity property on the quoted strikes, we have
+
+\[\begin{cases}t_{j}\left(K_{j+1}\right)&\leq C\left(K_{j+1}\right)=t_{j+1} \left(K_{j+1}\right)\\ t_{j+1}\left(K_{j}\right)&\leq C\left(K_{j}\right)=t_{j}\left(K_{j}\right) \end{cases}.\]
+
+Figure 2.1: Call price admissibility region
+
+So there exists \(\widehat{\widehat{K}}_{j}\in\left[K_{j},K_{j+1}\right]\) such that \(t_{j}\left(\widehat{\widehat{K}}_{j}\right)=t_{j+1}\left(\widehat{\widehat{K}}_{j}\right)\). What's more, the slope of \(b_{j-1}\) is lower than the slope of \(t_{j}\) and the slope of \(t_{j+1}\) is lower than the one of \(b_{j+1}\). It means that
+
+\[\forall K\in\left[K_{j},K_{j+1}\right],\ t_{j}(K)\geq b_{j-1}(K)\;;\ t_{j+1}(K) \geq b_{j+1}(K).\]
+
+Hence
+
+\[t_{j}(\widehat{\widehat{K}}_{j})=t_{j+1}(\widehat{\widehat{K}}_{j})\geq\max \left\{b_{j+1}(\widehat{\widehat{K}}_{j}),b_{j-1}(\widehat{\widehat{K}}_{j}) \right\}.\]
+
+But note that \(p_{1}=\left(\widehat{\widehat{K}}_{j},t_{j}\left(K^{\star}\right)\right)\) is a critical point for the call value in \(\widehat{\widehat{K}}_{j}\) in the sense that the bounds on the skew only allow prices which are above \(t_{j}\) and \(t_{j+1}\). In other words, \(C\left(K\right)\in epi(t_{j})\cap epi(t_{j+1})\) where \(epi\left(f\right)=\left\{\left(x,y\right),y\geq f(x)\right\}\) refers to the epigraph of the map \(f\). With arguments above, we easily see that
+
+\[epi\left(t_{j}\right)\cap epi\left(t_{j+1}\right)\cap\left(\left[K_{j},K_{j+1 }\right],\mathbb{R}\right)\subset epi\left(b_{j+1}\right)\cap epi\left(b_{j-1} \right)\cap\left(\left[K_{j},K_{j+1}\right],\mathbb{R}\right)\]
+
+This implies that if condition (2.4) is satisfied on the skew, then the first inequality of condition (2.2) on the volatility level is satisfied.
+
+Now let's check the relation between the upper bounds. We see that the admissible region \(\mathcal{A}\) in the sense of (2.4) is a parallelogram formed by the two points \(\left(K_{j},C\left(K_{j}\right)\right)\), \(\left(K_{j+1},C(K_{j+1})\right)\) and the right lines \(t_{j}\) and \(t_{j+1}\). The upper bound of condition (2.2) is the diagonal of that parallelogram so this bound is always below the superior bound of the parallelogram \(\mathcal{A}\). This proves that **the two conditions (2.4) and (2.2) are complementary.** To illustrate it, we can take an example of call function in \(\mathcal{A}\) but arbitrable in the sense of (2.2). We know there exists a critical point \(p_{2}=\left(K^{\star\star},\delta_{j+1}\left(K^{\star\star}-K_{j}\right)+C \left(K_{j}\right)\right)\) in \(\mathcal{A}\) which is above \(\frac{K^{\star\star}-K_{j}}{K_{j+1}-K_{j}}C\left(K_{j+1}\right)+\frac{K_{j+1}- K^{\star\star}}{k_{j+1}-K_{j}}C\left(K_{j}\right)\). The strategy is to take \(\epsilon>0\) and
+
+\[C\left(K\right)=\left(\delta_{j+1}\left(K-K_{j}\right)+C\left(K_{j}\right) \right)\left(1-g_{\epsilon}\left(K\right)\right)+g_{\epsilon}\left(K\right) \left(C\left(K_{j+1}\right)+\delta_{j}\left(K-K_{j+1}\right)\right).\]
+
+so that \(g_{\epsilon}\in\mathcal{C}^{1}\left(\left[K_{j},K_{j+1}\right]\right)\) and \(g_{\epsilon}=0\) on \(\left[K_{j},K^{\star\star}-\epsilon\right]\) and \(g_{\epsilon}=1\) on \(\left[K^{\star\star}+\epsilon,K_{j+1}\right]\). We know such a function exists by Urysohn's lemma. This last result has a direct consequence on the lower bound of the market implied volatility \(\sigma\left(K\right)\). 
+
+## 3 The model free bounds for the implied volatility skew
+
+Identifying model free arbitrage free bounds for the implied volatility skew is the second other target of theoreticians and professional operators. This has been one of the subject of several papers among which [11],[28], [27] and [38]. The narrowest bounds, the Gourion-Lucic bounds, have been given for any quoted strike by [4]. [28] extended this results for any log-strike \(x\) but this extension remains a theoretical result as these bounds depends on the knowledge of the implied volatility at \(x\) while this one is a non-quoted strike level.
+
+### The bounds for the implied volatility skew
+
+**Theorem 25**.: _For any given quoted maturity \(T\), given a set \(\mathbb{K}_{T}\) of \(n_{K}\) quoted strikes, a necessary arbitrage free condition for the volatility skew, \(s\left(K_{j}\right):=\frac{d\sigma\left(K_{j},T\right)}{dK_{j}}\) for any quoted strike \(K_{j}\in\mathbb{K}_{i}\) is the following inequality:_
+
+\[s_{min}\left(j\right)<s\left(K_{j}\right)<s_{max}\left(j\right)\ \ \forall j=1;...;n_{K}\]
+
+_with_
+
+\[\begin{cases}s_{min}\left(j\right)&=\frac{C\left(K_{j},T\right)-C \left(K_{j-1},T\right)}{\left(K_{j}-K_{j-1}\right)}-\delta_{j}}{\left(K_{j}-K_ {j-1}\right)}\ \ \forall j=2;...;n_{iK}\\ s_{min}\left(1\right)&=\frac{C\left(K_{1}\right)-K_{1}^{\prime\prime}-K_{1}^{ \prime\prime}}{\nu_{1}}\ \ \text{when}\ j=1\end{cases} \tag{3.1}\] \[\begin{cases}s_{max}\left(j\right)&=\frac{\frac{C\left(K_{j+1} \right)-C\left(K_{j}\right)}{\kappa_{j+1}-K_{j}}-\delta_{j}}{\nu_{j}}\ \forall j=1;...;n_{iK}-1\\ s_{max}\left(n_{i,k}\right)&=\frac{-\delta_{j}}{\nu_{j}}\ \ \text{when}\ j=n_{i,K}\end{cases} \tag{3.2}\]
+
+_with \(s_{min}\left(j\right)<s_{max}\left(j\right)\) if and only if the market quotes \(C\left(K_{j-1}\right)\), \(C\left(K_{j}\right)\) and \(C\left(K_{j+1}\right)\) are arbitrage free in terms of butterfly arbitrage._Proof.: see [4]. 
+
+An extension of this result is the following theorem.
+
+**Theorem 26**.: _For a given quoted maturity \(T\), for any strike level \(K\), assuming the immediately inferior and superior quoted strike level are noted \(K_{j}\) and \(K_{j+1}\), a necessary arbitrage free condition for the implied volatility \(\sigma\left(K\right)\) and its volatility skew \(s:K\mapsto\frac{d\sigma\left(K,T\right)}{dK}\), is to have \(s\left(K\right)\) continuous for any \(K\in\mathbb{K}\) and to have the following inequality:_
+
+\[\mathcal{S}_{j,min}\left(K\right)<s\left(K\right)<\mathcal{S}_{j,max}\left(K \right)\ \ \forall j=1;...;n_{iK}\]
+
+_with_
+
+\[\mathcal{S}_{j,max}\left(K\right)=\frac{\mathcal{N}\left(d_{2}\left(K\right) \right)-\mathcal{N}\left(d_{2}\left(K_{j+1}\right)\right)}{\sqrt{\tau}n\left( d_{1}\left(K\right)\right)}+\frac{n\left(d_{1}\left(K_{j+1}\right)\right)}{n\left(d_{1} \left(K\right)\right)}s\left(K_{j+1}\right)\]
+
+_with \(\mathcal{S}_{j,min}\left(K\right)\leq\mathcal{S}_{j,max}\left(K\right)\ \forall K\in\left[K_{j};K_{j+1}\right]\)_
+
+Proof.: A classical result of financial analysis states that any call function must be convex decreasing with respect to the strike (e.g see Theoreme 2.2 from [Theranchi]) so that \(\forall K\in\left[K_{j},K_{j+1}\right],\)\(\frac{\mathrm{d}C\left(K\right)}{\mathrm{d}K}\in\left[\delta_{j},\delta_{j+1}\right]\). Recall the expression of the market delta strike \(\frac{\mathrm{d}C\left(K\right)}{\mathrm{d}K}=\Delta_{k}^{BS}\left(K\right)+ \nu^{BS}\left(K\right)\times s\left(K\right)\) with respect to the Black-Scholes delta strike, \(\Delta_{k}^{BS}\left(K\right)=-\mathcal{N}\left(d_{2}\left(K\right)\right)\), and the Vega Black Scholes, \(\nu^{BS}\left(K\right)=\sqrt{\tau}n\left(d_{1}\left(K\right)\right)\) (\(as\)\(X_{0}=1\)). If the implied volatility slice is assumed differentiable, by positivity of Black-Scholes vega one has immediately
+
+\[\begin{cases}\Delta_{k}^{BS}(K_{j})+\nu^{BS}\left(K_{j}\right)\times s\left( K_{j}\right)&\leq\Delta_{k}^{BS}(K)+\nu^{BS}\left(K\right)\times s\left(K\right) \\ \Delta_{k}^{BS}(K)+\nu^{BS}\left(K\right)\times s\left(K\right)&\leq\Delta_{k}^ {BS}(K_{j+1})+\nu^{BS}\left(K_{j+1}\right)\times s\left(K_{j+1}\right)\end{cases}\]
+
+\[\Leftrightarrow\mathcal{S}_{j,min}\left(K\right)\leq s\left(K\right)\leq \mathcal{S}_{j,max}\left(K\right)\]
+
+The last of the proof is to demonstrate \(\mathcal{S}_{j,min}\left(K\right)\leq\mathcal{S}_{j,max}\left(K\right)\). Let \(K\in\left[K_{j},K_{j+1}\right]\). The distance between the bounds writes
+
+\[\mathcal{S}_{j,max}\left(K\right)-\mathcal{S}_{j,min}\left(K\right)\] \[=\frac{1}{n\left(d_{1}\left(K\right)\right)}\bigg{[}\frac{ \mathcal{N}\left(d_{2}\left(K_{j}\right)\right)-\mathcal{N}\left(d_{2}\left(K _{j+1}\right)\right)}{\sqrt{\tau}} \tag{3.3}\] \[+n\left(d_{1}\left(K_{j+1}\right)\right)s\left(K_{j+1}\right)-n \left(d_{1}\left(K_{j}\right)\right)s\left(K_{j}\right)\bigg{]} \tag{3.4}\]
+
+On quoted strikes \(K_{j}\) and \(K_{j+1}\), so-called Sharkjaw bounds on the skew have already been proven taking into account market Call/Put triangle arbitrage. We suppose the'market' skews lie in the Sharkjaw admissible region given by the theorem (25), i.e \(s\left(K_{j}\right)\in\left[s_{min}\left(K_{j}\right),s_{max}\left(K_{j}\right)\right]\) and \(s\left(K_{j+1}\right)\in\left[s_{min}\left(K_{j+1}\right),s_{max}\left(K_{j+1 }\right)\right]\). We easily see that
+
+\[\min\left\{\mathcal{S}_{j,max}\left(K\right)-\mathcal{S}_{j,min}\left(K\right) \right\}= \mathcal{S}_{j,max}\left(K\right)\left|s_{\left(K_{j+1}\right)=s_{ min}\left(K_{j+1}\right)}-\mathcal{S}_{j,min}\left(K\right)\left|s_{\left(K_{j} \right)=s_{max}\left(K_{j}\right)}\right.\]
+
+where the minimum is computed over \(\left[s\left(K_{j}\right),s\left(K_{j+1}\right)\right]\) in their admissible region. Indeed \(\mathcal{S}_{j,max}\) and \(\mathcal{S}_{j,min}\) are increasing affine functions of respectively \(s\left(K_{j+1}\right)\) and \(s\left(K_{j}\right)\). But
+
+\[n\left(d_{1}\left(K_{j+1}\right)\right)s_{min}\left(K_{j+1} \right)-n\left(d_{1}\left(K_{j}\right)\right)s_{max}(K_{j})\] \[=n\left(d_{1}\left(K_{j+1}\right)\right)\frac{\frac{C\left(K_{j+1 }\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}+\mathcal{N}\left(d_{2}\left(K_{j+1 }\right)\right)}{\sqrt{\tau}n\left(d_{1}\left(K_{j+1}\right)\right)} \tag{3.5}\] \[-n\left(d_{1}\left(K_{j}\right)\right)\frac{\frac{C\left(K_{j+1} \right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}+\mathcal{N}\left(d_{2}\left(K_{j} \right)\right)}{\sqrt{\tau}n\left(d_{1}\left(K_{j}\right)\right)} \tag{3.6}\]
+
+Hence by substituting (3.5) in (3.3) we have \(\mathcal{S}_{j,max}\left(K\right)\left|s_{\left(K_{j+1}\right)=s_{min}\left(j+1 \right)}-\mathcal{S}_{j,min}\left(K\right)\left|s_{\left(K_{j}\right)=s_{max} \left(j\right)}=0\). The corresponding skew function is given by (3.10) and, by direct implication of the Sharkjaw bounds, for all \(K\) in \(\left[K_{j},K_{j+1}\right]\), for all 'quoted' skews \(\left\{s_{j},s_{j+1}\right\}\) in \(\left[s_{min}\left(j\right),s_{max}\left(j\right)\right]\times\left[s_{min}\left( j+1\right)\right),s_{max}\left(j+1\right)]\), we have
+
+\[\mathcal{S}_{j,min}\left(K\right)\left|s_{\left(K_{j}\right)=s_{j}}\leq\frac{ \mathrm{d}\sigma\left(K\right)}{\mathrm{d}K}\leq\mathcal{S}_{j,max}\left(K\right) \left|s_{\left(K_{j+1}\right)=s_{j+1}}\right.\]An additional observation is that the upper bound on the interval \(\left[K_{j},K_{j+1}\right]\) becomes the lower bound for the interval \(\left[K_{j+1};K_{j+2}\right]\). As this common bound is continuous with respect to the strike on the market grid (as long as the IV surface \(\sigma\) is not arbitrable, we know that the continuity on the quoted strikes is required according to 'Fukasawa' bounds), in particular in \(K_{j+1}\), we have \(s\left(K_{j+1}^{-}\right)\leq\mathcal{S}_{j,max}\) and \(s\left(K_{j+1}^{+}\right)\geq\mathcal{S}_{j,max}\) so if we want the implied volatility surface to be \(\mathcal{C}^{1}\) in the strike dimension, we must have \(s\left(K_{j+1}^{-}\right)=s\left(K_{j+1}^{+}\right)=\mathcal{S}_{j,max}\left( K\right)=s\left(K_{j+1}\right)\). This means \(s\left(K\right)\) must be continuous for any \(K\in\mathbb{K}\). 
+
+These bounds depend on the skews level on the quoted strikes which have to be in the Sharkjaw's bounds. Finally, the value of the implied volatility \(\sigma(K)\) is assumed to be chosen in \(\mathcal{A}\left(K;j\right)=\left\{\sigma\geq 0,\sigma_{j,min}\left(K \right)\leq\sigma\leq\sigma_{j,max}\left(K\right)\right\}\) where \(\sigma_{j,min}\) and \(\sigma_{j,max}\) refer to the bounds on the implied volatility level previously explicited in Theorem 18.
+
+_Remark 1:_ The last part of the proof above is also a direct consequence of the convexity of the call function, its slopes being increasing so that \(\mathcal{S}_{j,max}\left(K\right)\geq\mathcal{S}_{j,min}\left(K\right)\) as long as the the skew on the quoted strikes are arbitrage free (cf (25)).
+
+_Remark 2:_ Note also that these bounds are local (in reason of the increasing slope of the Call function) such that the lower bound only depends on the left quoted strike \(K_{j}\) whereas the upper bound only depends on the right quoted strike \(K_{j+1}\). This small result generalizes the Corollary 3.10 from [28] and implies in particular that the derivative of a continuous and admissible implied volatility surface must fit the'market' skews on quoted strikes (which can be estimated by finite finite differences on market vanilla prices). Last but not least, we conclude that the derivative of the implied volatility surface cannot have negative jumps on quoted strikes.
+
+_Remark 4:_ If one considers the right wing of the strike scale, it means \(K_{j}=K_{n_{K}}\) and \(K_{j+1}=+\infty\), then the upper bound for the Call slope becomes zero and the upper bound on the skew becomes the right hand side of Lemma 3.7 of [28]. The main drawback of the theorem (26) is it links \(\sigma\left(K\right)\) and its first order derivative \(s\left(K\right)\) by a set of inequalities. However there is a way to establish a more direct link. To get it, the following result expresses the convexity as a function of its lower bound given by Durrleman [10] and a positive function expressed in terms of the market delta strikes.
+
+### The convexity dependency on the market delta strikes
+
+Since the works of Durrleman, an arbitrage-free convexity of the implied volatility, \(c\left(K\right)\) (\(\equiv\frac{\mathrm{d}^{2}\sigma}{\mathrm{d}K^{2}}\)) is known to have a lower bound but few more was known of his behavior until the following proposition:
+
+**Proposition 27**.: _The arbitrage free distance, \(\mathcal{D}_{c}\left(K\right)\equiv c\left(K\right)-L_{conv}\left(K\right)\) is a positive function depending on the market delta strikes such that any arbitrage free convexity function \(c\left(K\right)\) must be such that:_
+
+\[c\left(K\right)=L_{conv}\left(K\right)+\frac{\frac{d\phi_{\theta}\left(K\right) }{dK}}{\sqrt{\tau}n(d_{1})}\]
+
+_with \(L_{conv}\left(K\right)=\frac{-1}{\sigma\left(K\right)}\left(\frac{1}{K\sqrt {\tau}}+d_{2}s\left(K\right)\right)\left(\frac{1}{K\sqrt{\tau}}+d_{1}s\left(K \right)\right)-\frac{s\left(K\right)}{K}\) and \(\phi_{\theta}\left(K\right)=\theta\left(K\right)\Delta_{K}^{mkt}\left(K_{j} \right)+\left(1-\theta\left(K\right)\right)\Delta_{K}^{mkt}\left(K_{j+1}\right)\) a monotone increasing function \(\forall K\in\left[K_{j};K_{j+1}\right]\) which equals \(\Delta_{K}^{mkt}(K_{j})\) in \(K_{j}\) and \(\Delta_{K}^{mkt}(K_{j+1})\) in \(K_{j+1}\) in order to match quoted skew values and satisfy the Durrelman condition._
+
+Proof.: The expression of all admissible skews by a function \(S_{\theta}\) is trivial. By differentiating the ODE (3.8) given by \(S_{\theta}\), one has
+
+\[\frac{\mathrm{d}^{2}\sigma}{\mathrm{d}K^{2}}=\frac{-1}{\sigma\left(K\right)} \left(\frac{1}{K\sqrt{\tau}}+d_{2}\frac{\mathrm{d}\sigma}{\mathrm{d}K} \right)\left(\frac{1}{K\sqrt{\tau}}+d_{1}\frac{\mathrm{d}\sigma}{\mathrm{d}K} \right)-\frac{1}{K}\frac{\mathrm{d}\sigma}{\mathrm{d}K}+\frac{f_{\theta}^{ \prime}\left(K\right)}{\sqrt{\tau}n(d_{1})}\]
+
+So that the function \(f_{\theta}=\theta(K)\Delta_{K}^{mkt}(K_{j})+(1-\theta(K))\Delta_{K}^{mkt}(K_{j+1})\) has to be non-decreasing from \(K_{j}\) to \(K_{j+1}\) and equals \(\Delta_{K}^{mkt}(K_{j})\) in \(K_{j}\) and \(\Delta_{K}^{mkt}(K_{j+1})\) in \(K_{j+1}\) in order to match quoted skew values and satisfy the Durrelman condition. 
+
+An immediate consequence is the following corollary.
+
+**Corollary 28**.: _The set of all admissible continue skews on \(\left[K_{j},K_{j+1}\right]\) is of the form_
+
+\[\mathcal{S}_{j}=\left\{S_{\theta}\mid\theta\in\mathcal{C}\left(\left[K_{j},K_{ j+1}\right],[0,1]\right),\text{ non-increasing and }\theta(K_{j})=1,\,\theta(K_{j+1})=0\right\} \tag{3.7}\]
+
+_with_
+
+\[S_{\theta}(K,\sigma(K))=\frac{\mathcal{N}\left(d_{2}\left(K\right)\right)+ \theta(K)\Delta_{K}^{mkt}(K_{j})+\left(1-\theta(K)\right)\Delta_{K}^{mkt}\left( K_{j+1}\right)}{\sqrt{\tau}n\left(d_{1}\left(K\right)\right)}\]\[\Delta_{K}^{mkt}(K_{j})=-\mathcal{N}\left(d_{2}\left(K_{j}\right)\right)+\sqrt{ \tau}n\left(d_{1}\left(K_{j}\right)\right)\frac{\underline{d\sigma\left(K_{j} \right)}}{\underline{d}K}\]
+
+_And the corresponding implied volatility slice is thus a solution to the nonlinear first order two-point boundary value problem:_
+
+\[\begin{cases}\frac{\mathrm{d}\sigma}{\mathrm{d}K}\left(K\right)&=S_{\theta} \left(K,\sigma(K)\right),\quad K\in\left[K_{j},K_{j+1}\right]\\ \sigma\left(K_{j}\right)&=\sigma_{j}\\ \sigma\left(K_{j+1}\right)&=\sigma_{j+1}\end{cases}. \tag{3.8}\]
+
+Proof.: The expression of all admissible skew by a function \(S_{\theta}\) is trivial. By differentiating the ODE (3.8) given by \(S_{\theta}\), one has
+
+\[\frac{\mathrm{d}^{2}\sigma}{\mathrm{d}K^{2}}=\frac{-1}{\sigma(K)}\left(\frac {1}{K\sqrt{\tau}}+d_{2}\frac{\mathrm{d}\sigma}{\mathrm{d}K}\right)\left( \frac{1}{K\sqrt{\tau}}+d_{1}\frac{\mathrm{d}\sigma}{\mathrm{d}K}\right)- \frac{1}{K}\frac{\mathrm{d}\sigma}{\mathrm{d}K}+\frac{f_{\theta}^{\prime}(K)} {\sqrt{\tau}n(d_{1})}\]
+
+So that the function \(\phi_{\theta}=\theta(K)\Delta_{K}^{mkt}(K_{j})+(1-\theta(K))\Delta_{K}^{mkt}( K_{j+1})\) has to be non-decreasing from \(K_{j}\) to \(K_{j+1}\) and equals \(\Delta_{K}^{mkt}(K_{j})\) in \(K_{j}\) and \(\Delta_{K}^{mkt}(K_{j+1})\) in \(K_{j+1}\) in order to match quoted skew values and satisfy the Durrelman condition. 
+
+The class of admissible skew functions is infinite and non explicit, but we can identify a particular case given by the following assertion.
+
+**Corollary 29**.: _Assuming all \(s(K_{j})\) in \(\left[s_{min}\left(j\right),s_{max}\left(j\right)\right]\), for all \(s\left(K_{j+1}\right)\) in \(\left[s_{min}\left(K_{j+1}\right),s_{max}\left(K_{j+1}\right)\right]\), a skew functional always satisfying the non-arbitrage condition of theorem (26) is linked to the volatility \(\sigma\left(K\right)\) by the following first order two points boundary value problem on \(\sigma\left(K\right)\):_
+
+\[\begin{cases}\frac{\mathrm{d}\sigma\left(K\right)}{\mathrm{d}K}&=F\left(K, \sigma\left(K\right)\right),\quad K\in\left[K_{j},K_{j+1}\right]\\ \sigma\left(K_{j}\right)&=\sigma_{j}\\ \sigma\left(K_{j+1}\right)&=\sigma_{j+1}\end{cases} \tag{3.9}\]
+
+_with_
+
+\[F\left(K,\sigma\left(K\right)\right)=\frac{\mathcal{N}\left(d_{2}\left(K, \sigma\left(K\right)\right)\right)+\frac{C^{mkt}(K_{j+1})-C^{mkt}(K_{j})}{K_{j+ 1}-K_{j}}}{\sqrt{\tau}n\left(d_{1}\left(K,\sigma\left(K\right)\right)\right)} \ \forall K\in\left[K_{j},K_{j+1}\right] \tag{3.10}\]
+
+Proof.: By the mean value theorem and because of the call convexity, \(\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\in\left[\frac {\mathrm{d}C\left(K_{j}\right)}{\mathrm{d}K};\frac{\mathrm{d}C\left(K_{j+1} \right)}{\mathrm{d}K}\right]\) so that the skew \(s\left(K\right)\) defined by the ODE (3.9) is non arbitrable. The non-arbitrability of the solution of (3.9) may be proven provided that a comparison principle exists (see [20, 7]) as \(F\left(K,\sigma\left(K\right)\right)=\frac{\mathrm{d}\sigma_{j,max}}{\mathrm{d }K}\) and by lemma (24), \((\mathcal{S}_{j,min}\leq s\leq\mathcal{S}_{j,max}){\Rightarrow}\sigma\geq \sigma_{j,min}\). 
+
+_Remark 30_.: If \(s(K_{j})=s_{max}\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)=s_{min}\left(K_{j+1}\right)\)_then the skew \(K\mapsto s\left(K\right)\) is fully determined between \(K_{j}\) and \(K_{j+1}\). This comes down to having \(\mathcal{N}\left(d_{2}\left(K,\sigma\left(K\right)\right)\right)=\mathcal{N} \left(d_{2}\left(K_{j},\sigma\left(K_{j}\right)\right)\right)\ \forall K\in\left[K_{j},K_{j+1}\right]\). This means the corresponding pair \(\left\{\sigma\left(K\right);s\left(K\right)\right\}\) is such that the density \(\phi\left(d_{2}\left(K\right)\right)\) is null between \(\forall K\in\left[K_{j},K_{j+1}\right]\).
+
+Now combining the arbitrage bounds existing on \(\sigma\left(K\right)\) to the ones (26), we may obtain a new theorem giving wider bounds for the skew \(s\left(K\right)\) but that won't depend on the level of the volatility. Before getting this result, the behavior of the skew bounds \(\mathcal{S}_{j,min}\left(K\right)\) and \(\mathcal{S}_{j,max}\left(K\right)\) in function of \(\sigma\left(K\right)\) and \(s\left(K\right)\) must be studied (see (26)). It is straightforward to see these bounds are linearly dependent of \(s\left(K\right)\). The dependency on \(\sigma\left(K\right)\) is a little bit more complicated to identify and is the focus of the following sub section.
+
+### Skew bounds properties
+
+First the distance \(\mathcal{S}_{j,max}-\mathcal{S}_{j,min}\), seen like function of \(\sigma\) with respect to skews evaluated on quoted strikes \(s\left(K_{j}\right),\,s\left(K_{j+1}\right)\), is studied to ensure the non-emptyness of the corresponding bounding interval.
+
+**Proposition 31**.: _Let \(\left(s_{j},s_{j+1}\right)\in\left[s_{min}\left(j\right),s_{max}\left(j\right) \right]\times\left[s_{min}\left(j+1\right),s_{max}\left(j+1\right)\right]\) be the chosen sticky skews on \(K_{j}\), \(K_{j+1}\) so that the only variable considered here is \(\sigma\left(K\right)\). Then \(\mathcal{S}_{j,max}-\mathcal{S}_{j,min}\) is always positive thus guaranteeing the existence of the skew \(s\left(K\right)\) between \(\mathcal{S}_{j,min}\) and \(\mathcal{S}_{j,max}\)._Proof.: Recall the expression of the skew bounds distance (3.3) and note that \(sign\left(\frac{\mathrm{d}\left(\mathcal{G}_{j,max}-\mathcal{S}_{j,min}\right)}{ \mathrm{d}\sigma}\right)=-sign\left(\frac{\mathrm{d}n\left(d_{1}\left(K\right) \right)}{\mathrm{d}\sigma}\right)\). As \(\frac{\mathrm{d}\mathrm{d}_{1}\left(K\right)}{\mathrm{d}\sigma}=-\frac{d_{2} \left(K\right)}{\sigma}\), one has \(\frac{\mathrm{d}n\left(d_{1}\left(K\right)\right)}{\mathrm{d}\sigma}=\frac{d_ {1}\left(K\right)d_{2}\left(K\right)n\left(d_{1}\left(K\right)\right)}{\sigma \left(K\right)}\). Therefore the distance between skew bounds directly evolves according to the product of the normalizing volatility transformation (NVT) \(d_{1}\left(K\right)\) and \(d_{2}\left(\cdot,\sigma(\cdot)\right)\). Because
+
+\[\begin{cases}d_{1}\left(K\right)\geq 0&\Leftrightarrow\sigma\left(K\right)^{2} \geq\frac{2K}{\tau}\\ d_{2}\left(K\right)\geq 0&\Leftrightarrow\sigma\left(K\right)^{2}\leq-\frac{2K}{ \tau}\end{cases}\]
+
+it yields \(sign\left(\frac{\mathrm{d}\left(\mathcal{S}_{j,max}-\mathcal{S}_{j,min} \right)}{\mathrm{d}\sigma}\right)=-sign\left(d_{1}\left(K\right)d_{2}\left(K \right)\right)=-\mathbf{1}_{\left\{\sigma\left(K\right)^{2}\leq\frac{2|K|}{ \tau}\right\}}+\mathbf{1}_{\left\{\sigma\left(K\right)^{2}\geq\frac{2|K|}{ \tau}\right\}}\). So the distance \(\mathcal{S}_{j,max}-\mathcal{S}_{j,min}\) is decreasing on \(\left[0,\tau^{-\frac{1}{2}}\sqrt{2|K|}\right]\) and increasing on \(\left[\tau^{-\frac{1}{2}}\sqrt{2|K|},+\infty\right[\). From a practical point of view, the practitioner would be looking for the admissible level of volatility in \(K\) which allows the maximal liberty in the choice of the skew. It writes
+
+\[\sigma^{\star}\left(K;j\right)=\operatorname*{argmax}_{\sigma\in\mathcal{A} \left(k\right)}\left\{\mathcal{S}_{j,max}\left(T,K,\sigma\left(K\right),K_{j +1},\sigma\left(K_{j+1}\right)\right)-\mathcal{S}_{j,min}\left(T,K,\sigma\left( K\right),K_{j},\sigma\left(K_{j}\right)\right)\right\}\]
+
+Therefore, by noting \(\mathcal{D}(K,\sigma)=\mathcal{S}_{j,max}\left(K,\sigma\right)-\mathcal{S}_{ min}\left(K,\sigma\right)\),
+
+\[\operatorname*{argmax}_{\sigma\left(K\right)\in\mathcal{A}\left(K \right)}\left\{\mathcal{D}\left(K\right)\right\}= \sigma_{j,max}\mathbf{1}_{\left\{\sigma_{j,min}\geq\tau^{-\frac{1}{2}} \sqrt{2|K|}\right\}}+\sigma_{j,min}\mathbf{1}_{\left\{\sigma_{j,max}\leq\tau^{ -\frac{1}{2}}\sqrt{2|K|}\right\}}\] \[+\max\left(\mathcal{D}\left(K,\sigma_{j,min}\right);\mathcal{D} \left(K,\sigma_{j,max}\right)\right)\mathbf{1}_{\left\{\sigma_{j,min}\leq\tau ^{-\frac{1}{2}}\sqrt{2|K|}\leq\sigma_{j,max}\right\}}.\]
+
+Note that the global minimum of the distance between lower and upper bounds is explicit, indeed one has
+
+\[\forall K\in\left[K_{j},K_{j+1}\right],\,\min_{\sigma\in\mathbb{ R}^{+}}\left\{\mathcal{D}\left(K,\sigma\right)\right\}= \sqrt{2\pi}\left(\frac{\mathcal{N}\left(d_{2}\left(K_{j}\right) \right)-\mathcal{N}\left(d_{2}\left(K_{j+1}\right)\right)}{\sqrt{\tau}}\right.\] \[+n\left(d_{1}\left(K_{j+1}\right)\right)s\left(K_{j+1}\right)-n \left(d_{1}\left(K_{j}\right)\right)s\left(K_{j}\right)\right)\] \[=\sqrt{\frac{2\pi}{\tau}}\left(\Delta_{k}^{mkt}\left(K_{j+1} \right)-\Delta_{k}^{mkt}\left(K_{j}\right)\right).\]
+
+This quantity remains positive as long as the skews on quoted strikes are non-arbitrable. As the volatility \(\sigma\left(K\right)\) is bounded for any strike level thanks to the theorem (18), tighter bounds may be identified as soon as the behavior of the bounds related to \(\sigma\left(K\right)\) is known. (Below in the theorem (32), for sake of clarity, we let figure the volatility argument \(\sigma\) in the expression of \(d_{1}\) and \(d_{2}\)). 
+
+**Proposition 32**.: _The bound functions \(\mathcal{S}_{max}\left(\sigma\right)\) and \(\mathcal{S}_{min}\left(\sigma\right)\) defined like:_
+
+\[\mathcal{S}_{max}\left(\sigma\right)=\frac{\mathcal{N}\left(d_{2}\left(K, \sigma\right)\right)-\mathcal{N}\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1} \right)\right)\right)}{\sqrt{\tau}n\left(d_{1}\left(K,\sigma\right)\right)}+ \frac{n\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)}{n \left(d_{1}\left(K,\sigma\right)\right)}s\left(K_{j+1}\right)\]
+
+_are both decreasing functions of its \(\sigma\) argument \(\forall\)\(k\leq 0\) and \(\forall k\geq 0\) when \(\sigma<\hat{\sigma}\) and increasing otherwise. More formally it means:_
+
+\[\text{sign}\left(\frac{\mathrm{d}\mathcal{S}_{max}}{\mathrm{d} \sigma}\right)=\text{sign}\left(\frac{\mathrm{d}\mathcal{S}_{min}}{\mathrm{d} \sigma}\right)>0\text{ }\forall k<0\text{ or }\forall k\geq 0\text{ when }\sigma>\hat{\sigma}\] \[<0\text{ otherwise}.\]
+
+_with \(\hat{\sigma}=\sqrt{\frac{2\max\left(0:k\right)}{\tau}}\) (and \(k=\ln\left(K/X_{0}\right)\))_
+
+Proof.: This work will be done for \(\mathcal{S}_{max}\) only because the case \(\mathcal{S}_{min}\) comes down to replacing all indexes \(j+1\) by \(j\).
+
+Before all, the following identity
+
+\[\forall\sigma\geq 0,\text{ }\frac{\mathrm{d}d_{1}}{\mathrm{d}\sigma}\left(k, \sigma\right)=\frac{k}{\sigma^{2}\sqrt{\tau}}+\frac{\sqrt{\tau}}{2}=\frac{-d_{2 }\left(k,\sigma\right)}{\sigma}\]yields to
+
+\[\forall\sigma\geq 0,\;\frac{\mathrm{d}\mathcal{S}_{max}\left(\sigma\right)}{ \mathrm{d}\sigma}=-\frac{d_{1}\left(k,\sigma\right)}{\sigma\sqrt{\tau}n\left(d_ {1}\left(k,\sigma\right)\right)}\phi(k,\sigma)\]
+
+Where
+
+\[\phi(k,\sigma) =n\left(d_{2}\left(k,\sigma\right)\right)+d_{2}\left(k,\sigma \right)\mathcal{N}\left(d_{2}\left(k,\sigma\right)\right)\] \[-d_{2}\left(k,\sigma\right)\mathcal{N}\left(d_{2}\left(k_{j+1}, \sigma(k_{j+1})\right)\right)+\sqrt{\tau}d_{2}\left(k,\sigma\right)\frac{ \mathrm{d}\sigma(k_{j+1})}{\mathrm{d}k}n\left(d_{1}\left(k_{j+1},\sigma\left( k_{j+1}\right)\right)\right)\] \[=n\left(d_{2}\left(k,\sigma\right)\right)+d_{2}\left(k,\sigma \right)\mathcal{N}\left(d_{2}\left(k,\sigma\right)\right)+d_{2}\left(k,\sigma \right)\Delta_{K}^{mkt}\left(k_{j+1}\right)\]
+
+Assume the skews on quoted strikes satisfy the Sharkjaw condition, then we have
+
+\[\sqrt{\tau}\frac{\mathrm{d}\sigma\left(k_{j+1}\right)}{\mathrm{d}k}n\left(d_ {1}\left(k_{j+1},\sigma\left(k_{j+1}\right)\right)\right)\geq\mathcal{N} \left(d_{2}\left(k_{j+1},\sigma\left(k_{j+1}\right)\right)\right)+\frac{C \left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\]
+
+and
+
+\[\sqrt{\tau}\frac{\mathrm{d}\sigma\left(k_{j+1}\right)}{\mathrm{d}k}n\left(d_ {1}\left(k_{j+1},\sigma\left(k_{j+1}\right)\right)\right)\leq\mathcal{N} \left(d_{2}\left(k_{j+1},\sigma\left(k_{j+1}\right)\right)\right)+\frac{C \left(K_{j+2}\right)-C\left(K_{j+1}\right)}{K_{j+2}-K_{j+1}}\]
+
+in particular, \(\Delta_{K}^{mkt}\left(k_{j+1}\right)\leq 0.\) We immediatly see that if \(d_{2}\left(k,\sigma\right)\leq 0,\)then \(\phi(k,\sigma)\geq 0\). Indeed, we always have \(n\left(d_{2}\left(k,\sigma\right)\right)+d_{2}\left(k,\sigma\right)\mathcal{N }\left(d_{2}\left(k,\sigma\right)\right)\geq 0.\) If \(d_{2}\left(k,\sigma\right)\geq 0,\) it is trivial. Otherwise, the Mills' ratio ensures that \(\forall x<0,\mathcal{N}(x)<\frac{n\left(x\right)}{x-x}\) and we have the desired property. Now, we have to study the signs of \(d_{2}\left(k,\sigma\right)\) and \(d_{1}\left(k,\sigma\right)\). Given a fixed value of \(k,\) we have:
+
+\[\begin{cases}d_{1}\left(k,\sigma\right)&\geq 0\\ d_{2}\left(k,\sigma\right)&\leq 0\end{cases}\]
+
+\[\Leftrightarrow\begin{cases}\sigma&\geq\sqrt{\frac{2k^{+}}{\tau}}=\sigma_{+} \\ \sigma&\geq\sqrt{\frac{-2k^{-}}{\tau}}=\sigma_{-}\end{cases}\]
+
+where \(k^{+}=\max\left\{0,k\right\}\) and \(k^{-}=\min\left\{0,k\right\}.\) In particular, if \(k\geq 0,\;\forall\sigma\geq 0,\)\(d_{2}(T,k,\sigma)\leq 0\) and if \(k\leq 0,\;\forall\sigma\geq 0,\;d_{1}(T,k,\sigma)\geq 0\). With the result above, we deduce that
+
+\[\left(k\geq 0\right)\;\text{or}\;\left(k\leq 0\text{ and }\sigma\geq\sigma_{-}\right) \Rightarrow\phi(k,\sigma)\geq 0\]
+
+The last remaining case is \(k\leq 0\) and \(\sigma\leq\sigma_{-}\). In this case, we have \(d_{1}\left(k,\sigma\right)\geq 0\) and \(d_{2}\left(k,\sigma\right)\geq 0\). Moreover
+
+\[\frac{\mathrm{d}\phi}{\mathrm{d}\sigma}(k,\sigma)=\frac{\mathrm{d}d_{2}}{ \mathrm{d}\sigma}\left(k,\sigma\right)\left[\mathcal{N}\left(d_{2}\left(k, \sigma\right)\right)+\Delta_{K}^{mkt}\left(k_{j+1}\right)\right]=\frac{-d_{1 }\left(k,\sigma\right)}{\sigma}\left[\mathcal{N}\left(d_{2}\left(k,\sigma \right)\right)+\Delta_{K}^{mkt}\left(k_{j+1}\right)\right]\]
+
+Let's study the sign of the term in the brackets: \(\mathcal{N}\left(d_{2}\left(k,\sigma\right)\right)+\Delta_{K}^{mkt}\left(k_{j+1 }\right)\geq 0\Leftrightarrow\sigma^{2}\frac{\tau}{2}-\mathcal{N}^{-1}\left(- \Delta_{K}^{mkt}\left(k_{j+1}\right)\right)\sigma\sqrt{\tau}+k\leq 0\). Because \(\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1}\right)\right)^{2}\tau-2 \tau k\geq 0\), this is equivalent to
+
+\[\frac{\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1}\right)\right)- \sqrt{\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1}\right)\right)^{2}-2 k}}{\sqrt{\tau}}\leq\sigma\leq\hat{\sigma}\]
+
+with \(\hat{\sigma}=\frac{\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1} \right)\right)+\sqrt{\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1} \right)\right)^{2}-2k}}{\sqrt{\tau}}\). Because \(k\leq 0,\)we have
+
+\[\mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1}\right)\right)-\sqrt{ \mathcal{N}^{-1}\left(-\Delta_{K}^{mkt}\left(k_{j+1}\right)\right)^{2}-2k}\leq 0\]
+
+and this imply that \(\phi\left(k,\cdot\right)\) is decreasing on \(\left[0,\hat{\sigma}\right]\) and increasing on \(\left[\hat{\sigma},+\infty\right]\). Finally, one has \(\phi\left(k,\hat{\sigma}\right)=n\left(d_{2}\left(k,\hat{\sigma}\right) \right)\geq 0\) and \(\forall\sigma\geq 0,\phi\left(k,\sigma\right)\geq 0.\) As \(\forall\sigma\geq 0,\)\(\frac{\mathrm{d}\mathcal{S}_{max}}{\mathrm{d}\sigma}=-\frac{d_{1}\left(k,\sigma \right)}{\sigma\sqrt{\tau}n\left(d_{1}\left(k,\sigma\right)\right)}\phi(k,\sigma),\) we know that \(\mathrm{sign}\left(\frac{\mathrm{d}\mathcal{S}_{max}}{\mathrm{d}\sigma}\right)= -\mathrm{sign}d_{1}\left(k,\sigma\right)\). Then the behavior of \(\mathcal{S}_{max}\) in function of \(\sigma\) is summarized in the following table:
+
+\begin{tabular}{|c|c|c|c|} \multicolumn{4}{c}{Properties of \(\mathcal{S}_{max}\) in function of \(\sigma\)} \\ \hline  & \(\sigma\in\) & \(\left[0;\sigma_{+}\right]\) & \(\left[\sigma_{+};+\infty\right]\) \\ \hline \hline \multirow{2}{*}{\(k\leq 0\)} & \(\mathrm{sign}\left(\frac{\mathrm{d}\mathcal{S}_{max}}{\mathrm{d}\sigma}\right)\) & - & - \\ \cline{2-4}  & \(\mathcal{S}_{max}\) & \(\searrow\) & \(\searrow\) \\ \hline \multirow{2}{*}{\(k\geq 0\)} & \(\mathrm{sign}\left(\frac{\mathrm{d}\mathcal{S}_{max}}{\mathrm{d}\sigma}\right)\) & + & - \\ \cline{2-4}  & \(\mathcal{S}_{max}\) & \(\nearrow\) & \(\searrow\) \\ \hline \end{tabular}
+
+Q.E.D.
+
+The exact same proof may be derived for the lower bound \(\mathcal{S}_{min}\). The reader will note that the behavior of the bounds on each strike interval is independent of the local information in \(k_{j}\) and \(k_{j+1}\), the latter indeed only manage the level of the bounds on \(\left[K_{j},K_{j+1}\right]\). While taking \(K_{j}=0.88\), \(K_{j+1}=1.1\), a maturity of \(1\)Y, \(s\left(K_{j}\right)=-0.12\), \(s\left(K_{j+1}\right)=-0.115\), \(\sigma\left(K_{j}\right)=0.34\), and \(\sigma\left(K_{j+1}\right)=0.28\), graphically we have:
+
+### Arbitrability bounds for the skew
+
+Given the preceding results, unfortunately there is no arbitrage free bounds for which, given any non quoted log-strike level \(K\), the skew \(s\left(k\right)\) is arbitrage free for any level of the quoted volatility.
+
+However the below corollary to the theorems (18) and (26) tells us unconditional arbitrability bounds, \(s_{min}\left(k\right)\) and \(s_{max}\left(k\right)\) are proven to exist. They are said "arbitrability" bounds and not arbitrage free bounds as it means any skew level \(s\left(k\right)\) outside \(\left[s_{min}\left(k\right);s_{max}\left(k\right)\right]\) is not arbitrage free whatever the skew and the volatility at the nearest quoted strikes are provided that these two nearest skews, \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\) and the volatility \(\sigma\left(K\right)\) are respectively inside the bounding given by the theorems (26) and (18). On the contrary any such skew level \(s\left(k\right)\) inside \(\left[s_{min}\left(k\right);s_{max}\left(k\right)\right]\) is not necessarily arbitrage free.
+
+**Corollary 33**.: _Combined with the convex bounds on the implied volatility given by the theorem (18), and assuming the skew equals \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\) for respectively \(K=K_{j}\) and \(K=K_{j+1}\), a necessary but not sufficient condition for the skew \(s\left(K\right)\) to be arbitrage free is to respect the following conditions:_
+
+\[\mathcal{B}_{min}\left(K\right)\leq s\left(K\right)\leq\mathcal{B}_{max}\left( K\right)\]
+
+_with_
+
+\[\mathcal{B}_{min}\left(K\right)=\mathcal{S}_{min}\left(\sigma=\sigma_{max} \right)\ \forall k<0\text{ or }\min\left[\mathcal{S}_{min}\left(\sigma=\sigma_{max}\right);\mathcal{S}_{ min}\left(\sigma=\sigma_{min}\right)\right]\ \forall k>0\]
+
+\[\mathcal{B}_{max}\left(K\right)=\mathcal{S}_{max}\left(\sigma=\sigma_{min} \right)\ \forall k<0\text{ or }\mathcal{S}_{max}\left(\sigma=\max\left(\sigma_{min};\min\left(\sigma_{+}; \sigma_{max}\right)\right)\right)\ \forall k>0\]
+
+_and these bounds are always such that \(\mathcal{B}_{min}\left(K\right)\leq\mathcal{B}_{max}\left(K\right)\)._
+
+Proof.: This corollary is a direct consequence of (32) and (26). 
+
+These bounds \(\mathcal{B}_{min}\left(K\right)\) and \(\mathcal{B}_{max}\left(K\right)\) define an admissible range for the skew given the assumed values of \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\) (present in the calculus of \(\mathcal{S}_{min}\) and \(\mathcal{S}_{max}\)) in the sense that if \(s\left(K\right)\) is outside this range, it is always arbitrable. An graphic example of these bounds is:It reveals the following important property of the skew \(s\left(K\right)\):
+
+**Proposition 34**.: _For any quoted maturity \(T\), the market \(s\left(K\right)\) is always a continuous function of \(K\)._
+
+Proof.: On may easily prove the following limits:
+
+\[\lim_{K\uparrow K_{j}}\mathcal{B}_{min}\left(K\right)=s_{j,min}<s\left(K_{j} \right);\ \ \lim_{K\downarrow K_{j}}\mathcal{B}_{min}\left(K\right)=s\left(K_{j}\right)\]
+
+\[\lim_{K\uparrow K_{j}}\mathcal{B}_{max}\left(K\right)=s\left(K_{j}\right);\ \ \lim_{K \downarrow K_{j}}\mathcal{B}_{min}\left(K\right)=s_{j,max}>s\left(K_{j}\right)\]
+
+The direct consequence is we may never have \(s\left(K\right)\) to be discontinuous of \(K\). 
+
+### Unconditional arbitrage free bounds for the skew
+
+At the opposite of the preceding result, the following corollary to the same theorems (18) and (26) gives unconditional bounds such that any skew value \(s\left(K\right)\) inside their range is arbitrage free whatever the values of \(\sigma\left(K\right)\)\(\forall K\) and \(s\left(K\right)\)\(\forall K\in\mathbb{K}\) are provided \(s\left(K_{j}\right)\)\(\in\)\(\left[s_{j,min};s_{j,max}\right]\forall K\in\mathbb{K}\) and provided \(\sigma\left(K\right)\) is inside \(\left[\sigma_{min};\sigma_{max}\right]\).
+
+**Corollary 35**.: _Combined with the convex bounds on the implied volatility given by the theorem (18), a necessary and sufficient condition for the skew \(s\left(K\right)\) to be arbitrage free is to respect the following conditions:_
+
+\[\mathcal{B}_{min}\left(K\right)\leq s\left(K\right)\leq\mathcal{B}_{max}\left( K\right)\]
+
+_with_
+
+\[\mathcal{B}_{min}\left(K\right)=\mathcal{S}_{min}\left(\sigma=\sigma_{min} \right)\ \forall k<0\text{ or }\mathcal{S}_{min}\left(\sigma=\max\left(\sigma_{min};\min \left(\sigma_{+};\sigma_{max}\right)\right)\right)\ \forall k>0\]
+
+_and these bounds are always such that \(\mathcal{B}_{min}\left(K\right)\leq\mathcal{B}_{max}\left(K\right)\)._
+
+The following graph illustrates these new bounds being narrower than the preceding ones obtained from the (33):(Note we may prove easily that the min and max bounds \(\tilde{\mathcal{B}}\)share exactly the same limits than the ones of \(\mathcal{B}\)).
+
+These last two results are depending on ad hoc arbitrage free values \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\) for the skew at the two nearest quoted strikes \(K_{j}\) and \(K_{j+1}\). But we may wonder what happens to the bounds on the skew according to these market skew values. In fact, if we search for the narrowest bounds while moving \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\) inside their respective SharkJaw bounds, no open range exist. At the opposite, the following corollary tells us what are the widest possible admissible arbitrability bounds for the skew \(s\left(K\right)\) when only the implied volatility and the corresponding Sharkjaw bounds for the skew are known at the quoted strikes whereas the two corresponding skews remain unknown.
+
+#### 3.5.1 Unconditional arbitrable bounds for the skew
+
+This corollary is easily proved as the bounds \(\mathcal{S}_{min}\) and \(\mathcal{S}_{max}\) are respectively monotonic increasing functions of the quoted skew \(s\left(K_{j}\right)\) and \(s\left(K_{j+1}\right)\).
+
+**Corollary 36**.: _Combined with the convex bounds on the implied volatility given by the theorem (18), a necessary **but not sufficient** condition for the skew \(s\left(K\right)\) to be arbitrage free is to respect the following conditions:_
+
+\[\widehat{\mathcal{B}}_{min}\left(K\right)\leq s\left(K\right)\leq\widehat{ \mathcal{B}}_{max}\left(K\right)\]
+
+_with_
+
+\[\widehat{\mathcal{B}}_{min}\left(K\right)=\mathcal{S}_{min}\left(\sigma= \sigma_{max},s=s_{j,min}\right)\ \forall k<0\ or\ \min\left[\mathcal{S}_{min}\left(\sigma=\sigma_{max};s=s_{j,min}\right); \mathcal{S}_{min}\left(\sigma=\sigma_{min},s=s_{j,min}\right)\right]\ \forall k>0\] \[\widehat{\mathcal{B}}_{max}\left(K\right)=\mathcal{S}_{max}\left( \sigma=\sigma_{min},s=s_{j+1,max}\right)\ \forall k<0\ or\ \mathcal{S}_{max}\left(\sigma=\max\left(\sigma_{min};\min\left(\sigma_{+}; \sigma_{max}\right)\right),s=s_{j+1,max}\right)\ \forall k>0\]
+
+_and these bounds are always such that \(\widehat{\mathcal{B}}_{min}\left(K\right)\leq\widehat{\mathcal{B}}_{max}\left( K\right)\)._
+
+In the end, we have the following ordering of the bounds on the skew:
+
+\[\widehat{\mathcal{B}}_{min}\left(K\right)\leq\mathcal{B}_{min}\left(K\right) \leq\tilde{\mathcal{B}}_{min}\leq\tilde{\mathcal{B}}_{max}\left(K\right)\leq \mathcal{B}_{max}\left(K\right)\leq\widehat{\mathcal{B}}_{max}\left(K\right)\]
+
+Graphically whereas the bounds \(\tilde{\mathcal{B}}\) and \(\mathcal{B}\) are rather near, these last \(\widehat{\mathcal{B}}\) are far away from the two other kinds of bounds:A last difference between the bounds \(\widehat{\mathcal{B}}\) and the others is their limit behavior. Indeed it is straightforward to prove these ones do converge the SharkJaw bounds such that:
+
+\[\lim_{K\downarrow K_{j}}\mathcal{B}_{min}\left(K\right)=s_{j,min}\text{ \ and \ }\lim_{K\uparrow K_{j}}\mathcal{B}_{max}\left(K\right)=s_{j,max}\]
+
+In the end, combining all the preceding results help to define a general theorem of arbitrage giving necessary and sufficient condition arbitrage-free conditions for \(\sigma\left(K\right)\), \(s\left(K\right)\) and the convexity \(c\left(K\right)\) taken altogether but before getting into this last theorem, the convexity is shown to exhibit a very specific behavior with regard to its lower arbitrage free bound given by the Durrleman's condition
+
+### General Arbitrage Free theorem for the IV, its skew and convexity
+
+While assuming a specific choice of the skew at the existing quoted levels of strike, the preceding results lead to the a general arbitrage free theorem any candidate function \(\sigma\left(K\right)\) (and a fortiori its first and second order derivatives, \(s\left(K\right)\) and \(c\left(K\right)\)) must respect to be arbitrage free with regard to the market information given at the strike quoted levels.
+
+**Theorem 37**.: _Given the increasing ordered set \(\mathbb{K}=\left\{K_{1};...;K_{n_{K}}\right\}\) of the \(n_{K}\) strikes quoted in the market for a quoted maturity \(T\) which the corresponding implied volatility and skew are respectively \(\Sigma=\left\{\sigma\left(K_{1}\right);...;\sigma\left(K_{n_{K}}\right)\right\}\) and \(\chi=\left\{s\left(K_{1}\right);...;s\left(K_{n_{K}}\right)\right\}\), if these three sets defines an arbitrage-free market such that:_
+
+\(\bullet\) _the corresponding call prices \(C_{BS}\left(K,\sigma\left(K\right)\right)\)\(\forall K\in\mathbb{K}\) are decreasing and convex following the increasing ordering of \(\mathbb{K}\);_
+
+\(\bullet\) _any pair \(\left\{K,\sigma\left(K\right)\right\}\in\left\{\mathbb{K},\Sigma\right\}\) is such that it generates decreasing values of the NVTs \(d_{1}\) and \(d_{2}\) evaluated at each \(K\in\mathbb{K}\) with respect to the theorem (1);_
+
+\(\bullet\) _any pair \(\left\{K,s\left(K\right)\right\}\in\left\{\mathbb{K},\chi\right\}\) is such that all skews are all inside the arbitrage free interval defined by the theorem (25)_
+
+\(\bullet\) _any triplet \(\left\{K,s\left(K\right),c\left(K\right)\right\}\in\left\{\mathbb{K},\Sigma,\chi\right\}\) respects the Durrleman's condition that is:_
+
+\[c\left(K\right)\geq-\frac{1}{\sigma\left(K\right)}\left(\frac{1}{K\sqrt{ \tau}}+d_{2}\left(K\right)s\left(K\right)\right)\left(\frac{1}{K\sqrt{\tau}}+ d_{1}\left(K\right)s\left(K\right)\right)-\frac{s\left(K\right)}{K}\text{ \ }\forall K\in\mathbb{K}\]
+
+_then, if the nearest quoted strike inferior to any given non quoted strike \(K\) is noted \(K_{j}\), necessary and sufficient conditions for the corresponding implied volatility \(\sigma\left(K\right)\), skew \(s\left(K\right)\)\(\equiv\)\(\frac{d\sigma}{dK}\) and convexity \(c\left(K\right)\equiv\)\(\frac{d^{2}\sigma}{dK^{2}}\forall K\notin\mathbb{K}\) to be arbitrage free are:_
+
+\[\begin{cases}\widehat{\sigma}_{j,min}\leq\sigma\left(K\right)\leq\sigma_{j, max}\\ \mathcal{L}_{min}\left(K\right)<s\left(K\right)<\mathcal{L}_{max}\left(K\right) \\ c\left(K\right)\geq-\frac{1}{\sigma\left(K\right)}\left(\frac{1}{K\sqrt{\tau}} +d_{2}\left(K\right)s\left(K\right)\right)\left(\frac{1}{K\sqrt{\tau}}+d_{1} \left(K\right)s\left(K\right)\right)-\frac{s\left(K\right)}{K}\end{cases}\]_where \(\widehat{\sigma}_{j,min}=Y_{BS}\left(K;C_{j,min}\right)\) and \(\sigma_{j,max}=Y_{BS}\left(K;C_{j,max}\right)\) with_
+
+\[C_{j,min} =\max\left(\left(1-e^{k}\right)^{+};C\left(K_{j};\sigma\left(K_{j} \right)\right)+\left(K-K_{j}\right)\delta_{j}\right)\text{ \ when }K<\widehat{\widehat{K}}\] \[=\max\left(\left(1-e^{k}\right)^{+};C\left(K_{j+1};\sigma\left(K _{j+1}\right)\right)+\left(K-K_{j+1}\right)\delta_{j+1}\right)\text{ \ otherwise }\] \[\widehat{\widehat{K}} =\frac{C\left(K_{j+1};\sigma\left(K_{j+1}\right)\right)-C\left(K _{j};\sigma\left(K_{j}\right)\right)+K_{j}\delta_{j}-K_{j+1}\delta_{j+1}}{ \left(\delta_{j}-\delta_{j+1}\right)}\] \[\delta_{j}=-N\left(d_{2}\left(K_{j}\right)\right)-\sqrt{\tau}n \left(d_{1}\left(K_{j}\right)\right)s\left(K_{j}\right)\text{ \ and }\delta_{j+1}=-N\left(d_{2}\left(K_{j+1}\right)\right)-\sqrt{\tau}n\left(d_{1 }\left(K_{j+1}\right)\right)s\left(K_{j+1}\right)\] \[\mathcal{L}_{min} =\mathcal{S}_{min}\left(K,\sigma_{j,min}\right)\text{ \ }\forall k<0\] \[=\mathcal{S}_{min}\left(K,\max\left(\sigma_{j,min};\min\left( \sigma_{+};\sigma_{j,max}\right)\right)\right)\text{ \ otherwise }\]
+
+\[\mathcal{L}_{max} =\mathcal{S}_{max}\left(K,\sigma=\sigma_{j,max}\right)\text{ \ } \forall k<0\] \[=\min\left[\mathcal{S}_{max}\left(K,\sigma=\sigma_{j,max}\right); \mathcal{S}_{max}\left(K,\sigma=\sigma_{j,min}\right)\right]\text{ \ otherwise }\]
+
+\[\mathcal{S}_{max}\left(K,\sigma\right)=\frac{\mathcal{N}\left(d_{2}\left(K \right)\right)-\mathcal{N}\left(d_{2}\left(K_{j+1}\right)\right)}{\sqrt{\tau} n\left(d_{1}\left(K\right)\right)}+\frac{n\left(d_{1}\left(K_{j+1}\right)\right)}{n \left(d_{1}\left(K\right)\right)}s\left(K_{j+1}\right)\] \[\mathcal{S}_{min}\left(K,\sigma\right)=\frac{\mathcal{N}\left(d_ {2}\left(K\right)\right)-\mathcal{N}\left(d_{2}\left(K_{j}\right)\right)}{ \sqrt{\tau}n\left(d_{1}\left(K\right)\right)}+\frac{n\left(d_{1}\left(K_{j} \right)\right)}{n\left(d_{1}\left(K\right)\right)}s\left(K_{j}\right)\]
+
+Proof.: Using the preceding results, this is straightforward to prove. 
+
+Using the same terms except we don't assume any knowledge of the market skew, the following theorem gives necessary but not sufficient conditions for the market to arbitrage free. If no choice is made for the skew \(s\left(K\right)\) at the quoted levels of strike, an additionnal less powerful theorem depending only on the level of the quoted implied volatility at the nearest quoted strike level can tell us whether a specific choice of \(\sigma\left(K\right)\), \(s\left(K\right)\) and \(c\left(K\right)\) is arbitrable (aka it does tell us it is arbitrage free):
+
+**Theorem 38**.: _Given the increasing ordered set \(\mathbb{K}=\left\{K_{1};...;K_{n_{K}}\right\}\) of the \(n_{K}\) strikes quoted in the market for a quoted maturity \(T\) which the corresponding implied volatilities are respectively \(\Sigma=\left\{\sigma\left(K_{1}\right);...;\sigma\left(K_{n_{K}}\right)\right\}\), if these two sets respect the following necessary arbitrage-free conditions such that:_
+
+\(\bullet\) _The corresponding call prices \(C_{BS}\left(K,\sigma\left(K\right)\right)\)\(\forall K\in\mathbb{K}\) are decreasing and convex following the increasing ordering of \(\mathbb{K}\);_
+
+\(\bullet\) _Any pair \(\left\{K,s\left(K\right)\right\}\in\left\{\mathbb{K},\chi\right\}\) is such that all skews are all inside the arbitrage free interval defined by the theorem (25)_
+
+_then if the nearest quoted strike inferior to any given non quoted strike \(K\) is noted \(K_{j}\), necessary **but not** sufficient conditions for the corresponding implied volatility \(\sigma\left(K\right)\), skew \(s\left(K\right)\) and convexity \(c\left(K\right)\) to be arbitrage free are:_
+
+\[\begin{cases}\widehat{\sigma}_{j,min}\leq\sigma\left(K\right)\leq\sigma_{j,max }\\ \widetilde{\mathcal{B}}_{min}\left(K\right)<s\left(K\right)<\widehat{\mathcal{B }}_{max}\left(K\right)\\ c\left(K\right)\geq-\frac{\sigma\left(K\right)}{\sigma\left(K\right)}\left( \frac{1}{K\sqrt{\tau}}+d_{2}\left(K\right)s\left(K\right)\right)\left(\frac{1} {K\sqrt{\tau}}+d_{1}\left(K\right)s\left(K\right)\right)-\frac{s\left(K\right)} {K}\end{cases}\]
+
+One direct consequence of the Theorem (37) is for the calibration to market data of any parametric shape like the SVI or the SABR. Indeed the quality of calibration of such parametric shape is usually based on a weighted average of quadratic spread between the market implied volatility and its parametric model counterpart. But the theorem allows us to measure the arbitrability of any parametric shape by the prism of the arbitrability at the level of the volatility \(\sigma\left(K\right)\), of the skew \(s\left(K\right)\) and of the convexity \(c\left(K\right)\).
+
+Illustration with the SVI calibrated to SX5E market data
+
+The SVI model, being a very popular parametric model for the implied volatility developed by [12] and studied by [12, 31], it is used here to illustrate the quality of its calibration with regards to the preceding results. In particular, the resulting estimated implied volatility and skew are compared to the arbitragre free bounds given in the final theorem (37). In the SVI model, the implied variance \(V_{SVI}\left(k\right)\) is a function of the log strike \(k\) such that:
+
+\[V\left(k\right)=a+b\left(\rho\left(k-m\right)+\sqrt{\left(k-m\right)^{2}+\sigma ^{2}}\right)\]
+
+Using a Nelder Mead algorithm, the SVI parametric shape has been calibrated on market data available for the Eurostoxx 50 Equity Index as of \(7^{th}\) October 2022 for two market maturities (\(14^{th}\) Oct \(2022=7\) days and \(15^{th}\) Dec 2023\(=1\) year and \(69\) days ) with respectively \(31\) and \(16\) quoted strikes. To check the arbitrability, all the graphs have been plotted below for a thin grid of \(100\) strike levels between two successful quoted strike levels.
+
+In the two first graphs below, the SVI volatility is plotted with its d-bounds, \(\sigma_{1,2}^{t}\) and \(\sigma_{1,2}^{u}\), from the theorem (11) and its much narrower arbitrage free bounds \(\sigma_{j,min}\) and \(\sigma_{j,max}\) from the theorem (18). These two graphs shows a good fit of the SVI to the market data, the corresponding average absolute calibration error being respectively of \(11\) and \(2\) bps. However the results are much more mixed in terms of the arbitrability of the fitted SVI volatility as this one is respectively not arbitrage free for \(76\),\(81\)\(\%\) and \(44\),\(65\%\) of the quoted strikes. This proves the utility to consider the calibration in terms of arbitrability rather than in terms of calibration error as this one doesn't really account for the arbitrage free feature of the fit. Additionnally these two examples illustrates how much narrower the Gourion-Houssard (GH) bounds on the volatility (18) are compared to the d-bounds ones(17): in the \(7\) days maturity case, the average spread between the lower and upper d-bounds equals \(10.39\%\) while the one between the GH bounds equals only \(0.26\%\). A similar result is obtained in the \(1\) year \(69\) days maturity case with respectively spreads of \(11.13\%\) and \(1.83\%\). Note that while these last spreads are wider in the long term, except for the d-bounds which are decreasing explicitly with the maturity according to their formula (11), it is not possible to settle whether the spread between the GH bounds is wider because of the maturity or it is wider because of a lower number of quoted strikes (and we may wonder if it is more the "density" of quoted strikes in a same range of strikes which plays a role here rather than the absolute number of quoted strikes in itself).
+
+[FIGURE:S4.F1][ENDFIGUThe graph (4) illustrates the importance of getting an arbitrage free skew respecting the SharkJaw bounds given by the theorem (26) for the calculus of \(\widehat{\sigma}_{j,min}\). Indeed the non respect of the SharkJaw bounds induces a meaningless level for the lower bound \(\widehat{\sigma}_{j,min}\) as an arbitrage free skew at the neighboring quoted strikes is mandatory for its calculus. Without such arbitrage free skews values, the resulting \(\widehat{\sigma}_{j,min}\) appears then to be superior \(\sigma_{j,max}\) which is a non sense.
+
+\begin{tabular}{c} (with Vol_Min d=\(\sigma_{1,2}^{1}\left(k,x\right)\) and Vol_Max d=\(\sigma_{1,2}^{u}\left(k,x\right)\) \\ Vol Min GH=\(\sigma_{j,min}\), Vol_Max GH=\(\sigma_{j,max}\) and Vol Min Skew GH=\(\widehat{\sigma}_{j,min}\) \\ \end{tabular}
+
+The graph (4) illustrates the importance of getting an arbitrage free skew respecting the SharkJaw bounds given by the theorem (26) for the calculus of \(\widehat{\sigma}_{j,min}\). Indeed the non respect of the SharkJaw bounds induces a meaningless level for the lower bound \(\widehat{\sigma}_{j,min}\) as an arbitrage free skew at the neighboring quoted strikes is mandatory for its calculus. Without such arbitrage free skews values, the resulting \(\widehat{\sigma}_{j,min}\) appears then to be superior \(\sigma_{j,max}\) which is a non sense.
+
+\begin{tabular}{c} (with Vol_Min d=\(\sigma_{1,2}^{1}\left(k,x\right)\) and Vol_Max d=\(\sigma_{1,2}^{u}\left(k,x\right)\) \\ Vol Min GH=\(\sigma_{j,min}\), Vol_Max GH=\(\sigma_{j,max}\) and Vol Min Skew GH=\(\widehat{\sigma}_{j,min}\) \\ \end{tabular}
+
+The following graphs(4) and (4) focus on the skew given the SVI parametric shape compared to the three different pairs of bounds \(\left\{\mathcal{\widehat{B}}_{min}\left(K\right);\mathcal{\widehat{B}}_{max} \left(K\right)\right\}\); \(\left\{\mathcal{B}_{min}\left(K\right);\mathcal{B}_{max}\left(K\right)\right\}\) and \(\left\{\mathcal{\hat{B}}_{min}\left(K\right);\mathcal{\hat{B}}_{max}\left(K \right)\right\}\). Given the fact the two last pairs depend on arbitrage free levels at the quoted strikes, only the last pair \(\left\{\mathcal{\widehat{B}}_{min}\left(K\right);\mathcal{\widehat{B}}_{max} \left(K\right)\right\}\) of unconditional bounds is really suitable for an arbitrability test although these bounds only define a necessary but not sufficient condition for the model under scrutiny to be arbitrage free.
+
+[MISSING_PAGE_POST]
+
+As stated just above, especially in the short term case (4), the poor fit of the SVI skew for the OTM call strikes condemns the calculus of the narrower bound \(\widehat{\sigma}_{j,min}\) to be useless. The main default of the inconditionnal bounds is they don't give a clear view of the corresponding min and max values obtained for the cdf when this one is computed with the SVI calibrated value of the volatility and the unconditional bounds \(\left\{\widehat{\mathcal{B}}_{min}\left(K\right);\widehat{\mathcal{B}}_{max }\left(K\right)\right\}\). The graphs palliates to this issue and exhibits the fact:
+
+Last the two following graphs complements the graphs (4) and (4) with the narrower bounds \(\left\{\mathcal{B}_{min}\left(K\right);\mathcal{B}_{max}\left(K\right)\right\}\) and \(\left\{\tilde{\mathcal{B}}_{min}\left(K\right);\tilde{\mathcal{B}}_{max}\left(K \right)\right\}\) which are narrower as long as the SVI skew is arbitrage free at the quoted strike levels according to the theorem (25) extensively exposed and studied in [4].
+
+Skew of the calibrated SVI and all related bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+Skew of the calibrated SVI and uncond bounds
+
+\begin{tabular}{Conclusion
+
+The new bounds on the implied volatility and its skew give a complete new way to assess the quality of a model's calibration to the market of vanilla options in terms of butterfly arbitrage. However the way these bounds may be globally consistent between consecutive quoted maturities is not studied: in particular, we don't know how the lower and upper GH bounds interact for any pair of successive quoted maturities while, thanks to previous works, we know the cumulated implied volatility \(\nu\left(K,T\right)\equiv\sigma\left(K,\tau\right)\sqrt{\tau}\) must be non decreasing function of the maturity \(\tau\) for any \(K\). For example, using data simulated with an Heston model for 3 consecutive quoted maturities 3 months, 6 months, 1 year and 9 strikes regularly scattered around the ATM, a clear representation of the corresponding lower and upper bounds for \(\nu\) is given by the following graph 5.A (5) where no bounds cross themselves between the maturities. However if the 1 year maturity has only 4 quoted levels for far out the money strikes, the next graph 5.B (5) shows crossing become possible and it means we need a way to handle this kind of case.
+
+(5.B.)
+
+So one first next step could be to determine lower and upper bound for the volatility taking into account this monotonicity property of \(\nu\left(K,T\right)\).
+
+Second the new GH bounds both for the implied volatility and its skew determine a set of arbitrage free conditions given by the theorem (37) and based upon the quoted strikes so complex that any classic parametric shape like the ones from the SVI and SABR families have a very hard - not to say impossible - challenge to take up if we want them to be arbitrage free in volatility and skew. It doesn't necessarily mean these methods must be dropped out but we must rethink the way these methods are used. The results of the part (4) suggest these methods may no longer be used as a primary tool to fit the market. In particular, even with good fits in terms of calibration errors, the resulting arbitrograms show poor performance in terms of arbitrability. It means local volatility models directly built upon parametric shapes with the classic formula of Gatheral [13] will be contaminated by these arbitrages. It emphasizes the true criterion to alleviate the quality of the calibration is the arbitrability and not necessarily the classic calibration error measures used up to now. What suggest these results is that while the quality of the SVI volatility is not good in terms of arbitrage, the corresponding SVI skew is way better as it results in much less arbitrage than for the SVI implied volatility. Then future works may be focused on studies using the parametric shapes above only to deliver first guesses for the skew at the quoted strike levels helping to define more precisely new interpolation techniques for the calibration of Local Volatility models.
+
+## Annex I: Proof of the theorem (11)
+
+Proof.: Let's try to sum up the different cases: two trinoms emerge in the whole process which come from the monotonicity of the market \(d_{1}\) and \(d_{2}\). The key quantities to reveal arbitability bounds for the implied volatility \(\sigma\left(x\right)\)\(\forall\)\(\log\) strike \(x\) related to any quoted strike \(k=\ln\left(K\right)\) are then:
+
+\[\begin{cases}g_{1}\left(x\right)=\sigma\left(x\right)\sqrt{\tau}\left(d_{1} \left(x\right)-d_{1}\left(k\right)\right)\\ g_{2}\left(x\right)=\sigma\left(x\right)\sqrt{\tau}\left(d_{2}\left(x\right)-d _{2}\left(k\right)\right)\end{cases}\text{ }\Leftrightarrow\begin{cases}g_{1}\left(x\right)=\frac{ \tau}{2}\sigma\left(x\right)^{2}-d_{1}\left(k\right)\sqrt{\tau}\sigma\left(x \right)-x\\ g_{2}\left(x\right)=-\frac{\tau}{2}\sigma\left(x\right)^{2}-d_{2}\left(k\right) \sqrt{\tau}\sigma\left(x\right)-x\end{cases}\]
+
+The respective determinants, \(\Delta_{1}\) and \(\Delta_{2}\) of respectively \(g_{1}\left(x\right)\) and \(g_{2}\left(x\right)\) are:
+
+\[\begin{cases}\Delta_{1}=d_{1}\left(k\right)^{2}\tau+2\tau x\\ \Delta_{2}=d_{2}\left(k\right)^{2}\tau-2\tau x\end{cases}\]
+
+The determinants are only positive if:
+
+\[\begin{cases}\Delta_{1}\geq 0\text{ \ if }x\geq\frac{-d_{1}\left(k\right)^{2}}{2 }\\ \Delta_{2}\geq 0\text{ \ if }x\leq\frac{d_{2}\left(k\right)^{2}}{2}\end{cases}\]
+
+Note that if \(k=k_{-}\textless 0\), \(d_{2}\left(k\right)=0\) while if \(k=k_{+}\textgreater 0\), \(d_{1}\left(k\right)=0\). When they exist, the roots \(l_{1}^{\pm}\) of \(g_{1}\left(x\right)\) and \(l_{2}^{\pm}\) of \(g_{2}\left(x\right)\) are
+
+\[\begin{cases}l_{1}^{-}=\frac{1}{\sqrt{\tau}}\left(d_{1}\left(k\right)-\sqrt{d _{1}\left(k\right)^{2}+2x}\right)\text{ \ }l_{1}^{+}=\frac{1}{\sqrt{\tau}}\left(d_{1}\left(k\right)+\sqrt{d_{1} \left(k\right)^{2}+2x}\right)\\ l_{2}^{-}=\frac{1}{\sqrt{\tau}}\left(-d_{2}\left(k\right)-\sqrt{d_{2}\left(k \right)^{2}-2x}\right)\text{ \ }l_{2}^{+}=\frac{1}{\sqrt{\tau}}\left(-d_{2}\left(k\right)+\sqrt{d_{2}\left(k \right)^{2}-2x}\right)\end{cases}\]
+
+Then if \(x>k\), to respect the monotonicity of \(d_{1}\) and \(d_{2}\), we must have:
+
+\[\begin{cases}\frac{\tau}{2}\sigma\left(x\right)^{2}-d_{1}\left(k\right)\sqrt{ \tau}\sigma\left(x\right)-x\leq 0\\ -\frac{\tau}{2}\sigma\left(x\right)^{2}-d_{2}\left(k\right)\sqrt{\tau}\sigma \left(x\right)-x\leq 0\end{cases}\]
+
+whereas if \(x<k\), we must have:
+
+\[\begin{cases}P_{1}\left(x\right)=\frac{\tau}{2}\sigma\left(x\right)^{2}-d_{1} \left(k\right)\sqrt{\tau}\sigma\left(x\right)-x\geq 0\\ P_{2}\left(x\right)=-\frac{\tau}{2}\sigma\left(x\right)^{2}-d_{2}\left(k\right) \sqrt{\tau}\sigma\left(x\right)-x\geq 0\end{cases}\]
+
+The domain of possible \(\sigma\left(x\right)\) are depending on the sign of \(x\) which makes the bounds to exist or not. Moreover thanks to the lemma (4), the number of cases to analyze to identify the arbitrability bounds for the implied volatility are depending on \(x\), \(k\) and the relative position of \(x\) and \(k\) (\(x<k\) or \(x>k\)). These cases are:
+
+\[x<-\frac{d_{1}\left(k\right)^{2}}{2};\text{ \ }-\frac{d_{1}\left(k\right)^{2}}{2} \leq x\leq 0;\text{ \ }0\leq x\leq\frac{d_{2}\left(k\right)^{2}}{2};\text{ \ }\frac{d_{2}\left(k\right)^{2}}{2}<x\]
+
+\[k<k_{-};\text{ }k_{-}\leq k\leq 0;\text{ \ }0\leq k\leq k_{+};\text{ \ }k>k_{+}\]
+
+This gives 4\(\times\)4\(\times\)2=32 subcases. Hopefully some cases are trivial while the others always rely on the same reasoning. To avoid a useless painful redundant demonstration, we detail two typical subcases and let the reader do the remaining ones.
+
+**Case 1:** When \(x<\frac{-d_{1}^{2}}{2}\), \(k<k_{-}\) and \(x<k\), it means \(x<\frac{-d_{1}^{2}}{2}\leq k\) as \(k<\frac{-d_{1}^{2}}{2}\) is just impossible. This case implies, we must have \(P_{1}\left(x\right)>0\) and \(P_{2}\left(x\right)>0\). We have:
+
+\[\Delta_{1}<0\] \[\Delta_{2}>0\]
+
+This implies:
+
+\[\frac{l_{2}^{-}}{\sqrt{\tau}}<\sigma\left(x\right)<\frac{l_{2}^{+}}{\sqrt{\tau}}\]
+
+As \(d_{2}>0\) and \(x<0\), we have \(l_{2}^{-}<0\) and \(l_{2}^{+}>0\) so that the bounding is:
+
+\[0<\sigma\left(x\right)<\frac{l_{2}^{+}}{\sqrt{\tau}}\]
+
+**Case 2:** When \(x<\frac{-d_{1}^{2}}{2}\), \(k<k_{-}\) and \(x>k\), this means \(k<x<\frac{-d_{1}^{2}}{2}<k\) which is impossible to happen as \(k<\frac{-d_{1}^{2}}{2}\) is just impossible. Last, among the most complicated subcase, there is the following one:
+
+**Case 3:**\(\frac{-d_{1}^{2}}{2}<x<\frac{d_{1}^{2}}{2}\), \(k<k_{-}\) and \(x<k\), it means \(\frac{-d_{1}^{2}}{2}<x<k<k_{-}<\frac{d_{1}^{2}}{2}\). Note that the case \(\frac{-d_{1}^{2}}{2}<x<\frac{d_{1}^{2}}{2}<k\) is just impossible. This case implies we must have \(P_{1}\left(x\right)>0\) and \(P_{2}\left(x\right)>0\). We have some change for the determinants, they are both positive (i.e. \(\Delta_{1}>0\) and \(\Delta_{2}>0\)). This implies:
+
+\[\begin{cases}\sigma\left(x\right)<\frac{l_{1}^{-}}{\sqrt{\tau}}&\text{OR}\ \ \sigma\left(x\right)>\frac{l_{1}^{+}}{\sqrt{\tau}}\\ \frac{l_{2}^{-}}{\sqrt{\tau}}&<\sigma\left(x\right)<\frac{l_{2}^{+}}{\sqrt{ \tau}}\end{cases}\]
+
+\[\Leftrightarrow\begin{cases}&\frac{l_{2}^{-}}{\sqrt{\tau}}<\sigma\left(x \right)<\frac{1}{\sqrt{\tau}}\min\left(l_{1}^{-},l_{2}^{+}\right)\\ OR&\frac{1}{\sqrt{\tau}}\max\left(l_{2}^{-};l_{1}^{+}\right)<\sigma\left(x \right)<\frac{l_{2}^{+}}{\sqrt{\tau}}\end{cases}\]
+
+As \(k<k_{-}\), we have \(d_{1}>0\) and \(d_{2}>0\), this means \(l_{2}^{-}<0\). Moreover we need to distinguish the case \(x<0\) and \(x>0\). The second case can be dismissed as we may not have \(x<k<k_{-}\) and \(x>0\). When \(x<0\), we have \(l_{1}^{-}>0\), \(l_{1}^{+}>0\) and \(l_{2}^{+}>0\) in order that the boundings become:
+
+\[\begin{cases}&0<\sigma\left(x\right)<\frac{1}{\sqrt{\tau}}\min\left(l_{1}^{-},l_{2}^{+}\right)\\ \text{OR}&\frac{l_{1}^{+}}{\sqrt{\tau}}<\sigma\left(x\right)<\frac{l_{2}^{+} }{\sqrt{\tau}}\end{cases} \tag{5.1}\]
+
+The first condition is always verified. For the second, it does not exist if \(l_{1}^{+}<l_{2}^{+}\) or not. This last inequality is equivalent to:
+
+\[d_{1}+\sqrt{d_{1}^{2}+2x}<-d_{2}+\sqrt{d_{2}^{2}-2x}\]
+
+\[\Leftrightarrow d_{1}+d_{2}<\sqrt{d_{2}^{2}-2x}-\sqrt{d_{1}^{2}+2x} \tag{5.2}\]
+
+For \(k<k_{-}\), we have \(d_{1}>d_{2}>0\Rightarrow d_{1}>-d_{2}\), then let's check if \(\sqrt{d_{1}^{2}+2x}<\sqrt{d_{2}^{2}-2x}\ \ \forall-\frac{d_{1}^{2}}{2}<x<k\). As \(\frac{-d_{1}^{2}}{2}<x<\frac{d_{2}^{2}}{2}\), the argument of the two square roots are positive. Taking the square, we have:
+
+\[d_{1}^{2}+2x<d_{2}^{2}-2x\]
+
+\[\Leftrightarrow\frac{k^{2}}{\sigma^{2}\tau}+\frac{\sigma^{2}\tau}{4}-k+2x< \frac{k^{2}}{\sigma^{2}\tau}+\frac{\sigma^{2}\tau}{4}+k-2x\Leftrightarrow x< \frac{k}{2}\]
+
+which is true as \(x<k<k_{-}<0\). So we always have \(\sqrt{d_{2}^{2}-2x}-\sqrt{d_{1}^{2}+2x}>0\ \ \ \ \forall-\frac{d_{1}^{2}}{2}<x<k\). As only the rhs of 5.2 is depending on x, let's see what is the slope of \(\sqrt{d_{2}^{2}-2x}-\sqrt{d_{1}^{2}+2x}\):
+
+\[\frac{\text{d}\left(\sqrt{d_{2}^{2}-2x}-\sqrt{d_{1}^{2}+2x}\right)}{\text{d}x }=\frac{-2}{2\sqrt{d_{2}^{2}-2x}}-\frac{2}{2\sqrt{d_{1}^{2}+2x}}=\left(-\frac{ 1}{\sqrt{d_{1}^{2}+2x}}-\frac{1}{\sqrt{d_{2}^{2}-2x}}\right)<0\]
+
+this means the maximum of the rhs in the interval \(\left[\frac{-d_{1}^{2}}{2};\frac{d_{2}^{2}}{2}\right]\) is attained for \(x=-\frac{d_{1}^{2}}{2}\) and its value is \(\sqrt{d_{2}^{2}+d_{1}^{2}}\)and its minimum is attained for \(x=k\). The minimum value of the rhs is then\(|d_{1}|-|d_{2}|\). For that we need to know if the lhs is always superior to the rhs for its maximum attained at \(x=-\frac{d_{1}^{2}}{2}\). The inequality \(l_{1}^{+}<l_{2}^{+}\) becomes:
+
+\[l_{1}^{+}<l_{2}^{+}\Leftrightarrow d_{1}+d_{2}<\sqrt{d_{2}^{2}+d_{1}^{2}}\]
+
+Then as both sides are positive (\(k<k_{-}\)), we have:
+
+\[d_{1}^{2}+d_{2}^{2}+2d_{1}d_{2}<d_{2}^{2}+d_{1}^{2}\ \Leftrightarrow 2d_{1}d_{2}<0\]
+
+which is always false for \(k<k_{-}\). So we always have \(l_{1}^{+}>l_{2}^{+}\). Last, let's see if \(l_{1}^{-}>l_{2}^{+}\) to assess the value of \(\min\left(l_{1}^{-},l_{2}^{+}\right)\) in the first bounding in (5.1)
+
+\[l_{1}^{-}>l_{2}^{+}\Leftrightarrow d_{1}+\sqrt{d_{1}^{2}+2x}>-d_{2}+\sqrt{d_{2 }^{2}-2x}\]\[\Leftrightarrow d_{1}+d_{2}>\sqrt{d_{2}^{2}-2x}-\sqrt{d_{1}^{2}+2x}\]
+
+The rhs is a function of \(x\) which the slope is always negative in order that it attains its maximum in the interval \(\left[\frac{-d_{1}^{2}}{2};k\right]\) for \(x=\frac{-d_{1}^{2}}{2}\). At this level of \(x\), the preceding inequality becomes:\(d_{1}+d_{2}>\sqrt{d_{2}^{2}+d_{1}^{2}}\). As \(d_{1}>0\) and \(d_{2}>0\)\(\forall k<k_{-}\), we may rise the two sides to their square value so that the preceding inequality become \(2d_{1}d_{2}>0\) which is always true because \(k<k_{-}\). In the end, \(l_{1}^{-}>l_{2}^{+}\) for \(\frac{-d_{1}^{2}}{2}<x<k<k_{-}<\frac{d_{2}^{2}}{2}\) and the bounding is:
+
+\[0<\sigma\left(x\right)<\frac{l_{2}^{+}}{\sqrt{\tau}}\text{ for}\frac{-d_{1}^{2}}{2}<x<k<k_{-}<\frac{d_{2}^{2}}{2}\]
+
+All the remaining 29 subcases recycle the same arguments and so are left to the reader.
+
+## Annex II: Proof of the theorem (22)
+
+Proof.: The proof is divided into 4 main inequalities: \(\sigma_{1,2}^{l}\left(k_{j};K\right)\leq\sigma_{j,min}\); \(\sigma_{1,2}^{l}\left(k_{j+1};K\right)\leq\sigma_{j,min}\); \(\sigma_{j,max}\leq\sigma_{1,2}^{u}\left(k_{j};K\right)\) and \(\sigma_{j,max}\leq\sigma_{1,2}^{u}\left(k_{j+1};K\right)\). Moreover due to the two different limit behaviors from proposition (8) of both \(l_{1}^{+}\left(k_{j+1};K\right)\) and \(l_{2}^{+}\left(k_{j+1};K\right)\) when they are upper limits for the volatility, there are two additional subcases to the proof of the two last inequalities. Moreover, \(\sigma_{j,min}\) is itself the maximum of two curves generated respectively by two different portfolios \(\overleftarrow{V}_{j}\) and \(\overrightarrow{V}_{j}\) which means two subcases for the two first inequalities. Hopefully in certain cases, the upper limit \(\sigma_{j,max}\) becomes the lower limit when the strike passes through the quoted strike in order that the number of cases to prove will be reduced.
+
+Depending on whether \(K\leq K_{j+1}\) or not, and also on the relative position of \(K_{j+1}\) to \(e^{k_{+}}\) and \(e^{k_{-}}\), the limit values of \(\sigma_{1,2}^{u}\left(k_{j+1};K\right)\) and \(\sigma_{1,2}^{\sigma}\left(k_{j+1};K\right)\) are not the same due to the limits (8) of both \(l_{1}^{+}\left(k_{j+1};K\right)\) and \(l_{2}^{+}\left(k_{j+1};K\right)\).
+
+**First inequality:** Let's prove the rhs of (2.1), \(\sigma_{j,max}\leq\sigma_{1,2}^{u}\left(k_{j+1};x\right)\).
+
+Before delving into the different subcases, first let's define the function \(\gamma^{u}\left(K\right)\) like the difference of value between \(\overrightarrow{V}_{j}\left(K\right)\) and \(C_{1,2,j+1}^{u}\left(K\right)=C\left(K,\sigma=\sigma_{1,2}^{u}\left(k_{j+1};K \right)\right)\):
+
+\[\gamma^{u}\left(K\right)\subseteq C_{1,2,j+1}^{u}\left(K\right)-\overline{V}_ {j}\left(K\right)\]
+
+Now let's prove the function \(\gamma^{u}\left(K\right)\) is a concave function for any strike \(K\):
+
+For \(K<K_{j+1}\) according to the theorem (11) we have \(\sigma_{1,2}^{u}\left(k_{j+1};K\right)=l_{2}^{+}\left(k_{j+1};K\right)\). The definition of this level is then such that \(d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)\) does not depend on \(K\) as \(d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)=d_{2}\left(K_{j+1},l_{2}^{+ }\left(k_{j+1};K_{j+1}\right)\right)=d_{2}\left(K_{j+1};\sigma\left(K_{j+1} \right)\right)\). It means \(\frac{\partial d_{2}\left(\cdot,l_{2}^{+}\left(k_{j+1};K\right)\right)}{ \partial K}|_{K}=0\). It also means:
+
+\[d_{1}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)=d_{2}\left(K,l_{2}^{+} \left(k_{j+1};K\right)\right)+l_{2}^{+}\left(k_{j+1};K\right)\sqrt{\tau}\]
+
+in order that:
+
+\[\frac{\mathrm{d}d_{1}\left(K,l_{2}^{+}\left(k_{j+1};K\right) \right)}{\partial K} =\frac{\mathrm{d}d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right) \right)}{\partial K}+\frac{\mathrm{d}l_{2}^{+}\left(k_{j+1};K\right)}{ \mathrm{d}K}\sqrt{\tau}\] \[=\frac{\mathrm{d}l_{2}^{+}\left(k_{j+1};K\right)}{\mathrm{d}K} \sqrt{\tau}.\]
+
+Given these last results, the first order derivative of \(\gamma^{u}\left(K\right)\) equals:
+
+\[\frac{\mathrm{d}\gamma^{u}\left(K\right)}{\mathrm{d}K}= -N\left(d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)\right)+X_ {0}n\left(d_{1}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)\right)\frac{ \mathrm{d}l_{2}^{+}\left(k_{j+1};K\right)}{\mathrm{d}K}\sqrt{\tau}\] \[-\left(\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1}-K _{j}}\right)\]
+
+As
+
+\[\frac{\mathrm{d}l_{2}^{+}\left(k_{j+1};K\right)}{\mathrm{d}K}=\frac{-1}{K\sqrt {\tau}\sqrt{d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)^{2}-2\ln \left(K\right)}} \tag{5.3}\]and because \(\forall K,X_{0}n\left(d_{1}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)\right)= Kn\left(d_{2}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)\right)\), we have:
+
+\[\frac{\mathrm{d}\gamma^{u}\left(K\right)}{\mathrm{d}K}=-N\left(d_{2}\left(K_{j +1},\sigma\left(K_{j+1}\right)\right)\right)-\frac{n\left(d_{2}\left(K_{j+1}, \sigma\left(K_{j+1}\right)\right)\right)}{\sqrt{d_{2}\left(K_{j+1},\sigma \left(K_{j+1}\right)\right)^{2}-2\ln\left(K\right)}}-\left(\frac{C\left(K_{j+1 }\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\right)\]
+
+Then the second order derivative equals:
+
+\[\frac{\mathrm{d}^{2}\gamma^{u}\left(K\right)}{\mathrm{d}K^{2}}=-\frac{n\left( d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)}{K\left[d_{2} \left(K_{j+1},\sigma\left(K_{j+1}\right)\right)^{2}-2\ln\left(K\right) \right]^{\frac{3}{2}}}\leq 0\,\,\,\forall K\]
+
+This means the function \(\gamma\left(K\right)\) is always concave whatever the value of \(K\) is. Moreover by construction \(\overline{V_{j}}\left(K_{j+1}\right)=C\left(K_{j+1}\right)\), now two sub-cases arise: either \(k_{j+1}\leq k_{+}\) or \(k_{j+1}>k_{+}\). Indeed the limit of \(l_{2}^{+}\) depends on the relative position of \(k_{j+1}\) and \(k_{+}\).
+
+When \(k_{j+1}>k_{+}\), we know \(\lim_{k\uparrow k_{j+1}}l_{2}^{+}\left(k_{j+1};k\right)=\frac{2k_{j+1}}{\sigma \left(k_{j+1}\right)^{\tau}}>\sigma\left(k_{j+1}\right)\) which implies \(\overline{V_{j}}\left(K_{j+1}\right)<\lim_{K\uparrow K_{j+1}}C_{1,2,j+1}^{u} \left(K\right)\). Said otherwise, if \(k_{j+1}>k_{+}\), we know \(\lim_{k\uparrow k_{j+1}}l_{2}^{+}\left(k_{j+1};k\right)=\frac{2k_{j+1}}{\sigma \left(K_{j+1}\right)\vee\tau}\geq\sigma\left(K_{j+1}\right)\). This last result means we have \(\gamma^{u}\left(K_{j+1}\right)\geq 0\). Given the concavity of \(\gamma^{u}\left(K\right)\), we only need to show \(\lim_{K\downarrow 0}\gamma^{u}\left(K\right)\geq 0\) to get \(\gamma^{u}\left(K\right)\geq 0\,\,\,\forall K\in\left[0;K_{j+1}\right]\). This is immediate as for \(K<K_{j}\), the line \(K\mapsto\overline{V_{j}}\left(K\right)\)is lower than the tangent to the price curve in \(K_{j}\), which is in turn lower than the assumed convex price curve \(k\mapsto C(k,\sigma(k))\).
+
+When \(k_{j+1}\leq k_{+}\), we know \(\lim_{k\uparrow k_{j+1}}l_{2}^{+}\left(k_{j+1};k\right)=\sigma\left(k_{j+1}\right)\). In this case, let's prove the slope of \(\gamma\left(K\right)\) is negative for \(K=K_{j+1}\).Using the notations for the Vega and delta Black Scholes, we have \(\delta_{BS}\left(K_{j+1}\right)=-N\left(d_{2}\left(K_{j+1},l_{2}^{+}\left(k_{j +1};K_{j+1}\right)\right)\right)\) and \(v_{BS}\left(K_{j+1}\right)=X_{0}\sqrt{\tau}n\left(d_{1}\left(K_{j+1},l_{2}^{+} \left(k_{j+1};K_{j+1}\right)\right)\right)\) such that:
+
+\[\frac{\mathrm{d}\gamma^{u}\left(K\right)}{\mathrm{d}K}_{|K=K_{j+1}}=\delta_{ BS}\left(K_{j+1}\right)+v_{BS}\left(K_{j+1}\right)\frac{\mathrm{d}l_{2}^{+} \left(k_{j+1};K\right)}{\mathrm{d}K}_{|K=K_{j+1}}-\left(\frac{C\left(K_{j+1} \right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\right)\leq 0\]
+
+\[\iff\delta_{BS}\left(K_{j+1}\right)+v_{BS}\left(K_{j+1}\right)\frac{\mathrm{d }l_{2}^{+}\left(k_{j+1};K\right)}{\mathrm{d}K}_{|K=K_{j+1}}\leq\frac{C\left(K _{j+1}\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\]
+
+This inequality must be true for any value of \(K_{j}\) in particular for \(K_{j}=0\). And as by arbitrage we have \(\frac{C\left(K_{j+1}\right)-1.0}{K_{j+1}}\leq\frac{C\left(K_{j+1}\right)-C \left(K_{j}\right)}{K_{j+1}-K_{j}}\), we expect to have:
+
+\[\delta_{BS}\left(K_{j+1}\right)+v_{BS}\left(K_{j+1}\right)\frac{\mathrm{d}l_{2} ^{+}\left(k_{j+1};K\right)}{\mathrm{d}K}_{|K=K_{j+1}}\leq\frac{C\left(K_{j+1} \right)-1.0}{K_{j+1}} \tag{5.4}\]
+
+Using (5.3), we have \(\frac{\mathrm{d}l_{2}^{+}\left(k_{j+1};K\right)}{\mathrm{d}K}_{|K=K_{j+1}}= \frac{-1}{K_{j+1}\sqrt{\tau}d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right) \right)}\) so that (5.4) becomes
+
+\[\delta_{BS}\left(K_{j+1}\right)+K_{j+1}n\left(d_{2}\left(K_{j+1},l_{2}^{+} \left(k_{j+1};K\right)\right)\right)\sqrt{\tau}\frac{-1}{K_{j+1}\sqrt{\tau}d_{1} \left(K_{j+1},\sigma\left(K_{j+1}\right)\right)}\leq\frac{C\left(K_{j+1} \right)-1.0}{K_{j+1}}\]
+
+\[\Leftrightarrow-N\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right) \right)d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)-n\left(d_{2} \left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)\leq d_{1}\left(K_{j+1}, \sigma\left(K_{j+1}\right)\right)\left(\frac{C\left(K_{j+1}\right)-1.0}{K_{j+1}}\right)\]
+
+\[\Leftrightarrow\left[\frac{1.0-C\left(K_{j+1}\right)}{K_{j+1}}-N\left(d_{2} \left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)\right]d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right]d_{1}\left(K_{j+1},\sigma\left(K_{j+1} \right)\right)\leq n\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right))\]
+
+Using the Black Scholes formula for the \(C\left(K_{j+1}\right)\), we have:
+
+\[\left[\frac{1.0-X_{0}N\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1} \right)\right)\right)+K_{j+1}N\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1} \right)\right)\right)}{K_{j+1}}-N\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1} \right)\right)\right)\right]\] \[\times d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\leq n \left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)\]\[\Leftrightarrow\left[\frac{1.0-N\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right) \right)\right)}{K_{j+1}}\right]d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right) \right)\leq n\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)\]
+
+\[\Leftrightarrow 1.0-N\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right) \right)\leq K_{j+1}\frac{n\left(d_{2}\left(K_{j+1},\sigma\left(K_{j+1}\right) \right)\right)}{d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)}\]
+
+As the "vega" symmetry means \(X_{0}n\left(d_{1}\right)=Kn\left(d_{2}\right)\ \forall K\), the preceding inequality becomes with \(X_{0}=1\):
+
+\[1.0-N\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)\leq \frac{n\left(d_{1}\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)\right)}{d_{1 }\left(K_{j+1},\sigma\left(K_{j+1}\right)\right)}\]
+
+By Mill's ratio, \(1-N\left(x\right)\leq\frac{n\left(x\right)}{x}\ \forall x>0\), the inequality is right for \(\forall k_{j+1}\leq k_{+}\). By transitivity, we finally prove that: \(\delta_{BS}\left(K_{j+1}\right)+v_{BS}\left(K_{j+1}\right)^{\frac{1}{d_{2}^{2 }}\left(k_{j+1};K\right)}\)\(|_{K=K_{j+1}}\leq\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}} \Leftrightarrow\frac{\mathrm{d}\gamma^{u}\left(K\right)}{\mathrm{d}K}|_{K=K_{ j+1}}\leq 0\). As the \(\gamma^{u}\left(K\right)\) is always concave, this implies \(\gamma^{u}\left(K\right)>0\ \forall K<K_{j+1},\ \forall K_{j}<K_{j+1}\) and \(k_{j+1}\leq k_{+}\).
+
+**Second inequality:**\(\sigma_{1,2}^{l}\left(k_{j};K\right)\leq\sigma_{j,min}\) The preceding last result also proves \(\gamma^{u}\left(K\right)<0\ \forall K>K_{j+1}\,\ \forall K_{j}<K_{j+1}\) and \(k_{j+1}\leq k_{+}\) which is equivalent, by shifting the index j by \(-1\), to say \(\sigma_{1,2}^{l}\left(k_{j};K\right)\leq\sigma_{j,min}\) when \(k_{j}\leq k_{+}\) as \(\sigma_{1,2}^{l}\left(k_{j};K\right)=l_{2}^{+}\left(k_{j};k\right)\) for \(k_{j}\leq k_{+}\). Indeed the upper d-limit becomes the lower d-limit when \(K\) passes through the level \(K_{j+1}\) in this case. Said otherwise, for \(k_{j}\leq k_{+}\), this is due to the fact \(\lim_{K\downarrow K_{j}}C_{1,2,j}^{l}\left(K\right)=\lim_{K\uparrow K_{j}}C_{1,2,j}^{u}\left(K\right)\). We also need to check if \(\sigma_{1,2}^{l}\left(k_{j};K\right)\leq Y_{BS}(k,\overrightarrow{V_{j+1}}(K))\). As \(\forall K\geq\widehat{K}_{j+1},\overleftarrow{V_{j+1}}(K)=\overrightarrow{V_{ j}}\left(K\right)\leq\overrightarrow{V_{j+1}}(K)\), it yields,
+
+\[\forall K\geq\widehat{K}_{j+1}, C_{BS}\left(K,\sigma_{1,2}^{l}\left(k_{j+1};K \right)\right)-\overrightarrow{V_{j+1}}(K)\] \[\leq C_{BS}\left(K,l_{2}^{+}\left(k_{j+1};K\right)\right)- \overleftarrow{V_{j+1}}(K)=\gamma^{u}(K)\leq 0.\]
+
+Then we need to prove \(\sigma_{1,2}^{l}\left(k_{j};K\right)\leq\sigma_{j,min}\) for \(k_{j}>k_{+}\). In this last case, the proof is immediate as \(\sigma_{1,2}^{l}\left(k_{j};K\right)=0\).
+
+**Third inequality:**\(\sigma_{j,max}\leq\sigma_{1,2}^{u}\left(k_{j};K\right)\) : The portfolio to consider here is the portfolio \(\gamma^{l}\left(K\right)\) that is the difference between \(\overline{V_{j}}\) and \(C_{1,2,j}^{u}\left(K\right)=C\left(K,\sigma=\sigma_{1,2}^{u}\left(k_{j};K\right)\right)\):
+
+In this case, according to the theorem (11) as \(\sigma_{1,2}^{u}\left(k_{j};K\right)=l_{1}^{+}\left(k_{j};K\right)\). Let's define
+
+\[\gamma^{l}\left(K\right)=C\left(K,l_{1}^{+}\left(k_{j};K\right)\right)-\left[ \left(1-\theta_{j}\right)C\left(K_{j}\right)+\theta_{j}C\left(K_{j+1}\right)\right]\]
+
+\[\gamma^{l}\left(K\right)=\left(X_{0}N\left(d_{1}\left(K;l_{1}^{+}\left(k_{j};K \right)\right)\right)-KN\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right) \right)\right)\right)-\left(\frac{K_{j+1}-K}{K_{j+1}-K_{j}}C\left(K_{j}\right)+ \frac{K-K_{j}}{K_{j+1}-K_{j}}C\left(K_{j+1}\right)\right)\]
+
+When the volatility sticks to \(l_{1}^{+}\left(k_{j};K\right)\), the corresponding \(d_{1}\) is invariant of \(K\) and equals so that \(d_{1}\left(K;l_{1}^{+}\left(k_{j};K\right)\right)=d_{1}\left(K_{j};l_{1}^{+} \left(k_{j};K_{j}\right)\right)\). It implies the first order derivative equals:
+
+\[\frac{\mathrm{d}\gamma^{l}\left(K\right)}{\mathrm{d}K}=Kn\left(d_{2}\left(K;l _{1}^{+}\left(k_{j};K\right)\right)\right)\frac{\mathrm{d}l_{1}^{+}\left(k_{j};K \right)}{\mathrm{d}K}\sqrt{\tau}-N\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K \right)\right)\right)-\frac{C\left(K_{j+1}\right)-C\left(K_{j}\right)}{K_{j+1} -K_{j}}\]
+
+Given that \(\frac{\mathrm{d}l_{1}^{+}\left(k_{j};K\right)}{\mathrm{d}K}=\frac{1}{K\sqrt{ \tau}\sqrt{d_{1}^{2}\left(K_{j};l_{1}^{+}\left(k_{j};K\right)\right)+2\ln(K)}}\), we have:
+
+\[\frac{\mathrm{d}\gamma^{l}\left(K\right)}{\mathrm{d}K}=\frac{n\left(d_{2}\left(K; l_{1}^{+}\left(k_{j};K\right)\right)\right)}{\sqrt{d_{1}^{2}\left(K_{j};l_{1}^{+} \left(k_{j};K_{j}\right)\right)+2\ln\left(K\right)}}-N\left(d_{2}\left(K;l_{1}^{+ }\left(k_{j};K\right)\right)\right)-\frac{C\left(K_{j+1}\right)-C\left(K_{j} \right)}{K_{j+1}-K_{j}}.\]
+
+Furthermore, note that
+
+\[d_{2}\left(K,l_{1}^{+}\left(k_{j},K\right)\right) =d_{1}\left(K,l_{1}^{+}\left(k_{j},K\right)\right)-\sqrt{\tau}l_ {1}^{+}\left(k_{j},K\right) \tag{5.5}\] \[=-\sqrt{d_{1}(K_{j},\sigma(K_{j}))^{2}+2k}\leq 0.\]
+
+The second order derivative of our call portfolio equals then:
+
+\[\frac{\mathrm{d}^{2}\gamma^{l}\left(K\right)}{\mathrm{d}K^{2}} =\frac{\partial}{\partial K}\left(\frac{n\left(d_{2}\left(K;l_{1}^{+} \left(k_{j};K\right)\right)\right)}{\sqrt{d_{1}^{2}\left(K;l_{1}^{+}\left(k_{j};K \right)\right)+2\ln\left(K\right)}}\right)\] \[-n\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right) \right)\frac{\partial d_{2}\left(\cdot,l_{1}^{+}\left(k_{j};\cdot\right) \right)}{\partial K}|_{K}\]\[= \frac{n\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right) \right)}{K\sqrt{d_{1}^{2}\left(k_{j},\sigma(k_{j})\right)+2k}}+\frac{n\left(d_{ 2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right)\right)d_{2}\left(K;l_{1}^{+} \left(k_{j};K\right)\right)}{K\left(d_{1}^{2}\left(k_{j},\sigma(k_{j})\right)+ 2k\right)}\] \[-\frac{n\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right) \right)}{K\left(d_{1}^{2}\left(k_{j},\sigma(k_{j})\right)+2k\right)^{\frac{3} {2}}}\] \[= -\frac{n\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right) \right)}{K\left(d_{1}^{2}\left(k_{j},\sigma(k_{j})\right)+2k\right)^{\frac{3} {2}}}\leq 0.\]
+
+This means \(\gamma^{l}\left(K\right)\) is concave \(\forall K\). Let's see then if the first order derivative is positive when \(K\to K_{j}\):
+
+\[\frac{\mathrm{d}\gamma^{l}\left(K\right)}{\mathrm{d}K}>0\Leftrightarrow\frac{n \left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right)\right)}{\sqrt{d_{1}^ {2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)+2\ln\left(K\right)}}- N\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right)\right)>\frac{C\left(K_{j+1} \right)-C\left(K_{j}\right)}{K_{j+1}-K_{j}}\]
+
+It is then sufficient to prove that
+
+\[\frac{n\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right)\right) \right)}{\sqrt{d_{1}^{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right) +2\ln\left(K\right)}}-N\left(d_{2}\left(K;l_{1}^{+}\left(k_{j};K\right) \right)\right)>0\]
+
+Because of (5.5),
+
+\[\sqrt{d_{1}^{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)+2\ln\left( K\right)}=-d_{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right).\]
+
+We will again make use of the Mill's ratio which ensures that
+
+\[\forall x<0,\mathcal{N}(x)<\frac{n(x)}{-x}.\]
+
+We finally check that if \(k\searrow k^{-}\) and then \(d_{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)\nearrow 0^{-}\), our inequality reduces to \(\frac{1}{2}<+\infty\) and the assertion \(\frac{\mathrm{d}\gamma^{l}}{\mathrm{d}K}(K_{j})>0\) is proven.
+
+Note that \(d_{2}\left(K,l_{1}^{+}\left(K_{j};K_{j}\right)\right)\) is not the market \(d_{2}\) which is computed for a volatility level that doesn't equal \(l_{1}^{+}\left(K_{j};K_{j}\right)\) but \(\sigma\left(K_{j}\right)\). Given that \(d_{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)<0\ \forall K_{j}<K_{-}\), we have \(\frac{n\left(d_{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)\right) }{d_{2}\left(K_{j};l_{1}^{+}\left(k_{j};K_{j}\right)\right)}\)\(-N\left(d_{2}\left(K_{j};\ l_{1}^{+}\left(k_{j};K_{j}\right)\right)\right)>0\) in the same way than in the case of \(K_{j}>K_{-}\). Last step, let's see the value of \(\gamma^{l}\left(K\right)\) when \(K\to K_{j+1}\). As \(\sigma\left(K_{j+1}\right)<l_{1}^{+}\left(k_{j};K_{j+1}\right)\) (\(l_{1}^{+}\) is increasing and \(l_{1}^{+}\left(k_{j};k_{j}\right)\geq\sigma(k_{j})\geq\sigma(k_{j+1})\)) and \(\lim_{K\to K_{j+1}}\gamma^{l}\left(K\right)=C\left(K_{j+1};\sigma=l_{1}^{+} \left(k_{j};K_{j+1}\right)\right)-C\left(K_{j+1}\right)\) is a difference of Black-Scholes formula, combined with the concavity of \(\gamma^{l}\left(K\right)\), the fact \(\gamma^{l}\left(K_{j}\right)\geq 0\) and the positivity of \(\frac{\mathrm{d}\gamma^{l}\left(K\right)}{\mathrm{d}K}_{K=K_{j}}\), we have \(\gamma^{l}\left(K\right)>0\ \forall K_{j}\leq K\leq K_{j+1}\). Moreover when we take the limit \(K_{j+1}\rightarrow+\infty\), because of the convexity of call prices, we have \(\overline{V_{j}}<C\left(K_{j+1}\right)\ \forall K>K_{j+1}\) and so \(\gamma^{l}\left(K\right)>0\ \forall K>K_{j+1}\). In the end, we have \(\gamma^{l}\left(K\right)\ \forall K>K_{j}\) and so \(\sigma_{j,max}\leq\sigma_{1,2}^{\sigma}\left(k_{j};K\right)\ \forall K>K_{j}\).
+
+**Fourth inequality:**\(\sigma_{1,2}^{\sigma}\left(k_{j+1};K\right)\leq\sigma_{j,min}\). The preceding last result also proves \(\gamma^{l}\left(K\right)<0\ \forall K<K_{j}\), \(\forall K_{j}<K_{j+1}\) and \(k_{j}\geq k_{-}\) as it is equivalent, by shifting the index \(j\) by \(+1\), to say \(\sigma_{1,2}^{\sigma}\left(k_{j+1};K\right)\leq\sigma_{j,min}\) when \(k_{j+1}\geq k_{-}\) as \(\sigma_{1,2}^{\sigma}\left(k_{j+1};K\right)=l_{1}^{+}\left(k_{j+1};k\right)\) for \(k_{j+1}\geq k_{-}\). Indeed the upper d-limit becomes the lower d-limit when \(K\) passes through the level \(K_{j}\) in this case. Said otherwise, for \(k_{j+1}\geq k_{-}\), this is due to the fact \(\lim_{K\downarrow K_{j+1}}C_{1,2,j+1}^{\sigma}\left(K\right)=\lim_{K\uparrow K_{j+1 }}C_{1,2,j+1}^{u}\left(K\right)\).
+
+Then we need to prove \(\sigma_{1,2}^{\sigma}\left(k_{j+1};K\right)\leq\sigma_{j,min}\) for \(k_{j+1}<k_{-}\). In this last case, the proof is immediate as \(\sigma_{1,2}^{l}\left(k_{j+1};K\right)=0\) for \(k_{j+1}<k_{-}\). 
+
+## References
+
+* [1] F. Klebaner A. Brace, B. Goldys and Rob Womersley. Market model of stochastic implied volatility with application to the bgm model. _working paper_, 2000.
+* [2] Frederic Abergel and Sofiene El Aoud. On the joint dynamics of the spot and the impliedvolatility surface. _working paper_, 2014.
+* [3] S. Benaim and P. Friz. Smile asymptotics. ii. models with known moment generating functions. _Journalof Applied Probability_, 2008.
+
+* [4] Gourion Bernard. Calibration model scoring with new market induced narrower arbitrability boundsfor the implied volatility skew. _SSRN_, 2022.
+* [5] Fischer Black and Myron Scholes. The pricing of options and corporate liabilities. _Journal of Political Economy_, 1973.
+* [6] M. Brenner and M.G. Subrahmanyam. A simple formula to compute the implied standard deviation. _Financial Analysts Journal_, 1988.
+* [7] Mirko Budincevic. A comparison theorem of differential equations. _Novi Sad Journal of Mathematics_, 40, 2010.
+* volatility modelling with cash dividends and simple credit risk. _SSRN_, November 2010.
+* [9] P. Carr and G. Pelts. Game of vols. _ssrn_, 2015.
+* [10] V. Durrleman. A note on initial volatility surface,. _Unpublished manuscript_, 2003.
+* [11] Maasaki Fukasawa. The normalizing transformation of the implied volatility smile. _Mathematical Finance_, 2010.
+* [12] J. Gatheral. _The Volatility Surface: A Practionneer's guide_. Wiley, August 2006.
+* [13] J. Gatheral and A. Jacquier. Arbitrage-free svi volatility surface. _arXiv_, March 2013.
+* [14] Stefan Gerhold. Can there be an explicit formula for implied volatility? _working paper ssrn_, 2012.
+* [15] A. Gulisashvili. Asymptotic formulas with error estimates for call pricing functions and the impliedvolatility at extreme strikes. _SIAM Journal on Financial Mathematics_, 2010.
+* [16] A. Gulisashvili. Left-wing asymptotics of the implied volatility in the presence of atoms. _InternationalJournal of Theoretical and Applied Finance_, 2015.
+* [17] R. Hafner and Bernd Schmid. A factor-based stochasticimplied volatility model. _working paper_, 2005.
+* [18] P. Hagan, D. Kumar, A. Lesniewski, and D. Woodward. Managing smile risk. _Wilmott Magazine_, January 2002.
+* [19] Sebas Hendriks and Claude Martini. The extended ssvi volatility surface. _Journal of Computational Finance_, 2019.
+* [20] Lui Huizhao and Jiang Daqing. Two-points boundary value problem for first order implicit differential equations. _Hiroshima Mathematics Journal_, 1998.
+* expansions for the masses. _SSRN Electronic Journal_, 2011.
+* [22] A. Jacquier, G. Guo, C. Martini, and L. NeufCourt. Generalised arbitrage-free svi volatility surfaces. _ssrn_, 2016.
+* [23] Nan Su Jaehyuk Choi, Jeonggyu Huh. Tighter uniform bounds for blackscholes implied volatilityand the applications to root-finding. _arXiv_, 2023.
+* [24] Peter Jackel. Lets be rational. _working paper_, 2016.
+* [25] Dilip B. Madan Christian Potz Kathrin Glau, Paul Herold. The chebyshev method for the implied volatility. _Journal of Computational Finance_, 2019.
+* [26] R. Lee. The moment formula for implied volatility at extreme strikes. _Mathematical Finance_, 2004.
+* [27] Vladimir Lucic. Volatility notes. _ssrn_, 2019.
+* [28] Vladimir Lucic. Normalizing volatility transforms and parametrization of volatility smile. _ssrn_, 2022.
+* [29] S. De Marco, C. Hillairet, and A. Jacquier. Shapes of implied volatility with positive mass at zero. _SIAM Journal on Financial Mathematics_, 2017.
+
+* [30] Claude Martini and Arianna Mingone. Explicit no arbitrage domain for sub svis via reparametrization. _SIAM Journal on Financial Mathematics_, 2020.
+* [31] Claude Martini and Arianna Mingone. No arbitrage svi. _SIAM Journal on Financial Mathematics_, 13:227-261, 2022.
+* [32] R. Merton. Option pricing when underlying stock returns are discontinuous. _Journal of Financial Economics_, 1976.
+* [33] L. Wub P. Carr. Analyzing volatility risk and risk premium in option contracts:a new theory. _NYU Tandon Research Paper_, 2017.
+* [34] P. Pianca. Simple formulas to option pricing and hedging in the blackscholes model. _Rendiconti pergli Studi Economici Quantitativi._, 2005.
+* [35] V. Durrleman R. Cont, J. Da Fonseca. Stochastic models of implied volatility surfaces. _Economic Notes by Banca Monte dei Paschi di Siena SpA_, 2002.
+* [36] M. Roper. Arbitrage-free implied volatility surfaces. Technical report, School of Mathematics and Statistics, The University of Sydney, 2006.
+* [37] Philipp J. Schonbucher. A market model for stochastic implied volatility. _Working Paper_, 1998.
+* [38] Michael R. Tehranchi. A black-scholes inequality: applications and generalisations. _Finance and Stochastics_, 2020.
+* [39] R. Michael Tehranchi. Uniform bounds for black scholes implied volatility. _SIAM Journal on Financial Mathematics_, 2016.

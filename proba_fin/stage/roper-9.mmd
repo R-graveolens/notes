@@ -1,0 +1,385 @@
+# Arbitrage Free Implied Volatility Surfaces
+
+Michael Roper
+
+School of Mathematics and Statistics
+
+The University of Sydney
+
+NSW 2006, Australia
+
+michael.roper@sydney.edu.au
+
+This research was supported by ARC Discovery Projects DP0881460 and DP0558539.
+
+26 March, 2010
+
+###### Abstract
+
+This paper establishes sufficient conditions for an implied volatility surface to be free from "static arbitrage". The conditions are shown to be necessary under certain (very mild) conditions.
+
+Application is made to determining whether or not some proposed implied volatility smiles are free of static arbitrage.
+
+This paper establishes sufficient and close to necessary conditions for an implied volatility surface to be free from _static arbitrage_. A call price surface is free of static arbitrage if there can be no arbitrage opportunities _trading in the surface_. More precisely, a call option price surface \((K,\tau)\mapsto C(K,\tau)\) is free from static arbitrage if and only if there exists a non-negative martingale, say \(S\), such that \(C(K,\tau)=\mathbb{E}\left((S_{\tau}-K)^{+}\right)\) for every \(K,\tau\geq 0\). We then say that an implied volatility surface is free from static arbitrage if the call price surface \(C(K,\tau)=C^{BS}(K,\tau,\Sigma(K,\tau))\) is free from static arbitrage, where \(\Sigma(K,\tau)\) is the implied volatility at strike \(K\) and time to expiry \(\tau\), and \(C^{BS}(K,\tau,\Sigma(K,\tau))\) is the Black-Scholes price of a \(K\)-strike and \(\tau\) time to expiry option with implied volatility \(\Sigma(K,\tau)\).
+
+Determining necessary and sufficient conditions for an implied volatility surface to be free of (static) arbitrage is important for a number of reasons. Lee (pp. 11-12of [10]), for example, lists a number of applications. First, if a "model generates a theoretical [implied volatility surface] that differs qualitatively from empirical facts, [then] we have evidence of model misspecification". Second, "necessary conditions on" the implied volatility surface "for the absence of arbitrage provide[s] consistency checks that can help to reject unsound proposals" for implied volatility parameterisations. Also, as noted by Lee (p. 71 of [10]), it is of "benefit to [market] practitioners who seek parameterisations that fit" the market implied volatility smile. Finally, as noted by Musiela and Rutkowski (see pp. 270-271 of [11]) and [12], it is an important and open problem in stochastic implied volatility modelling since one needs to know how to specify an initial arbitrage free implied volatility surface.
+
+Our investigations proceed in a straightforward manner. We first establish necessary and sufficient conditions on the call price surface for it to be free of static arbitrage. We then translate these conditions into conditions on the implied volatility surface.
+
+Necessary and sufficient conditions on the call price surface for it to be free from static arbitrage are, under various conditions, quite well known. Buehler (see [1]) considers the case of a finite family of strikes and maturities in the call price surface, Davis and Hobson (see [1]) and Carr and Madan (see [1]) study similar problems, but with a different focus. Cox and Hobson ([1]) consider a call price surface to be free of static arbitrage if it may be matched by a local martingale. We do not use this approach because of the problem of implied volatility being ill-defined in strictly local martingale models. Durrleman [12] presents a number of necessary call option restrictions and is able to establish sufficiency under very strong conditions. The setup closest to ours is that of Follmer and Schied (see [13]), although their conditions differ from ours.
+
+Various necessary conditions on a surface for it to be an implied volatility surface are known, see Lee [10] and, especially, Durrleman [12]. No set of sufficient conditions has been presented in the literature. The main contribution of this paper is Theorem 2.9 which presents a set of conditions that, if satisfied, certifies that a candidate surface is indeed an implied volatility surface free from static arbitrage. The other major result of this paper is Theorem 2.15 which shows that the set of conditions which we proved were sufficient are, under two weak conditions, necessary properties of an implied volatility surface that is free of static arbitrage.
+
+This paper is organised as follows. In the first section, we give the mathematical setup. Some elementary properties of convex functions are recalled. In the second section, we give necessary and sufficient conditions for a call price surface to be free of static arbitrage. In the third section, we present sufficient conditions for an implied volatility surface to be free of static arbitrage and show that they are necessary under certain (very mild) technical conditions. In the final section, we give examples of implied volatility smile parameterisations that have been presented in the literature and show, using our results, that they are not arbitrage-free.
+
+## 1 Background
+
+### Setup
+
+We assume throughout this paper zero interest rates and dividend yield. We will also restrict ourselves to non-negative price processes, and assume that we are in a perfectly liquid market for European calls. That is, call option prices for all strikes, \(K>0\), and maturities, \(\tau\geq 0\), are known in the market. We exclude strike \(K=0\) from this assumption for two reasons. Firstly, it becomes problematic when one deals with implied volatility parameterised in terms of log moneyness (\(\ln(K/s)\), \(s\) being the stock price). Secondly, it is simple to take the continuous extension of the call price surface to \([0,\infty)\times[0,\infty)\), so that there is no real loss of generality in supposing that \(K>0\).
+
+**Definition 1.1**.: A _call price surface parameterised by \(s\)_ is a function
+
+\[C:[0,\infty)\times[0,\infty) \to\mathbb{R}\] \[(K,\tau) \mapsto C(K,\tau)\]
+
+along with a real number \(s>0\).
+
+It will sometimes be convenient to simply refer to a call price surface parameterised by \(s\) as a call price surface or a call surface.
+
+The next definition follows that presented in [1] except for our insistence on true martingales.
+
+**Definition 1.2**.: There is _no static arbitrage_ in a call price surface \(C\) if there exists a non-negative martingale \(X\) on some stochastic basis \((\Omega,\mathcal{F},\mathbb{F}=(\mathcal{F}_{t})_{t\geq 0},\mathbb{P})\) with \(C(K,\tau)=\mathbb{E}\left(\,(X_{\tau}-K)^{+}\,|\,\mathcal{F}_{0}\right)\) for each \((K,\tau)\in[0,\infty)\times[0,\infty)\). In particular, \(X_{0}=s\), i.e. the current stock price. If such a martingale and probability space exists, then we say that the call price surface is free of static arbitrage.
+
+### Auxiliary Facts
+
+**Definition 1.3** (Buehler, Definition 2 in [1]).: Let \(\mu,\nu\) be two measures defined on \((\mathbb{R},\mathscr{B}(\mathbb{R}))\). Then \(\mu\) is said to precede \(\nu\) in the Balayage order if and only if
+
+\[\int_{\mathbb{R}}f\,\mathrm{d}\mu\leq\int_{\mathbb{R}}f\,\mathrm{d}\nu\]
+
+for all convex functions \(f\). This is denoted by \(\mu\preceq\nu\) for probability measures with finite expectation.
+
+**Lemma 1.4** (Follmer and Schied, Corollary 2.63 in [11]).: _Let \(\mu,\nu\) be two measures defined on \((\mathbb{R},\mathscr{B}(\mathbb{R}))\). We have \(\mu\preceq\nu\) if and only if_
+
+\[\int_{\mathbb{R}}(x-K)^{+}\mu(dx)\leq\int_{\mathbb{R}}(x-K)^{+}\nu(dx)\]
+
+_for all \(K\in\mathbb{R}\)._
+
+**Theorem 1.5** (Kellerer, Theorem 3 in [10]).: _Let \(\mathcal{M}=(\mu_{t})_{t\in\mathcal{T}}\) be a set of probability measures on \((\mathbb{R},\mathscr{B}(\mathbb{R}))\) with finite expectation at each \(t\in\mathcal{T}\), where \(\mathcal{T}\subseteq[0,\infty)\) is some Borel set. A Markov sub-martingale with marginal distributions \(\mu_{t}\) exists if \(\mathcal{M}\) is in Balayage order, that is_
+
+\[\mu_{t}\preceq\mu_{t^{\prime}}\]
+
+_for all \(t<t^{\prime}\) with \(t,t^{\prime}\in\mathcal{T}\)._
+
+We will need an obvious corollary to Theorem 1.5.
+
+**Corollary 1.6**.: _Let \(\mathcal{M}=(\mu_{t})_{t\in\mathcal{T}}\) be a set of probability measures on \((\mathbb{R},\mathscr{B}(\mathbb{R}))\) with finite constant expectation for all \(t\in\mathcal{T}\), where \(\mathcal{T}\subseteq[0,\infty)\) is some Borel set. A Markov martingale with marginal distributions \(\mu_{t}\) exists if \(\mathcal{M}\) is in Balayage order, that is_
+
+\[\mu_{t}\preceq\mu_{t^{\prime}}\]
+
+_for all \(t<t^{\prime}\) with \(t,t^{\prime}\in\mathcal{T}\)._
+
+We will also use some elementary properties of convex functions.
+
+**Lemma 1.7**.: _Let \(f:(0,\infty)\to\mathbb{R}\) be a function that admits a continuous extension, call it \(g\), to \([0,\infty)\). We consider the following conditions on \(f\)._
+
+1. \(f\) _is convex;__;_
+2. \(f\) _is non-increasing;_
+3. \(f(x)\to 0\) _as_ \(x\to\infty\)_; and_
+4. _for some_ \(a\in(0,\infty)\)_,_ \((a-x)^{+}\leq f(x)\leq a\) _for every_ \(x>0\)_._
+
+_Then_
+
+1. _if_ \(f\) _satisfies (i), then_ \(g\) _is convex on_ \([0,\infty)\)_;_
+2. _if_ \(f\) _satisfies (ii), then_ \(g\) _is non-increasing on_ \([0,\infty)\)_;_
+3. _if_ \(f\) _satisfies (iii), then_ \(g(x)\to 0\) _as_ \(x\to\infty\)_;_
+4. _if_ \(f\) _satisfies (iv), then_ \((g(0)-x)^{+}=(a-x)^{+}\leq g(x)\leq a=g(0)\) _for every_ \(x\geq 0\)_;_
+5. _if_ \(f\) _satisfies (iv), then_ \(a=g(0)=\lim_{x\to 0^{+}}g(x)\)_;_
+6. _if_ \(f\) _satisfies (i), (ii), and (iv), then the right-hand derivative of_ \(g\)_, write it_ \(g^{\prime}_{+}\)_, exists, and is non-decreasing and right-continuous on_ \(x\geq 0\)_;_
+7. _if_ \(f\) _satisfies (i), (ii), and (iv), then for every_ \(x\geq 0\)_,_ \(-1\leq g^{\prime}_{+}(x)\leq 0\)_;_
+8. _if_ \(f\) _satisfies (i), (ii), and (iv), then for every_ \(x>0\)_,_ \(-1\leq\frac{g(x)-g(0)}{x}\leq g^{\prime}_{+}(x)\leq 0\)_; and_
+9. _if_ \(f\) _satisfies (i) and (iii), then_ \(g\) _is non-increasing._
+
+## 2 Main Results
+
+### The Call Price Surface
+
+In this section, we give necessary and sufficient conditions for a call price surface to be free of static arbitrage. The following is largely from Lemma 7.23 of Follmer and Schied (see [10]), although our conditions differ from theirs.
+
+We emphasise that in our conclusions we allow for \(K=0\).
+
+**Theorem 2.1**.: _Let \(s>0\) be a constant._
+
+1. _Let_ \(C:(0,\infty)\times[0,\infty)\to\mathbb{R}\) _satisfy the following conditions._1. _(Convexity in_ \(K\)_)_ \[C(\cdot,\tau)\text{ is a convex function},\quad\forall\tau\geq 0;\]
+2. _(Monotonicity in_ \(\tau\)_)_ \[C(K,\cdot)\text{ is non-decreasing},\quad\forall K>0;\]
+3. _(Large strike limit)_ \[\lim_{K\to\infty}C(K,\tau)=0,\quad\forall\tau\geq 0;\]
+4. _(Bounds)_ \[(s-K)^{+}\leq C(K,\tau)\leq s,\quad\forall K>0,\tau\geq 0;\text{ and}\]
+5. _(Expiry Value)_ \[C(K,0)=(s-K)^{+},\quad\forall K>0.\]
+
+_Then_
+
+1. _the function_ \[\widehat{C}:[0,\infty)\times[0,\infty) \to\mathbb{R}\] \[(K,\tau) \mapsto\begin{cases}s,&\text{ if }K=0\\ C(K,\tau),&\text{ if }K>0\end{cases}\] _satisfies assumptions (_A1_)-(_A5_) but with_ \(K\geq 0\) _instead of_ \(K>0\)_; and_
+2. _there exists a non-negative Markov martingale_ \(X\) _with the property that_ \[\widehat{C}(K,\tau)=\mathbb{E}\left((X_{\tau}-K)^{+}|X_{0}=s\right)\] _for all_ \(K,\tau\geq 0\)_._
+3. _All of the listed conditions in part (a) of this theorem are necessary properties of_ \(\widehat{C}\) _for it to be the conditional expectation of a call option under the assumption that_ \(X\) _is a (non-negative) martingale._
+
+Proof.:
+1. 1. The function \(\widehat{C}(\cdot,\tau)\) is the continuous extension of \(C(\cdot,\tau)\) to \([0,\infty)\). Therefore, properties (A1), (A3), and (A4) follow from Lemma 1.7. Clearly, (A2) and (A5) hold for \(\widehat{C}\).
+
+2. We first show that for each fixed \(\tau\geq 0\) there exists a probability measure \(\mu_{\tau}\) on \((\mathbb{R},\mathcal{B}(R))\) such that \[\widehat{C}(K,\tau)=\int_{[0,\infty)}(x-K)^{+}\,\mu_{\tau}(\mathrm{d}x),\quad \forall K,\tau\geq 0.\] (1) Our argument follows closely parts of Proposition A.4 and Lemma 7.23 of [10]. We will let \(\widehat{C}^{\prime}_{+}\) denote the right-hand partial derivative of \(\widehat{C}\) with respect to its first argument. Using Lemma 1.7 we get that for each \(\tau\geq 0\), \(\widehat{C}^{\prime}_{+}(\cdot,\tau)\) exists, is right-continuous, non-decreasing, and bounded above by zero and below by minus one. Fix \(\tau\geq 0\). Since \(\widehat{C}(\cdot,\tau)\) is convex on \([0,\infty)\), it holds for every \(\epsilon>0\) that \[\widehat{C}(K,\tau)=\widehat{C}(\epsilon,\tau)+\int_{\epsilon}^{K}\widehat{C} ^{\prime}_{+}(k,\tau)\,\mathrm{d}k.\] Taking the limit as \(\epsilon\to 0^{+}\) and using the fact that \[\lim_{K\to 0^{+}}\widehat{C}(K,\tau)=s,\] we get that \[\widehat{C}(K,\tau)=s+\int_{0}^{K}\widehat{C}^{\prime}_{+}(k,\tau)\,\mathrm{d}k.\] Then (A3) yields \[\lim_{K\to\infty}\int_{0}^{K}\widehat{C}^{\prime}_{+}(k,\tau)\,\mathrm{d}k=-s.\] (2) We may conclude that \[\lim_{K\to\infty}\widehat{C}^{\prime}_{+}(K,\tau)=0.\] and using the properties of \(\widehat{C}\) and \(\widehat{C}^{\prime}_{+}\) announced earlier \[F(K,\tau)=\begin{cases}1+\widehat{C}^{\prime}_{+}(K,\tau),&\text{if }K\geq 0\\ 0,&\text{if }K<0,\end{cases}\] is, with \(\tau\) fixed, a cumulative distribution function. Fix \(\tau\geq 0\). Of course, \(F\) defines a probability measure \(\mu_{\tau}\) on \((\mathbb{R},\mathcal{B}(\mathbb{R}))\). Using this we have that \[\widehat{C}(K,\tau) =s-\int_{0}^{K}-\widehat{C}^{\prime}_{+}(k,\tau)\,\mathrm{d}k\] \[=s-\int_{0}^{K}\int_{[k,\infty)}\mu_{\tau}(\,\mathrm{d}y)\,\mathrm{ d}k\] \[=s-\int_{0}^{\infty}\int_{0}^{K}\mathbb{1}_{\{k<y\}}\,\mathrm{d}k \,\mu_{\tau}(\mathrm{d}y)\] \[=s-\int_{[0,\infty)}(y\wedge K)\,\mu_{\tau}(\mathrm{d}y)\] \[=\int_{[0,\infty)}(y-K)^{+}\,\mu_{\tau}(\mathrm{d}y).\] Clearly, \(\int_{[0,\infty)}y\mu_{\tau}(dy)=\widehat{C}(0,\tau)=s\). So Equation (1) holds for each \(\tau\geq 0\) and \(K\geq 0\). As in [10], we now show that the family of measures \(\mathcal{M}=(\mu_{\tau})_{\tau\in[0,\infty)}\), with \(\mu_{\tau}\) defined as in the first part of the proof, is in Balayage order. Fix \(K\geq 0\). Let \(0\leq\tau_{1}<\tau_{2}<\infty\). Using (A2) and the representation of \(\widehat{C}(K,\tau)\) given in Equation (1), we have \[\int_{\mathbb{R}}(y-K)^{+}\,\mu_{\tau_{1}}(\mathrm{d}y)=\widehat{C}(K,\tau_{1 })\leq\widehat{C}(K,\tau_{2})=\int_{\mathbb{R}}(y-K)^{+}\,\mu_{\tau_{2}}( \mathrm{d}y),\] for \(K\geq 0\). By construction, every \(\mu_{\tau}\in\mathcal{M}\) has support contained in \([0,\infty)\). We can now argue that for fixed \(K<0\) \[\int_{-\infty}^{\infty}(y-K)^{+}\,\mu_{\tau_{1}}(\mathrm{d}y) =\int_{[0,\infty)}(y-K)^{+}\,\mu_{\tau_{1}}(\mathrm{d}y)\] \[=\int_{[0,\infty)}(y-K)\,\mu_{\tau_{1}}(\mathrm{d}y)\] \[=s-K\] \[=\int_{-\infty}^{\infty}(y-K)^{+}\,\mu_{\tau_{2}}(\mathrm{d}y).\] So by Lemma 1.4, we may conclude that \(\mathcal{M}\) is in Balayage order. The existence of a Markov martingale with marginals \(\mathcal{M}\) now follows from Corollary 1.6.
+2. The necessity comes from elementary facts about the conditional expectation of the call payoff.
+
+**Remark 2.2**.: It is to be noted that the constructed martingale of the previous theorem need not be cadlag, nor is the filtration necessarily right-continuous.
+
+### The Implied Volatility Surface
+
+We now turn our attention to the implied volatility surface and derive sufficient and close to necessary conditions for it to be free from static arbitrage.
+
+**Definition 2.3**.: Let
+
+\[d_{+}:\mathbb{R}\times(0,\infty) \to\mathbb{R}\] \[(u,v) \mapsto-u/v+v/2\]
+
+and
+
+\[d_{-}:\mathbb{R}\times(0,\infty) \to\mathbb{R}\] \[(u,v) \mapsto-u/v-v/2.\]
+
+Following Durrleman [1], we will work with a "scaled Black-Scholes" function as it simplifies the calculations.
+
+**Definition 2.4**.: Let
+
+\[B:\mathbb{R}\times[0,\infty) \to\mathbb{R}\] \[(x,\theta) \mapsto\begin{cases}\lim_{\theta\to 0^{+}}B(x,\theta)=(1-\exp(x))^{+},&\text{if }\theta=0,\\ \Phi\left(d_{+}(x,\theta)\right)-\exp(x)\Phi\left(d_{-}(x,\theta)\right),& \text{if }\theta\in(0,\infty)\\ \lim_{\theta\to\infty}B(x,\theta)=1,&\text{if }\theta=\infty.\end{cases}\]
+
+**Remark 2.5**.: It is clear that
+
+\[(1-\exp(x))^{+}\leq B(x,\theta)\leq 1\]
+
+for every \(x\in\mathbb{R}\) and \(\theta\in[0,\infty]\).
+
+**Remark 2.6**.: The standard representation of the Black-Scholes call pricing function can be recovered from \(B\) as follows
+
+\[C^{BS}(K,\tau,\sigma)=\begin{cases}sB(\ln(K/s),\sigma\sqrt{\tau}),&\text{if }K>0, \\ s,&\text{if }K=0,\end{cases}\]where \(s\) is the current stock price and \(\tau\) is the time to expiry of the \(K\)-strike call.
+
+Observe that \(B\) is conveniently written solely in terms of log-moneyness, that is \(\ln(K/s)\), and time-scaled volatility \(\sigma\sqrt{\tau}\).
+
+We now introduce a variant of implied volatility which we have termed _time-scaled implied volatility in log-moneyness form_.
+
+**Definition 2.7**.: Time scaled implied volatility (in log-moneyness form) parameterised by \(s\) is a function defined by
+
+\[\Xi:\mathbb{R}\times[0,\infty) \to[0,\infty]\] \[(x,\tau) \mapsto\sqrt{\tau}\Sigma(s\exp(x),\tau),\]
+
+where \(\Sigma\) is implied volatility and \(s>0\) is the stock price. \(K\) enters via \(x\) which is log-moneyness, that is \(x=\ln(K/s)\).
+
+**Remark 2.8**.: A time scaled implied volatility surface (in log-moneyness form) parameterised by \(s\) defines a call price surface parameterised by \(s\) via
+
+\[C(K,\tau)=\begin{cases}sB(\ln(K/s),\Xi(\ln(K/s),\tau)),&\text{ if }K>0,\\ s,&\text{ if }K=0.\end{cases}\]
+
+Note that there was no need to define implied volatility for \(K=0\).
+
+**Theorem 2.9**.: _Let \(s>0\) and \(\Xi:\mathbb{R}\times[0,\infty)\to\mathbb{R}\). Let \(\Xi\) satisfy the following conditions:_
+
+1. _(Smoothness) for every_ \(\tau>0\)_,_ \(\Xi(\cdot,\tau)\) _is twice differentiable._
+2. _(Positivity) for every_ \(x\in\mathbb{R}\) _and_ \(\tau>0\)_,_ \[\Xi(x,\tau)>0.\]
+3. _(Durrleman's Condition) for every_ \(\tau>0\) _and_ \(x\in\mathbb{R}\)_,_ \[0\leq\left(1-\frac{x\partial_{x}\Xi}{\Xi}\right)^{2}-\frac{1}{4}\Xi^{2}\left( \partial_{x}\Xi\right)^{2}+\Xi\partial_{xx}^{2}\Xi,\] (3) _where we have written_ \(\Xi\) _for_ \(\Xi(x,\tau)\)_._
+4. _(Monotonicity in_ \(\tau\)_) for every_ \(x\in\mathbb{R}\)_,_ \(\Xi(x,\cdot)\) _is non-decreasing._* _(Large moneyness behaviour)_1 _for every_ \(\tau>0\)__ Footnote 1: See Proposition 2.11 for a simpler condition. \[\lim_{x\to\infty}d_{+}(x,\Xi(x,\tau))=-\infty.\]
+* _(Value at maturity) for every_ \(x\in\mathbb{R}\)_,_ \[\Xi(x,0)=0.\]
+
+_Then_
+
+\[\widetilde{C}:[0,\infty)\times[0,\infty) \to\mathbb{R}\] \[(K,\tau) \mapsto\begin{cases}sB(\ln(K/s),\Xi(\ln(K/s),\tau)),&\text{ if }K>0,\\ s,&\text{ if }K=0,\end{cases}\]
+
+_is a call price surface parameterised by \(s\) that is free of static arbitrage. In particular, there exists a non-negative Markov martingale \(X\) with the property that \(\widetilde{C}(K,\tau)=\mathbb{E}\left((X_{\tau}-K)^{+}|X_{0}=s\right)\) for all \(K,\tau\geq 0\)._
+
+Proof.: It is sufficient to check that the conditions of Theorem 2.1 are satisfied by \(\widetilde{C}\). We will then have the claimed existence of a martingale from Theorem 2.1.
+
+We will use \(x=\ln(K/s)\). In the following, where it is obvious from the context, we will sometimes omit the arguments of functions. For example we will write \(d_{+}\) instead of \(d_{+}(u,v)\) and \(d_{-}\) instead of \(d_{-}(u,v)\), etc. We will let \(\partial_{1}B(u,v)\) denote the partial derivative of \(B\) with respect to its first argument evaluated at \((u,v)\in\mathbb{R}\times(0,\infty)\), \(\partial_{12}^{2}B(u,v)\) denote the mixed partial derivative of \(B\) with respect to its first and second arguments, and so on.
+
+As in Durrleman [10], we use, without further comment,
+
+\[\partial_{1}B(u,v) =-\exp(u)\Phi\left(d_{-}\right),\] \[\partial_{2}B(u,v) =\phi\left(d_{+}\right),\] \[\partial_{11}^{2}B(u,v) =-\exp(u)\Phi\left(d_{-}\right)+\frac{1}{v}\phi\left(d_{+}\right),\] \[\partial_{12}^{2}B(u,v) =\left(-\frac{u}{v^{2}}+\frac{1}{2}\right)\phi\left(d_{+}\right) \text{ and,}\] \[\partial_{22}^{2}B(u,v) =\left(\frac{u^{2}}{v^{3}}-\frac{v}{4}\right)\phi\left(d_{+}\right);\]which are easily obtained using that \(\exp(u)\phi(d_{-}(u,v))=\phi(d_{+}(u,v))\) for \(u,v\in\mathbb{R}\) with \(v\neq 0\) and \(\phi^{\prime}(z)=-z\phi(z)\) for all \(z\in\mathbb{R}\).
+
+We now turn to the proof of the first part of the present claim.
+
+* **Convexity in \(K\)**: The following argument for (A1) is due to Durrleman (see [10]). Fix \((x,\tau)\in\mathbb{R}\times(0,\infty)\) and let \(K=s\exp(x)\). We use that \(K>0\) which holds by assumption on \(s\). The positivity of \(\Xi\) and Equation (3), give that \[0\leq\frac{\phi(d_{+})}{K^{2}\Xi}\left(\left(1-\frac{x}{\Xi}\partial_{1}\Xi \right)^{2}-\frac{1}{4}\Xi^{2}\left(\partial_{1}\Xi\right)^{2}+\Xi\partial_{1 1}^{2}\Xi\right),\] where, here and following, \(\Xi\) and \(d_{+}\) are evaluated at \((x,\tau)\) and \((x,\Xi)\) respectively. Now, \[\frac{\phi(d_{+})}{K^{2}\Xi}\left(\left(1-\frac{x}{\Xi}\partial_{ 1}\Xi\right)^{2}-\frac{1}{4}\Xi^{2}\left(\partial_{1}\Xi\right)^{2}+\Xi \partial_{11}^{2}\Xi\right)\] \[=\frac{\phi(d_{+})}{K^{2}}\bigg{(}\frac{1}{\Xi}+\left(1-\frac{2 x}{\Xi^{2}}\right)\partial_{1}\Xi+\left(\frac{x^{2}}{\Xi^{3}}-\frac{\Xi}{4} \right)\left(\partial_{1}\Xi\right)^{2}+\partial_{11}^{2}\Xi-\partial_{1}\Xi \bigg{)}\] \[=\frac{1}{K^{2}}\left(\partial_{11}^{2}B+2\partial_{1}\Xi \partial_{12}^{2}B+(\partial_{1}\Xi)^{2}\partial_{22}^{2}B+(\partial_{11}^{2 }\Xi-\partial_{1}\Xi)\partial_{2}B-\partial_{1}B\right),\] where, here and following, \(B\) is evaluated at \((x,\Xi)\), \[=\left[\frac{1}{K^{2}}\partial_{11}^{2}B+\frac{1}{K^{2}}\partial_ {12}^{2}B\partial_{1}\Xi\right]-\left[\frac{1}{K^{2}}\partial_{1}B\right]+ \left[\left(\frac{1}{K}\partial_{12}^{2}B+\frac{1}{K}\partial_{22}^{2}B \partial_{1}\Xi\right)\frac{\partial_{1}\Xi}{K}\right]\] \[\quad+\left[\left(\frac{1}{K^{2}}\left(-\partial_{1}\Xi+ \partial_{11}^{2}\Xi\right)\right)\partial_{2}B\right]\] \[=\left\{\left[\frac{1}{K}\left(\partial_{11}^{2}B\partial_{K}x+ \partial_{12}^{2}B\partial_{K}\Xi\right)\right]-\left[\frac{1}{K^{2}}\partial _{1}B\right]\right\}\] \[\quad+\left\{\left[\left(\partial_{12}^{2}B\partial_{K}x+ \partial_{22}^{2}B\partial_{K}\Xi\right)\partial_{K}\Xi\right]+\left[\partial_ {KK}^{2}\Xi\partial_{2}B\right]\right\}\] \[=\left\{\partial_{K}(\partial_{1}B\partial_{K}x)\right\}+\left\{ \partial_{K}(\partial_{2}B\partial_{K}\Xi)\right\}\] \[=\partial_{KK}B.\] We may conclude that \[\partial_{KK}\widetilde{C}(K,\tau)=s\partial_{KK}B(\ln(K/s),\Xi(\ln(K/s),\tau) )\geq 0,\] as required.
+
+* **Monotonicity in \(\tau\)**: \(B\) is a strictly increasing function of its second argument, since \(\partial_{2}B(u,v)=\phi(d_{+}(u,v))>0\). Since \(\Xi(x,\tau)\) is non-decreasing in \(\tau\) for each fixed \(x\in\mathbb{R}\) by (IV4), it follows that \(\widetilde{C}(K,\cdot)=sB(\ln(K/s),\Xi(\ln(K/s),\cdot))\) is non-decreasing for each fixed \(K>0\). The case \(K=0\) is an immediate consequence of the definition of \(\widetilde{C}\).
+* **Large strike limit**: Much of the argument for (A3) is taken from Durrleman (see [1]). The case \(\tau=0\) is obvious. Fix \(\tau>0\). We must show that \[\lim_{x\to\infty}sB(x,\Xi(x,\tau))=s\lim_{x\to\infty}\left[\Phi(d_{+}(x,\Xi))- \exp(x)\Phi(d_{-}(x,\Xi))\right]=0.\] We have that \[\lim_{x\to\infty}d_{+}(x,\Xi(x,\tau))=-\infty.\] It follows from this that \[\lim_{x\to\infty}\Phi(d_{+}(x,\Xi))=0.\] It remains to show that \[\lim_{x\to\infty}\exp(x)\Phi(d_{-}(x,\Xi))=0.\] To see that this is the case, argue as follows. Let \(D=(0,\infty)\times(0,\infty)\). As Durrleman (see [1]) observed, we can use the Arithmetic-Geometric mean inequality and the fact that \(\Xi\) is strictly positive (by (IV2)), to get \[d_{-}(x,\Xi(x,\tau))=-\frac{x}{\Xi(x,\tau)}-\frac{\Xi(x,\tau)}{2}\leq-\sqrt{2x},\qquad\forall(x,\tau)\in D.\] Now, \(\Phi(\cdot)\) is increasing, so \[0\leq\exp(x)\Phi(d_{-})\leq\exp(x)\Phi(-\sqrt{2x}),\qquad\forall(x,\tau)\in D.\] By L'Hopital's Rule, we have \(\exp(x)\Phi(-\sqrt{2x})\to 0\) as \(x\to\infty\), so that \[\lim_{x\to\infty}\exp(x)\Phi(d_{-})=0.\] We have shown that \[\lim_{x\to\infty}sB(x,\Xi(x,\tau))=0,\]given that \(d_{+}\to-\infty\). It follows that \[\lim_{K\to\infty}\widetilde{C}(K,\tau)=0\] when \(d_{+}\to-\infty\).
+4. **Bounds**: As already noted in Remark 2.5, we have for all \(x\in\mathbb{R}\) and \(\theta\in[0,\infty]\) that \[(1-\exp(x))^{+}\leq B(x,\theta)\leq 1.\] Multiplying through by \(s\), which is assumed to be positive, and recalling that \(x=\ln(K/s)\) we are done.
+5. **Expiry value**: Immediate.
+
+The proof is therefore complete. 
+
+**Remark 2.10**.: The following proposition delivers a simpler test for the Large moneyness behaviour. The test is based on the behaviour ofsef
+
+\[\frac{\Xi(x,\tau)}{\sqrt{2x}},\]
+
+for large \(x\). Lee [10] presents his Large moneyness test as Lee requires
+
+\[\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}\leq 1\]
+
+while Durrleman [11] requires
+
+\[\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}<1.\]
+
+In fact, the case \(\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}=1\), requires special treatment as we now see.
+
+**Proposition 2.11**.: _We have that_
+
+1. \(d_{+}(x,\Xi(x,\tau))\to-\infty\) _when_ \(\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}\in[0,1)\)_;_2. \(d_{+}(x,\Xi(x,\tau))\) _may or may not converge to_ \(-\infty\) _when_ \(\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}=1\)_;_
+3. \(d_{+}(x,\Xi(x,\tau))\to-\infty\) _when_ \(\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}\in(1,\infty)\)_; and_
+4. \(d_{+}(x,\Xi(x,\tau))\to-\infty\) _when_ \(\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}=\infty\)_._
+
+Proof.: Throughout, we let
+
+\[U:=\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}.\]
+
+1. \((U\in[0,1))\). We have that \(U\) is the smallest real number such that \((\forall\epsilon>0)(\exists M)(\forall x>M)\) \[\frac{\Xi(x,\tau)}{\sqrt{2x}}<U+\epsilon.\] (4) In particular, we may choose \(\epsilon=\frac{1-U}{2}\), such that \(0<U+\epsilon=(1+U)/2<1\). From Equation (4), we have for all \(x\) large enough that \[\frac{\sqrt{2x}}{\Xi(x,\tau)}>\frac{1}{U+\epsilon}\quad\text{and}\;-\frac{\Xi (x,\tau)}{\sqrt{2x}}>-(U+\epsilon).\] Therefore, since \(0<U+\epsilon<1\), \[\frac{\sqrt{2x}}{\Xi(x,\tau)}-\frac{\Xi(x,\tau)}{\sqrt{2x}}>\frac{1-(U+ \epsilon)^{2}}{U+\epsilon}>0,\] for \(x\) large enough, by the choice of \(\epsilon\). It follows, using Durrleman's decomposition (see [1]) of \(d_{+}\), that \[\limsup_{x\to\infty}d_{+}(x,\Xi(x,\tau)) =\limsup_{x\to\infty}-\frac{\sqrt{x}}{\sqrt{2}}\left(\frac{ \sqrt{2x}}{\Xi(x,\tau)}-\frac{\Xi(x,\tau)}{\sqrt{2x}}\right)\] \[=-\infty\] \[=\lim_{x\to\infty}d_{+}(x,\Xi(x,\tau))\] So \(d_{+}\to-\infty\) as \(x\to\infty\).
+
+2. \((U=1).\) Let \[\Xi(x,1)=\sqrt{2}(x^{\frac{1}{2}}-x^{\frac{1}{4}}),\quad x\text{ large enough.}\] It satisfies \(d_{+}(x,\Xi)\to-\infty\) as \(x\to\infty\) and \(\lim_{x\to\infty}\Xi(x,1)/\sqrt{2x}=1\). Now suppose that \[\Xi(x,1)=\sqrt{2x},\quad x\text{ large enough.}\] Clearly, \(\limsup_{x\to\infty}\Xi(x,1)/\sqrt{2x}=1.\) But, \[d_{+}(x,\Xi)=-\frac{x}{\sqrt{2x}}+\frac{\sqrt{2x}}{2}=-\frac{\sqrt{x}}{\sqrt{2 }}+\frac{\sqrt{x}}{\sqrt{2}}=0\nrightarrow-\infty.\]
+3. \((U\in(1,\infty))\) It is sufficient to show that for any given \(M>0\) we can find an \(x\geq M\) such that \[d_{+}(x,\Xi)>0.\] Let us choose and take an \(M>0\). By definition of \(U\) and the assumption that it is in \((1,\infty)\), we have that \[(\forall\epsilon>0)(\forall M>0)(\exists x>M)\quad\Xi(x,\tau)/\sqrt{2x}>U-\epsilon.\] We take \[\epsilon:=U-1.\] Then there exists at least one \(x>M\) such that \(\Xi/\sqrt{2x}>U-\epsilon=1.\) Fix such an \(x\). We have \(-\Xi/\sqrt{2x}<-(U-\epsilon)\). Since \(U-\epsilon=1>0\) and \(\Xi/\sqrt{2x}>0\) by the positivity assumption, \(\sqrt{2x}/\Xi<1/(U-\epsilon)=1.\) Therefore \[\frac{\sqrt{2x}}{\Xi}-\frac{\Xi}{\sqrt{2x}} <\frac{1}{U-\epsilon}-(U-\epsilon)\] \[=\frac{1-(U-\epsilon)^{2}}{U-\epsilon}\] \[=0.\] Hence \[d_{+}=\frac{-\sqrt{x}}{\sqrt{2}}\left(\frac{\sqrt{2x}}{\Xi}-\frac{\Xi}{\sqrt{ 2x}}\right)>0\] for such \(x\). We see that \(d_{+}\) cannot converge to \(-\infty\) as \(x\to\infty\).
+
+4. \((U=\infty)\) Same proof as in (3) with \(U\) being any number \(>1\).
+
+**Remark 2.12**.: In [10], Lee assumes that the stock price is a non-negative martingale and derives that \(\Xi\) must satisfy
+
+\[\limsup_{x\to-\infty}\frac{\Xi^{2}(x,\tau)}{|x|}\in[0,2], \tag{5}\]
+
+equivalently
+
+\[\limsup_{x\to-\infty}\frac{\Xi(x,\tau)}{\sqrt{2\left|x\right|}}\in[0,1],\]
+
+for each \(\tau\geq 0\). We do not require such a condition. However, we know that this property must be satisfied by any function \(\Xi\) satisfying all the conditions in Theorem 2.9. Indeed, we have shown that there exists a non-negative martingale matching the call surface \(\widetilde{C}\): Lee's argument may then be applied and we can conclude that Equation (5) holds. It is difficult to see how to directly derive Equation (5) from the analytic conditions that we have imposed.
+
+In [10], Lee presents Gatheral's bounds on the derivative of (time-scaled) implied volatility (in log-moneyness form).
+
+We now show that the lower bound is a consequence of the other assumptions of Theorem 2.9, most importantly the convexity assumption. Following Lee [10], we will use the Mill's Ratio.
+
+**Definition 2.13**.: The function
+
+\[M:\mathbb{R} \to\mathbb{R}\] \[x \mapsto\frac{1-\Phi(x)}{\phi(x)}.\]
+
+is termed the Mill's Ratio, where \(\Phi\) is the standard normal cumulative distribution function and \(\phi\) is the standard normal density.
+
+**Corollary 2.14**.: _Let \(\widetilde{C}\) be defined in terms of \(\Xi\) as in the Theorem 2.9 Then for each \(x\in\mathbb{R}\) and \(\tau>0\)_
+
+\[-M(d_{+}(x,\Xi(x,\tau)))\leq\partial_{x}\Xi(x,\tau)\leq M(-d_{-}(x,\Xi(x,\tau ))).\]Proof.: We have the bounds \((s-K)^{+}\leq\widetilde{C}(K,\tau)\leq s\) for each \(K\) and \(\tau\). For the lower bound we can then use Lemma 1.7 to get that for \(K>0\)
+
+\[\partial_{K}\widetilde{C}(K,\tau) =\frac{s}{K}\left(\partial_{1}B+\partial_{2}B\partial_{x}\Xi\right)\] \[\geq\frac{\widetilde{C}(K,\tau)-s}{K}\] \[=\frac{sB-s}{K}\] \[=\frac{s(B-1)}{K}.\]
+
+Hence,
+
+\[\partial_{1}B+\partial_{2}B\partial_{x}\Xi\geq B-1,\]
+
+so that
+
+\[\partial_{x}\Xi \geq\frac{B-1-\partial_{1}B}{\partial_{2}B}\] \[=\frac{\Phi(d_{+})-e^{x}\Phi(d_{-})-1+e^{x}\Phi(d_{-})}{\partial _{2}B}\] \[=\frac{\Phi(d_{+})-1}{\phi(d_{+})}\] \[=-\frac{1-\Phi(d_{+})}{\phi(d_{+})}\] \[=-M(d_{+}).\]
+
+For the upper bound we note from Lemma 1.7 that \(\widetilde{C}\) is non-increasing from which
+
+\[\partial_{K}\widetilde{C}\leq 0\] \[\Leftrightarrow\frac{s}{K}(\partial_{1}B+\partial_{2}B\partial_{x }\Xi)\leq 0\] \[\Leftrightarrow\partial_{1}B+\partial_{2}B\partial_{x}\Xi\leq 0\] \[\Leftrightarrow\partial_{x}\Xi\leq\frac{-\partial_{1}B}{\partial_ {2}B}\] \[\Leftrightarrow\partial_{x}\Xi\leq\frac{e^{x}\Phi(d_{-})}{\phi(d_ {+})}\] \[\Leftrightarrow\partial_{x}\Xi\leq M(-d_{-}).\]We now show that the stated conditions are necessary under the smoothness and positivity requirements to ensure that the resulting call surface is free from static arbitrage.
+
+**Theorem 2.15**.: _Let \(s>0\) and \(\Xi:\mathbb{R}\times[0,\infty)\to\mathbb{R}\). Let \(\Xi\) satisfy the following conditions_
+
+1. _(Smoothness) For every_ \(\tau>0\)_,_ \(\Xi(\cdot,\tau)\) _is twice differentiable._
+2. _(Positivity) For every_ \(x\in\mathbb{R}\) _and_ \(\tau>0\)_,_ \[\Xi(x,\tau)>0.\]
+
+_Let_
+
+\[\widetilde{C}:[0,\infty)\times[0,\infty) \to\mathbb{R}\] \[(K,\tau) \mapsto\begin{cases}sB(\ln(K/s),\Xi(\ln(K/s),\tau)),&\text{if }K>0,\\ s,&\text{if }K=0.\end{cases}\]
+
+_Then if \(\Xi\) violates any of the remaining conditions (IV3)-(IV6) of Theorem 2.9, \(\widetilde{C}\) is not a call surface free from static arbitrage._
+
+Proof.: The necessity of conditions (IV3), (IV4) was shown in Durrleman [15]; in fact, the argument is clear by "reversing" the proofs of (A1) and (A2) in Theorem 2. Our condition of (IV5) differs from Durrleman's version of the property in order to allow for the case
+
+\[\limsup_{x\to\infty}\frac{\Xi(x,\tau)}{\sqrt{2x}}=1.\]
+
+(See Remark 2.11.) The necessity of (IV3) and (IV4) in this paper are taken directly from Durrleman [15]. (Durrleman [15] assumes that (IV1) and (IV2) hold.) With respect to the condition (IV6) we simplify specify the expiry value, whereas Durrleman [15] takes it to be given as the small time expiry. 
+
+## 3 Examples: Parameterisations of the Implied Volatility Smile
+
+In this section, we investigate whether or not some proposed parameterisations of the implied volatility smile are arbitrage-free or not. By the _implied volatility _smile_, we mean the function \(x\mapsto\Xi(x,\tau)\), i.e. time scaled implied volatility (in log-moneyness form) with time to expiry fixed. That is we fix \(\tau\) and analyse the dependence of \(\Xi\) on \(x\) alone. In order to check whether or not our conditions on the implied volatility are satisfied, we consider the proposed parameterisations as \(x\mapsto\Xi(x,1)\).
+
+The conditions that we need to check and, in particular, Durrleman's Condition, are onerous to check algebraically. We therefore resort to graphical analysis. For each of the three parameterisations we plot \(\Xi(\cdot,1)\) and \(\mathcal{I}\Xi(\cdot,1)\). The parameter choice is set out in the subsections below. The function \(\mathcal{I}\Xi\) is given by
+
+\[\mathcal{I}\Xi(x,\tau):=\left(1-\frac{x\partial_{x}\Xi(x,\tau)}{\Xi(x,\tau)} \right)^{2}-\frac{1}{4}\Xi(x,\tau)^{2}\left(\partial_{x}\Xi(x,\tau)\right)^{2} +\Xi(x,\tau)\partial_{xx}^{2}\Xi(x,\tau),\]
+
+where \(\partial_{x}:=\frac{\partial}{\partial x}\) and \(\partial_{xx}:=\frac{\partial^{2}}{\partial x^{2}}\). Observe that this is the right hand side of Durrleman's Condition in Equation (3).
+
+From Theorem 2.15, we know that a no arbitrage condition is that for each \(\tau>0\) and \(x\in\mathbb{R}\) we must have
+
+\[\mathcal{I}\Xi\geq 0. \tag{6}\]
+
+We note that this condition is non-linear, so the properties of the parameterisations may be very sensitive to change. We therefore use the specific numerical values of the various parameters indicated by the author of the parameterisation.
+
+We now present the graphical analysis of three proposed smile parameterisations.
+
+### Gatheral's "SVI" Parameterisation
+
+In [10] and [10], Gatheral proposed the implied volatility smile parameterisation
+
+\[\Xi^{\mathrm{SVI}}(x,\tau)=\sqrt{\left|a+b\left\{\rho(x-m)+\sqrt{(x-m)^{2}+ \sigma^{2}}\right\}\right|};\]
+
+the absolute value and the square root appear because Gatheral specified \(\Xi^{2}\) instead of \(\Xi\). We will refer to this parameterisation as the SVI parameterisation. For a fixed time to maturity, which we will take to be one time unit, Gatheral ([10]) suggests the parameter values
+
+\[a=0.04\quad b=0.8\quad\sigma=0.1\quad\rho=-0.4\text{ and }\quad m=0.\]
+
+In Figure 2, we can see that \(\mathcal{I}\Xi\) is negative for \(x\in(-1,-0.5)\). Therefore, the inequality in Equation (6) is not satisfied for all \(x\) and hence the parameterisationis not arbitrage free. (Gatheral's condition that \(b(1+|\rho|)\leq 4/\tau\) is clearly satisfied by the parameters we used.)
+
+### Avellaneda's "SABR" Parameterisation
+
+In [1], Avellaneda gives the following parameterisation
+
+\[\Xi^{\text{SABR}}(x,1)=\frac{\kappa\left|x\right|}{\ln(\kappa\left|f(x)\right|+ \sqrt{1+\kappa^{2}f^{2}(x)})}\]
+
+where
+
+\[f(x)=\frac{1-\exp(-\beta x)}{\sigma_{0}\beta}.\]
+
+Avellaneda takes
+
+\[\sigma_{0}=0.2\quad\beta=-4.0\quad\text{and }\kappa=0.5.\]
+
+From Figure 4, we can see that the condition in Equation (6) is not satisfied by \(\Xi^{\text{SABR}}\). Therefore the parameterisation is not arbitrage free.
+
+Figure 3: Plot of the implied volatility function \(\Xi^{\rm SABR}\)
+
+### Quadratic Parameterisation
+
+We take, as suggested in [1], a quadratic parameterisation for the smile curve, in particular,
+
+\[\Xi(x,1)=0.16-0.34x+4.45x^{2},\]
+
+taking the coefficients as given in [1]. This is not really meant as a plausible candidate since it does not satisfy Lee's moment formula, i.e.
+
+\[\lim_{x\to\infty}\frac{\Xi}{\sqrt{2x}}\in[0,1]\quad\text{ and }\lim_{x\to-\infty} \frac{\Xi}{\sqrt{2\left|x\right|}}\in[0,1].\]
+
+However, it appears that close to zero this parameterisation is often used and the behaviour at large \(\left|x\right|\) is specified by some other formula if it is required. In addition, from Figure 6, we can see that the condition (6) is not satisfied by \(\Xi^{\text{QUAD}}\). Therefore the parametrisation is not arbitrage free.
+
+Figure 5: Plot of the implied volatility function \(\Xi^{\text{QUAD}}\)
+
+## 4 Summary of Results
+
+In this paper, we have
+
+1. presented sufficient and necessary conditions for a call price surface to be free from static arbitrage;
+2. presented sufficient and close to necessary conditions for a time-scaled implied volatility surface in log-moneyness form to be free from static arbitrage.
+3. investigated whether or not some proposed parameterisations of the time-scaled implied volatility smile are free of static arbitrage.
+
+## 5 Acknowledgements
+
+Ben Goldys and Marek Rutkowski provided invaluable criticism, help and suggestions. I would also like to thank Jan Baldeaux and Zhi Guo for helpful criticism. Two anonymous readers provided helpful suggestions. Remaining errors are my own.
+
+## References
+
+* [Ave05] M. Avellaneda, _From SABR to geodesics_, November 2005, Conference presentation slides. Available at [http://www.math.nyu.edu/faculty/avellane/AvellanedaQ](http://www.math.nyu.edu/faculty/avellane/AvellanedaQ) Congress2005.pdf.
+* [Bue06] H. Buehler, _Expensive martingales_, Quantitative Finance **6** (2006), no. 3, 207-218.
+* [CH05] A. M. G. Cox and D. G. Hobson, _Local martingales, bubbles and option prices_, Finance and Stochastics **9** (2005), no. 4, 477-492.
+* [CM05] P. Carr and D. Madan, _A note on sufficient conditions for no arbitrage_, Finance Research Letters **2** (2005), no. 3, 125-130.
+* [DH07] M. H. A. Davis and D. G. Hobson, _The range of traded option prices_, Mathematical Finance **17** (2007), no. 1, 1-14.
+* [Dur03] V. Durrleman, _A note on initial volatility surface_, Unpublished manuscript, February 2003.
+* [FS04] H. Follmer and A. Schied, _Stochastic finance: an introduction in discrete time_, second revised and extended ed., Walter de Gruyter & Co., Berlin, 2004.
+* [Gat04] J. Gatheral, _A parsimonious arbitrage-free implied volatility parameterization with application to the valuation of volatility derivatives_, [http://www.math.nyu.edu/fellows_fin_math/gatheral/madrid2004.pdf](http://www.math.nyu.edu/fellows_fin_math/gatheral/madrid2004.pdf), May 2004, Conference presentation slides.
+* [Gat06], _The volatility surface: A practitioner's guide_, Wiley, 2006.
+* [Kel72] H. G. Kellerer, _Markov-Komposition und eine Anwendung auf Martingale_, Mathematische Annalen **198** (1972), 99-122.
+* [Lee00] R. Lee, _Implied and local volatilities under stochastic volatility_, Ph.D. thesis, Stanford University, 2000.
+* [Lee04], _The moment formula for implied volatility at extreme strikes_, Mathematical Finance **14** (2004), no. 3, 469-480.
+* [Lee05], _Implied volatility: statics, dynamics, and probabilistic interpretation_, Recent advances in applied probability, Springer, New York, 2005, pp. 241-268.
+
+* [MR05] M. Musiela and M. Rutkowski, _Martingale methods in financial modelling_, 2nd ed., vol. 36, Springer-Verlag, Berlin, 2005.
