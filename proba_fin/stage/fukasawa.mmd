@@ -1,0 +1,515 @@
+# Normalization for Implied Volatility
+
+Masaaki Fukasawa
+
+Center for the Study of Finance and Insurance, Osaka University,
+
+###### Abstract
+
+We study specific nonlinear transformations of the Black-Scholes implied volatility to show remarkable properties of the volatility surface. Model-free bounds on the implied volatility skew are given. Pricing formulas for the European options which are written in terms of the implied volatility are given. In particular, we prove elegant formulas for the fair strikes of the variance swap and the gamma swap.
+
+## 1 Introduction
+
+This study is motivated by an elegant formula (11.5) of Gatheral [4]:
+
+\[-2\mathrm{E}[\log(S_{T}/F)]=\int\sigma(g_{2}(z))^{2}\phi(z)\mathrm{d}z, \tag{1}\]
+
+where \(F\) is the forward price of the asset \(S_{T}\), \(\sigma\) is the Black-Scholes implied volatility as a function of \(\log\) moneyness \(k=\log(K/F)\) with strike \(K\) and maturity \(T\), and \(g_{2}\) is the inverse function of the transformation \(k\mapsto-d_{2}(k,\sigma(k))\). Here, we denote by \(\phi\) the standard normal density and define \(d_{2}\) as
+
+\[d_{2}(k,\sigma)=-\frac{k}{\sigma}-\frac{\sigma}{2}.\]
+
+This formula was essentially found by Morokoff, Akesson and Zhou [6] and used in Chriss and Morokoff [3]. A rigorous treatment is given in Carr and Lee [2]. Not only to prove it but also to ensure that the formula itself is well-defined, the preceding studies assumed, implicitly or explicitly, that the mapping \(k\mapsto-d_{2}(k,\sigma(k))\) is increasing. This monotonicity is not trivial because it involves the mapping \(k\mapsto\sigma(k)\). In this article, we show that it is in fact increasing under the minimal no-arbitrage condition and enjoys other nice properties which imply in particular model-free bounds on the implied volatility skew, that is, the first derivative of \(\sigma\). The formula (1), which is known to give thefair strike of the variance swap, is proved in an extended form. We find also its counterpart for the fair strike of the gamma swap which is seemingly new: it holds that
+
+\[2\mathbb{E}[\log(S_{T}/F)S_{T}/F]=\int\sigma(g_{1}(z))^{2}\phi(z)\mathrm{d}z. \tag{2}\]
+
+Here \(g_{1}\) is the inverse function of the mapping \(k\mapsto-d_{1}(k,\sigma(k))\), which is also shown to be increasing, where \(d_{1}(k,\sigma)=d_{2}(k,\sigma)+\sigma\). Moreover, we show that the functions \(g_{1}\) and \(g_{2}\) completely characterize the distribution of \(S_{T}\) in the following sense: it holds for a given absolutely continuous function \(\Psi\) that
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]=\int\left\{\Psi(g_{2}(z))-\Psi^{\prime}(g_{2}( z))+\Psi^{\prime}(g_{1}(z))e^{-g_{1}(z)}\right\}\phi(z)\mathrm{d}z.\]
+
+The results are model-independent and directly useful in practice. We present basic results including the monotonicity of \(d_{2}\) in Section 2. Then we introduce the normalized Black-Scholes implied volatilities in Section 3. Pricing formulas for the European options are given in Section 4.
+
+## 2 Basic results
+
+Let a nonnegative random variable \(S_{T}\) stand for an asset price at a fixed future time \(T>0\). We assume the following condition to hold throughout this article:
+
+**Condition 2.1**: _There exists a probability measure \(\mathbb{E}\) such that_
+
+\[P(K)=\mathbb{E}[(K-S_{T})_{+}],\ \ F=\mathbb{E}[S_{T}],\ \ \mathbb{E}[S_{T}=F]<1\]
+
+_for all \(K>0\), where \(P(K)\) is the undiscounted price of the put option with strike \(K\) and maturity \(T\) written on the asset and \(F\) is the \(T\)-expiry forward price of the same asset._
+
+**Definition 2.1**: _The (undiscounted) Black-Scholes put price is a function of \(k\in\mathbb{R}\) and \(\sigma\in(0,\infty)\) defined as_
+
+\[P_{\mathrm{BS}}(k,\sigma)=Fe^{k}\Phi(-d_{2}(k,\sigma))-F\Phi(-d_{1}(k,\sigma)),\]
+
+_where_
+
+\[d_{2}(k,\sigma)=\frac{-k-\sigma^{2}/2}{\sigma},\ \ d_{1}(k,\sigma)=d_{2}(k, \sigma)+\sigma.\]
+
+**Definition 2.2**: _The Black-Scholes implied volatility is a function of \(k\in\mathbb{R}\) defined as_
+
+\[\sigma(k)=P_{\mathrm{BS}}(k,\cdot)^{-1}(P(Fe^{k})),\]
+
+_or equivalently,_
+
+\[P_{\mathrm{BS}}(k,\sigma(k))=P(Fe^{k}).\]Recall that \(P_{\rm BS}\) is an increasing function of \(\sigma\) for fixed \(k\in\mathbb{R}\). Note also that \((K-F)_{+}\leq P(K)<K\) by Jensen's inequality and
+
+\[\lim_{\sigma\to 0}P_{\rm BS}(k,\sigma)=F(e^{k}-1)_{+},\ \ \lim_{\sigma\to\infty}P_{\rm BS}(k, \sigma)=Fe^{k},\]
+
+so that the Black-Scholes implied volatility is well-defined.
+
+**Definition 2.3**: _The first and second normalizing transformations (of log-moneyness) are functions \(f_{1}\) and \(f_{2}\) on \(\mathbb{R}\) defined as \(f_{1}(k)=-d_{1}(k,\sigma(k))\) and \(f_{2}(k)=-d_{2}(k,\sigma(k))\) respectively for \(k\in\mathbb{R}\); more specifically,_
+
+\[f_{1}(k)=\frac{k}{\sigma(k)}-\frac{\sigma(k)}{2},\ \ f_{2}(k)=\frac{k}{\sigma(k) }+\frac{\sigma(k)}{2}.\]
+
+Notice that \(\sigma(0)>0\) by the condition \(\mathbb{E}[S_{T}=F]<1\). Therefore we can define as \(f(k)=\pm\infty\) according to the sign of \(k\) if \(\sigma(k)=0\). Denote by \(D_{\rm BS}(K)\) and \(D_{\pm}(K)\) the functions of \(K=Fe^{k}\) defined as
+
+\[D_{\rm BS}(K)=\frac{1}{K}\frac{\partial P_{\rm BS}}{\partial k}(k,\sigma)|_{ \sigma=\sigma(k)}=\Phi(f_{2}(k))\]
+
+and
+
+\[D_{+}(K)=\mathbb{E}[K\geq S_{T}],\ \ D_{-}(K)=\mathbb{E}[K>S_{T}].\]
+
+respectively. We will assume sometimes, but not always, conditions below:
+
+**Condition 2.2**: _It holds that \(\mathbb{E}[S_{T}=0]<1/2\)._
+
+**Condition 2.3**: _It holds that \(\mathbb{E}[S_{T}=0]=0\)._
+
+**Condition 2.4**: _There exists \(p>0\) such that \(\mathbb{E}[S_{T}^{-p}]<\infty\)._
+
+**Condition 2.5**: _There exists \(p>0\) such that \(\mathbb{E}[S_{T}^{1+p}]<\infty\)._
+
+**Condition 2.6**: _The law of \(S_{T}\) under \(\mathbb{E}\) has a density._
+
+Denote by \(\partial_{+}^{x}\), \(\partial_{-}^{x}\) the right and left derivative operators with respect \(x\). We omit \(x\) when the operand has only one variable. Then, it holds that
+
+\[D_{\pm}(K) =\partial_{\pm}P(K)\] \[=D_{\rm BS}(K)+\frac{1}{K}\partial_{\pm}^{\sigma}P_{\rm BS}( \log(K/F),\sigma(\log(K/F)))\partial_{\pm}\sigma(\log(K/F)) \tag{3}\] \[=D_{\rm BS}(K)+\phi(-d_{2}(\log(K/F),\sigma(\log(K/F))))\partial_ {\pm}\sigma(\log(K/F)).\]
+
+**Lemma 2.1**: _It holds for all \(k\in\mathbb{R}\) that_
+
+\[f_{2}(k)\partial_{\pm}\sigma(k)<1.\]_Proof:_ The inequality is trivial when \(f_{2}(k)=0\). If \(f_{2}(k)>0\), it follows from (3) that
+
+\[f_{2}(k)\partial_{\pm}\sigma(k)=f_{2}(k)\frac{D_{\pm}(Fe^{k})-D_{\rm BS}(Fe^{k}) }{\phi(f_{2}(k))}\leq f_{2}(k)\frac{1-\Phi(f_{2}(k))}{\phi(f_{2}(k))}<1.\]
+
+Here we used the fact that \(0\leq D_{\pm}(K)\leq 1\) by definition and a well-known estimate
+
+\[1-\Phi(x)<x^{-1}\phi(x),\ \ x>0. \tag{4}\]
+
+For the case \(f_{2}(k)<0\), we have
+
+\[f_{2}(k)\partial_{\pm}\sigma(k)=f_{2}(k)\frac{D_{\pm}(Fe^{k})-D_ {\rm BS}(Fe^{k})}{\phi(f_{2}(k))}\] \[\leq -f_{2}(k)\frac{\Phi(f_{2}(k))}{\phi(f_{2}(k))}=-f_{2}(k)\frac{1- \Phi(-f_{2}(k))}{\phi(-f_{2}(k))}<1.\]
+
+ ////
+
+**Proposition 2.1**: _The first normalizing transformation \(f_{1}\) is an increasing function._
+
+_Proof:_ This follows from Lemma 2.1 because
+
+\[\partial_{\pm}f_{1}(k)=\frac{1}{\sigma(k)}\left\{1-\partial_{\pm}\sigma(k)f_{ 2}(k)\right\}\]
+
+by a simple calculation. ////
+
+**Lemma 2.2**: _It holds for all \(k\) with \(f_{1}(k)\leq 0\) that_
+
+\[f_{1}(k)\partial_{\pm}\sigma(k)<1.\]
+
+_Proof:_ By definition, it holds that for all \(K>0\),
+
+\[KD_{\pm}(K)\geq P(K).\]
+
+Combining this and (3), we have
+
+\[F\Phi(-d_{1}(k,\sigma(k)))+K\phi(-d_{2}(k,\sigma(k)))\partial_{\pm}\sigma(k)\geq 0\]
+
+with \(k=\log(K/F)\). Since \(K\phi(-d_{2})=F\phi(-d_{1})\), we obtain from (4),
+
+\[\partial_{\pm}\sigma(k)\geq-\frac{1-\Phi(d_{1}(k,\sigma(k)))}{\phi(d_{1}(k, \sigma(k)))}>-\frac{1}{d_{1}(k,\sigma(k))}.\]
+
+ ////
+
+**Proposition 2.2**: _The second normalizing transformation \(f_{2}\) is an increasing function.__Proof:_ By definition,
+
+\[\partial_{\pm}f_{2}(k)=\frac{1}{\sigma(k)}\left\{1-\partial_{\pm}\sigma(k)\frac{k }{\sigma(k)}\right\}+\frac{1}{2}\partial_{\pm}\sigma(k)=\frac{1}{\sigma(k)} \left\{1-\partial_{\pm}\sigma(k)f_{2}(k)\right\}+\partial_{\pm}\sigma(k). \tag{5}\]
+
+Hence, by Lemma 2.1, we have
+
+\[\partial_{\pm}f_{2}(k)>\partial_{\pm}\sigma(k).\]
+
+It suffices then to treat the case \(\partial_{\pm}\sigma(k)<0\). By rewriting (5), we have
+
+\[\partial_{\pm}f_{2}(k)=\frac{1}{\sigma(k)}\left\{1+\partial_{\pm}\sigma(k)d_{ 1}(k,\sigma(k))\right\}. \tag{6}\]
+
+If \(d_{1}(k,\sigma(k))<0\), we have \(\partial_{\pm}f_{2}(k)>0\) under \(\partial_{\pm}\sigma(k)<0\). If \(d_{1}(k,\sigma(k))\geq 0\), we can use Lemma 2.2 to obtain the same inequality. ////
+
+**Lemma 2.3**: _It holds for all \(k\in\mathbb{R}\) that_
+
+\[f_{1}(k)\partial_{\pm}\sigma(k)<1.\]
+
+_Proof:_ This follows from (6) and Proposition 2.2. ////
+
+**Lemma 2.4**: _It holds that \(f_{1}(k)\leq-\sqrt{2|k|}\) for all \(k\leq 0\)._
+
+_Proof:_ This is because the arithmetic mean exceeds the geometric mean. ////
+
+**Proposition 2.3**: _The mapping \(k\to\sqrt{2|k|}-\sigma(k)\) is decreasing on \((-\infty,0]\); it holds for all \(k<0\) that_
+
+\[\partial_{\pm}\sigma(k)>-\frac{1}{\sqrt{2|k|}}.\]
+
+_Proof:_ This follows from Lemmas 2.2 and 2.4. ////
+
+**Proposition 2.4**: _It holds that_
+
+\[\mathbb{E}[S_{T}=0]=\Phi(\lim_{k\to-\infty}f_{2}(k)).\]
+
+_In particular, Condition 2.2 holds if and only if there exists \(k^{*}<0\) such that \(f_{2}(k^{*})<0\). This condition is also equivalent to that there exists \(k^{*}<0\) such that_
+
+\[\sigma(k)<\sigma(k^{*})+\sqrt{2|k|}-\sqrt{2|k^{*}|}<\sqrt{2|k|}\]
+
+_for all \(k<k^{*}\)._
+
+_Proof:_ By definition,
+
+\[\mathbb{E}[(1-S_{T}/K)_{+}]=\Phi(f_{2}(k))-F\Phi(f_{1}(k))/K\]and the left hand side converges to \(\mathbb{E}[S_{T}=0]\) as \(K\to 0\). The first identity follows from
+
+\[F\Phi(f_{1}(k))/K=e^{k}\phi(-f_{1}(k))\frac{1-\Phi(-f_{1}(k))}{\phi(-f_{1}(k))}< \frac{1}{2\sqrt{n|k|}}\to 0\mbox{ as }k\to-\infty\]
+
+Here we used (4) and Lemma 2.4. To show the other equivalence, notice that
+
+\[\Phi(f_{2}(k))<1/2\Leftrightarrow f_{2}(k)<0\Leftrightarrow\sigma(k)<\sqrt{2 |k|}\]
+
+for \(k<0\) and use Proposition 2.3. ////
+
+**Proposition 2.5**: _Condition 2.3 holds if and only if \(\lim_{k\to-\infty}f_{2}(k)=-\infty\). If one of these equivalent conditions holds, then_
+
+\[\sqrt{2|k|}-\sigma(k)\to\infty\mbox{ as }k\to-\infty.\]
+
+_Proof:_ The first assertion follows immediately from Proposition 2.4. Suppose that the decreasing function \(a(k):=\sqrt{2|k|}-\sigma(k)\) is bounded above. Then
+
+\[2f_{2}(k)=\sqrt{2|k|}\left\{1-\frac{a(k)}{\sqrt{2|k|}}-\left(1-\frac{a(k)}{ \sqrt{2|k|}}\right)^{-1}\right\}=\sqrt{2|k|}\left\{-\frac{2a(k)}{\sqrt{2|k|}} +O(\frac{1}{2|k|})\right\}\]
+
+as \(k\to-\infty\), which implies \(f_{2}\) is bounded below. ////
+
+**Remark 2.1**: Proposition 2.4 is a slight refinement of Lemma 3.3 of Lee [5], where he showed Condition 2.2 holds if and only if there exists \(k^{*}<0\) such that \(\sigma(k)<\sqrt{2|k|}\) for all \(k<k^{*}\).__
+
+**Remark 2.2**: Putting \(V(k)=\sigma(k)^{2}\), Theorem 5.1 of Rogers and Tehranchi [7] gives a lower bound
+
+\[\partial_{-}V(k)>-4\]
+
+for \(k\leq 0\). By Proposition 2.3, it holds for all \(k,k_{0}\) with \(k\leq k_{0}\leq 0\) that
+
+\[\partial_{\pm}V(k)>-2\frac{\sigma(k)}{\sqrt{2|k|}}>-2\left\{1-\frac{\sqrt{2|k _{0}|}-\sigma(k_{0})}{\sqrt{2|k|}}\right\}. \tag{7}\]
+
+If \(k_{0}<k^{*}<0\), then \(\sigma(k_{0})<\sqrt{2|k_{0}|}\), so that (7) gives a sharper bound for \(k<k^{*}\) under Condition 2.2.
+
+**Lemma 2.5**: _It holds that \(f_{2}(k)\geq\sqrt{2k}\) for all \(k\geq 0\)._
+
+_Proof:_ This is because the arithmetic mean exceeds the geometric mean. ////
+
+**Proposition 2.6**: _The mapping \(\sqrt{2k}-\sigma(k)\) is increasing on \([0,\infty)\); it holds for all \(k>0\) that,_
+
+\[\partial_{\pm}\sigma(k)<\frac{1}{\sqrt{2k}}.\]_Proof:_ This follows from Lemmas 2.1 and 2.5. ///
+
+**Proposition 2.7**: _It holds that_
+
+\[f_{1}(k)\to\infty,\ \ \ \sqrt{2k}-\sigma(k)\to\infty\ as\ k\to\infty\]
+
+_and there exists \(k^{*}>0\) such that_
+
+\[\sigma(k)<\sigma(k^{*})+\sqrt{2k}-\sqrt{2k^{*}}<\sqrt{2k}\]
+
+_for all \(k>k^{*}\)._
+
+_Proof:_ The first claim on the divergences was given in Theorem 5.5 of Rogers and Tehranchi [7] but here we give its proof for the readers' convenience. By definition, or "Call-Put Parity",
+
+\[\mathbb{E}[(S_{T}-K)_{+}]=\mathbb{E}[(K-S_{T})_{+}]+F-K=F\Phi(-f_{1}(k))-K\Phi( -f_{2}(k)).\]
+
+The left hand side goes to \(0\) as \(K\to\infty\) and
+
+\[K\Phi(-f_{2}(k))=Fe^{k}\phi(f_{2}(k))\frac{1-\Phi(f_{2}(k))}{\phi(f_{2}(k))}< \frac{F}{2\sqrt{\pi k}}\to 0\ \text{as}\ k\to\infty.\]
+
+Here we used (4) and Lemma 2.5. Hence we have the first divergence. The second divergence follows from the first. In fact if the increasing function \(a(k):=\sqrt{2k}-\sigma(k)\) is bounded above, then
+
+\[2f_{1}(k)=\sqrt{2k}\left\{\left(1-\frac{a(k)}{\sqrt{2k}}\right)^{-1}-\left(1 -\frac{a(k)}{\sqrt{2k}}\right)\right\}=\sqrt{2k}\left(\frac{2a(k)}{\sqrt{2k}} +O(\frac{1}{2k})\right)\]
+
+as \(k\to\infty\), which contradicts the divergence of \(f_{1}\). To see the last inequality, notice that
+
+\[f_{1}(k)>0\Leftrightarrow\sigma(k)<\sqrt{2k}\]
+
+for \(k>0\) and use Proposition 2.6. ///
+
+**Remark 2.3**: Proposition 2.7 gives a slight refinement of Lemma 3.1 of Lee [5], where he showed that there exists \(k^{*}>0\) such that \(\sigma(k)<\sqrt{2k}\) for all \(k>k^{*}\). Putting \(V(k)=\sigma(k)^{2}\), Theorem 5.1 of Rogers and Tehranchi [7] gives a upper bound
+
+\[\partial_{+}V(k)<4\]
+
+for \(k\geq 0\). Theorem 5.5 of the same paper gives that there exists \(k^{*}>0\) such that
+
+\[\partial_{+}V(k)<2\]
+
+for all \(k\geq k^{*}\). From Proposition 2.6, it follows for all \(k,k_{0}\) with \(k>k_{0}>k^{*}>0\) that
+
+\[\partial_{\pm}V(k)<2\frac{\sigma(k)}{\sqrt{2k}}<2\left\{1-\frac{\sqrt{2k_{0}} -\sigma(k_{0})}{\sqrt{2k}}\right\}<2.\]
+
+Proposition 2.6 therefore gives more precise estimate.
+
+**Lemma 2.6**: _Under Condition 2.4, there exists \(q\in(0,2)\) such that it holds for all \(k<-1/(2-q)\) that_
+
+\[\sigma(k)<\sqrt{q|k|},\ \ f_{1}(k)<-\left\{\frac{1}{\sqrt{q}}+\frac{\sqrt{q}}{2} \right\}\sqrt{|k|},\ \ f_{2}(k)<-(\sqrt{2}-\sqrt{q})\sqrt{|k|} \tag{8}\]
+
+_and_
+
+\[\partial_{\pm}\sigma(k)>-\left\{\frac{1}{\sqrt{q}}+\frac{\sqrt{q}}{2}\right\} ^{-1}\frac{1}{\sqrt{|k|}}.\]
+
+_Proof:_ The first bound on \(\sigma\) was given by Lee [5]. The bounds on \(f_{1}\) and \(f_{2}\) follow from the first by noting that
+
+\[f_{1}(k) =-\left\{\frac{|k|}{\sigma(k)}+\frac{a\sigma(k)}{2}\right\}+ \frac{(a-1)\sigma(k)}{2}<-\sqrt{2a|k|}+\frac{(a-1)\sqrt{q|k|}}{2},\] \[f_{2}(k) =f_{1}(k)+\sigma(k)<-\sqrt{2|k|}+\sqrt{q|k|}\]
+
+with \(a=2/q\). Here we used the fact that the arithmetic mean exceeds the geometric mean. The last bound then follows from Lemma 2.2. ////
+
+**Lemma 2.7**: _Under Condition 2.5, there exists \(q\in(0,2)\) such that it holds for all \(k>1/(2-q)\) that_
+
+\[\sigma(k)<\sqrt{qk},\ \ f_{1}(k)>(\sqrt{2}-\sqrt{q})\sqrt{k},\ \ f_{2}(k)> \left\{\frac{1}{\sqrt{q}}+\frac{\sqrt{q}}{2}\right\}\sqrt{k} \tag{9}\]
+
+_and_
+
+\[\partial_{\pm}\sigma(k)<\left\{\frac{1}{\sqrt{q}}+\frac{\sqrt{q}}{2}\right\} ^{-1}\frac{1}{\sqrt{k}}.\]
+
+_Proof:_ The proof is similar to the previous one. ////
+
+**Remark 2.4**: The bounds we obtained so far are based on (4). A sharper bound is however known. Formula 7.1.13 from Abramowitz and Stegun [1] implies that
+
+\[\frac{1-\Phi(x)}{\phi(x)}\leq\frac{2}{x+\sqrt{x^{2}+8/\pi}}\]
+
+for \(x\geq 0\). Lemma 2.1 is then improved as
+
+\[f_{2}(k)\partial_{\pm}\sigma(k)\leq\frac{2|f_{2}(k)|}{|f_{2}(k)|+\sqrt{|f_{2}( k)|^{2}+8/\pi}}.\]
+
+Lemma 2.2 also has an improvement. In particular in light of Lemmas 2.4 and 2.5, we have for all \(k\in\mathbb{R}\) that
+
+\[\mathrm{sgn}(k)\partial_{\pm}\sigma(k)\leq\frac{2}{\sqrt{2|k|}+\sqrt{2|k|+8/ \pi}}<\sqrt{\frac{\pi}{2}}\wedge\frac{1}{\sqrt{2|k|}}.\]Normalized Black-Scholes implied volatilities
+
+Here we introduce the normalized Black-Scholes implied volatilities and give model-free bounds on them. They play an important role in the next section.
+
+**Definition 3.1**: _The first and second normalized Black-Scholes implied volatilities are functions on \(\mathbb{R}\) defined as \(\sigma_{1}(z)=\sigma(g_{1}(z))\) and \(\sigma_{2}(z)=\sigma(g_{2}(z))\) respectively for \(z\in\mathbb{R}\), where \(g_{1}\), \(g_{2}\) are the inverse functions of the increasing functions \(f_{1}\), \(f_{2}\) respectively._
+
+**Proposition 3.1**: _The mappings \(z\mapsto z+\sigma_{1}(z)\), \(z\mapsto z-\sigma_{2}(z)\) are increasing; it holds for all \(z\in\mathbb{R}\) that_
+
+\[\partial_{\pm}\sigma_{1}(z)>-1,\ \ \partial_{\pm}\sigma_{2}(z)<1.\]
+
+_Proof:_ The second inequality follows from (5) and Lemma 2.1. The first one follows from
+
+\[\partial_{\pm}f_{1}(k)=\frac{1}{\sigma(k)}\left\{1-\partial_{\pm}\sigma(k)f_{ 1}(k)\right\}-\partial_{\pm}\sigma(k)\]
+
+and Lemma 2.3. ////
+
+**Proposition 3.2**: _Put_
+
+\[\alpha_{1}^{\pm}(z;z_{0})=-z\pm\sqrt{\sigma_{1}(z_{0})^{2}+2z_{0}\sigma_{1}(z_ {0})+z^{2}}.\]
+
+_Then, it holds for \(z>z_{0}\geq 0\) that_
+
+\[\sigma_{1}(z)>\alpha_{1}^{+}(z,z_{0})>\sigma_{1}(z_{0})+z_{0}-z.\]
+
+_It also holds for \(z\in[0,z_{0})\) that_
+
+\[\sigma_{1}(z)<\alpha_{1}^{+}(z,z_{0})<\sigma_{1}(z_{0})+z_{0}-z.\]
+
+_Moreover, it holds for \(z<z_{0}\leq 0\) that_
+
+\[\sigma_{1}(z)>\alpha_{1}^{-}(z,z_{0}).\]
+
+_Under Condition 2.2, there exists \(z_{1}^{*}<0\) such that \(\sigma_{1}(z_{1}^{*})=-z_{1}^{*},\ \ z_{1}^{*}=f_{1}(g_{2}(0))\) and \(\alpha_{1}^{-}(z,z_{0})>0\) for all \(z\leq z_{0}\leq z_{1}^{*}\)._
+
+_Proof:_ The bounds follow from the fact that the mapping
+
+\[k\mapsto f_{2}(k)^{2}-f_{1}(k)^{2}=2k\]
+
+is an increasing function. For the existence of \(z_{1}^{*}\), notice that \(\sigma_{1}(z_{1}^{*})=-z_{1}^{*}\) is equivalent to
+
+\[\sigma(k_{1}^{*})=\sqrt{2|k_{1}^{*}|},\ \ f_{1}(k_{1}^{*})=z_{1}^{*}.\]
+
+See Proposition 2.4 for the existence of such \(k_{1}^{*}<0\). ////
+
+**Remark 3.1**: Because the inverse function of \(f_{1}\),
+
+\[g_{1}(z)=z\sigma_{1}(z)+\frac{1}{2}\sigma_{1}(z)^{2}\]
+
+is an increasing function, we obtain by considering the first derivative of \(g_{1}\) that
+
+\[\partial_{\pm}\sigma_{1}(z)>-\frac{\sigma_{1}(z)}{\sigma_{1}(z)+z}\]
+
+for \(z\geq z_{1}^{*}\) and
+
+\[\partial_{\pm}\sigma_{1}(z)<-\frac{\sigma_{1}(z)}{\sigma_{1}(z)+z}\]
+
+for \(z<z_{1}^{*}\). Since \(\alpha_{1}^{\pm}(\cdot,z_{0})\) satisfy the ordinary differential equation
+
+\[\psi^{\prime}(z)=-\frac{\psi(z)}{\psi(z)+z},\ \ \psi(z)=\sigma_{1}(z_{0})\]
+
+for \(\psi\), this bounds on \(\partial_{\pm}\sigma_{1}\) result in the same bounds for \(\sigma_{1}\) as in Proposition 3.2.
+
+**Proposition 3.3**: _Put_
+
+\[\alpha_{2}^{\pm}(z;z_{0})=z\pm\sqrt{\sigma_{2}(z_{0})^{2}-2z_{0}\sigma_{2}(z_ {0})+z^{2}}.\]
+
+_Then, it holds for \(z<z_{0}\leq 0\) that_
+
+\[\sigma_{2}(z)>\alpha_{2}^{+}(z,z_{0})>\sigma_{2}(z_{0})-z_{0}+z.\]
+
+_It also holds for \(z\in(z_{0},0]\) that_
+
+\[\sigma_{2}(z)<\alpha_{2}^{+}(z,z_{0})<\sigma_{2}(z_{0})-z_{0}+z.\]
+
+_Moreover, it holds for \(z>z_{0}\geq 0\) that_
+
+\[\sigma_{2}(z)>\alpha_{2}^{-}(z,z_{0}).\]
+
+_There exists \(z_{2}^{*}>0\) such that \(\sigma_{2}(z_{2}^{*})=z_{2}^{*},\ \ z_{2}^{*}=f_{2}(g_{1}(0))\) and \(\alpha_{2}^{-}(z,z_{0})>0\) for all \(z\geq z_{0}\geq z_{2}^{*}\)._
+
+_Proof:_ This also follows from the fact that the mapping
+
+\[k\mapsto f_{2}(k)^{2}-f_{1}(k)^{2}=2k\]
+
+is an increasing function. For the existence of \(z_{2}^{*}\), notice that \(\sigma_{2}(z_{2}^{*})=z_{2}^{*}\) is equivalent to
+
+\[\sigma(k_{2}^{*})=\sqrt{2k_{2}^{*}},\ \ f_{2}(k_{2}^{*})=z_{2}^{*}.\]
+
+See Proposition 2.7 for the existence of such \(k_{2}^{*}>0\). ///
+
+**Remark 3.2**: Because the inverse function of \(f_{2}\),
+
+\[g_{2}(z)=z\sigma_{2}(z)-\frac{1}{2}\sigma_{2}(z)^{2}\]
+
+is an increasing function, we obtain by considering the first derivative of \(g_{2}\) that
+
+\[\partial_{\pm}\sigma_{2}(z)>\frac{\sigma_{2}(z)}{\sigma_{2}(z)-z}\]
+
+for \(z\geq z_{2}^{*}\) and
+
+\[\partial_{\pm}\sigma_{2}(z)<\frac{\sigma_{2}(z)}{\sigma_{2}(z)-z}\]
+
+for \(z<z_{2}^{*}\). Since \(\alpha_{2}^{\pm}(\cdot,z_{0})\) satisfy the ordinary differential equation
+
+\[\psi^{\prime}(z)=\frac{\psi(z)}{\psi(z)-z},\ \ \psi(z)=\sigma_{2}(z_{0})\]
+
+for \(\psi\), this bounds on \(\partial_{\pm}\sigma_{2}\) result in the same bounds for \(\sigma_{2}\) as in Proposition 3.3.
+
+**Remark 3.3**: Here we give bounds on \(g_{1}\) and \(g_{2}\) under additional conditions. By (8), Condition 2.4 implies that there exists \(q\in(0,2)\) such that it holds for all \(z<-1/(2-q)\) that
+
+\[g_{1}(z)>-\left\{\frac{1}{\sqrt{q}}+\frac{\sqrt{q}}{2}\right\}^{-1}z^{2},\ \ g_{2}(z)>-(\sqrt{2}-\sqrt{q})^{-1}z^{2}. \tag{10}\]
+
+By (9), Condition 2.5 implies that there exists \(q\in(0,2)\) such that it holds for all \(z>1/(2-q)\) that
+
+\[g_{1}(z)<(\sqrt{2}-\sqrt{q})^{-1}z^{2},\ \ g_{2}(z)<\left\{\frac{1}{\sqrt{q}}+ \frac{\sqrt{q}}{2}\right\}^{-1}z^{2}. \tag{11}\]
+
+## 4 Pricing formulas for the European options
+
+Here we present pricing formulas for the European options which extend (1).
+
+**Lemma 4.1**: _Let \(\Psi\) be a function of polynomial growth. It holds that_
+
+\[\lim_{k\to\infty}|\Psi(k)|\sigma(k)\phi(f_{2}(k))=0,\ \lim_{k\to\infty}|\Psi(k)| \,|\partial_{\pm}\sigma(k)|\,\phi(f_{2}(k))=0,\] \[\lim_{k\to-\infty}|\Psi(k)|\sigma(k)\phi(f_{1}(k))=0,\ \lim_{k\to-\infty}|\Psi(k)|\,| \partial_{\pm}\sigma(k)|\,\phi(f_{1}(k))=0.\]
+
+_Under Condition 2.4, it holds that_
+
+\[\lim_{k\to-\infty}|\Psi(k)|\sigma(k)\phi(f_{2}(k))=0,\ \lim_{k\to-\infty}|\Psi(k)|\,| \partial_{\pm}\sigma(k)|\,\phi(f_{2}(k))=0.\]
+
+_Under Condition 2.5, it holds that_
+
+\[\lim_{k\to\infty}|\Psi(k)|\sigma(k)\phi(f_{1}(k))=0,\ \lim_{k\to\infty}|\Psi(k)|\,| \partial_{\pm}\sigma(k)|\,\phi(f_{1}(k))=0.\]_Proof:_ Use Propositions 2.4 and 2.7, Lemmas 2.4 and 2.5, (8) and (9). ////
+
+Note that under Condition 2.6, \(\sigma\) is continuously differentiable and its derivative is absolutely continuous. We can put therefore \(D=D_{+}=D_{-}\), \(D^{\prime}=\partial_{+}D=\partial_{-}D\) and \(\sigma^{\prime}=\partial_{+}\sigma=\partial_{-}\sigma\).
+
+**Theorem 4.1**: _Let \(\Psi\) be a differentiable function such that the derivative \(\Psi^{\prime}\) is absolutely continuous and of polynomial growth. Under Conditions 2.4 and 2.6, it holds that_
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))] =\int_{-\infty}^{\infty}\left\{\Psi(g_{2}(z))-\Psi^{\prime}(g_{2} (z))\left\{g_{2}(z)+\frac{1}{2}\sigma_{2}(z)^{2}\right\}\right\}\phi(z)\mathrm{ d}z\] \[\quad+\int_{-\infty}^{\infty}\Psi^{\prime\prime}(k)\sigma(k) \phi(f_{2}(k))\mathrm{d}k.\]
+
+_Proof:_ Since the density of \(S_{T}\) is given by \(D^{\prime}\),
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]=\int_{0}^{\infty}\Psi(\log(K/F))D^{\prime}(K) \mathrm{d}K=\int_{-\infty}^{\infty}\Psi(k)D^{\prime}(F\epsilon^{k})F\epsilon ^{k}\mathrm{d}k.\]
+
+Using (3), we have
+
+\[D^{\prime}(F\epsilon^{k})=\frac{1}{F\epsilon^{k}}\phi(f_{2}(k))\left\{\frac{ \mathrm{d}f_{2}}{\mathrm{d}k}(k)\left(1-f_{2}(k)\sigma^{\prime}(k)\right)+ \frac{\mathrm{d}^{2}\sigma}{\mathrm{d}k^{2}}(k)\right\}\]
+
+Since
+
+\[\frac{\mathrm{d}}{\mathrm{d}k}\phi(f_{2}(k))=-\phi(f_{2}(k))f_{2}(k)\frac{ \mathrm{d}f_{2}}{\mathrm{d}k}(k),\]
+
+we have
+
+\[-\int_{-\infty}^{\infty}\Psi(k)\phi(f_{2}(k))f_{2}(k)\frac{ \mathrm{d}f_{2}}{\mathrm{d}k}(k)\sigma^{\prime}(k)\mathrm{d}k=\left[\Psi(k) \sigma^{\prime}(k)\phi(f_{2}(k))\right]_{-\infty}^{\infty}\] \[\qquad\qquad\qquad\qquad\qquad-\int_{-\infty}^{\infty}\left\{ \Psi^{\prime}(k)\sigma^{\prime}(k)+\Psi(k)\frac{\mathrm{d}^{2}\sigma}{\mathrm{ d}k^{2}}(k)\right\}\phi(f_{2}(k))\mathrm{d}k.\]
+
+Hence, by Lemma 4.1,
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]=\int_{-\infty}^{\infty}\phi(f_{2}(k))\left\{ \Psi(k)\frac{\mathrm{d}f_{2}}{\mathrm{d}k}(k)-\Psi^{\prime}(k)\sigma^{\prime} (k)\right\}\mathrm{d}k.\]
+
+Since
+
+\[\int_{-\infty}^{\infty}\phi(f_{2}(k))\Psi^{\prime}(k)\sigma^{ \prime}(k)\mathrm{d}k\] \[=\left[\phi(f_{2}(k))\Psi^{\prime}(k)\sigma(k)\right]_{-\infty}^ {\infty}-\int_{-\infty}^{\infty}\frac{\mathrm{d}(\phi\Psi^{\prime}\circ g_{2} )}{\mathrm{d}z}(f_{2}(k))\frac{\mathrm{d}f_{2}}{\mathrm{d}k}(k)\sigma(k) \mathrm{d}k\] \[=-\int_{-\infty}^{\infty}\left\{\Psi^{\prime\prime}(k)\sigma^{ \prime}(f_{2}(k))\phi(f_{2}(k))-\Psi^{\prime}(k)f_{2}(k)\phi(f_{2}(k))\right\} \frac{\mathrm{d}f_{2}}{\mathrm{d}k}(k)\sigma(k)\mathrm{d}k,\]we obtain
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]\] \[=\int_{-\infty}^{\infty}\left\{\Psi(g_{2}(z))-\Psi^{\prime}(g_{2}(z) )z\sigma(g_{2}(z))+\Psi^{\prime\prime}(g_{2}(z))\sigma(g_{2}(z))g_{2}^{\prime}( z)\right\}\phi(z)\mathrm{d}z\] \[=\int_{-\infty}^{\infty}\left\{\Psi(g_{2}(z))-\Psi^{\prime}(g_{2} (z))z\sigma_{2}(z)\right\}\phi(z)\mathrm{d}z+\int_{-\infty}^{\infty}\Psi^{ \prime\prime}(k)\sigma(k)\phi(f_{2}(k))\mathrm{d}k.\]
+
+By definition,
+
+\[g_{2}(z)-z\sigma_{2}(z)=k-f_{2}(k)\sigma(k)=k+d_{2}(k,\sigma(k))\sigma(k)=- \frac{\sigma(k)^{2}}{2},\]
+
+which completes the proof. ////
+
+**Theorem 4.2**: _Let \(\Psi\) be a differentiable function such that the derivative \(\Psi^{\prime}\) is absolutely continuous and of polynomial growth. Under Conditions 2.5 and 2.6, it holds that_
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))S_{T}/F] =\int_{-\infty}^{\infty}\left\{\Psi(g_{1}(z))-\Psi^{\prime}(g_{1} (z))\left\{g_{1}(z)-\frac{1}{2}\sigma_{1}(z)^{2}\right\}\right\}\phi(z) \mathrm{d}z\] \[\quad+\int_{-\infty}^{\infty}\Psi^{\prime\prime}(k)\sigma(k)\phi( f_{1}(k))\mathrm{d}k.\]
+
+_Proof:_ Repeat the same argument as in the proof of Theorem 4.1 by replacing \(\Psi\) with \(k\mapsto e^{k}\Psi(k)\). Here we use \(e^{k}\phi(f_{2}(k))=\phi(f_{1}(k))\) and
+
+\[\frac{\mathrm{d}f_{2}}{\mathrm{d}k}(k)=\frac{\mathrm{d}f_{1}}{\mathrm{d}k}(k) +\sigma^{\prime}(k)\]
+
+to obtain
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))S_{T}/F]=\int_{-\infty}^{\infty}\phi(f_{1}(k)) \left\{\Psi(k)\frac{\mathrm{d}f_{1}}{\mathrm{d}k}(k)-\Psi^{\prime}(k)\sigma^{ \prime}(k)\right\}\mathrm{d}k.\]
+
+**Remark 4.1**: Letting \(\Psi(k)=k\) in Theorems 4.1 and 4.2, we obtain (1) and (2) respectively. These values coincide with the fair strikes of the variance swap and the gamma swap respectively in continuous semimartingale setting. To see this, let \(S\) be a continuous semimartingale and \(S^{0}\) be a deterministic process of locally bounded variation, which stand for a risky asset price process and a risk-free asset price process respectively. Put \(\tilde{S}_{t}=S_{t}/S_{0}\), \(\tilde{S}_{t}^{0}=S_{t}^{0}/S_{0}^{0}\) and \(S_{t}^{*}=\tilde{S}_{t}/\tilde{S}_{t}^{0}\). We may suppose that \(S^{*}\) is a local martingale under the risk neutral measure \(\mathbb{E}\). Then, \(S_{T}/F=S_{T}/\mathbb{E}[S_{T}]=S_{T}^{*}\). By Ito's formula, we have
+
+\[-2\mathbb{E}[\log(S_{T}^{*})]=\mathbb{E}\left[\int_{0}^{T}\frac{\mathrm{d} \langle S^{*}\rangle_{t}}{|S_{t}^{*}|^{2}}\right]=\mathbb{E}\left[\int_{0}^{T }\frac{\mathrm{d}\langle S\rangle_{t}}{|S_{t}|^{2}}\right]=\mathbb{E}[\langle \log(S)\rangle_{T}]\]
+
+and
+
+\[2\mathbb{E}[\log(S_{T}^{*})S_{T}^{*}]=\mathbb{E}\left[\int_{0}^{T}\frac{ \mathrm{d}\langle S^{*}\rangle_{t}}{S_{t}^{*}}\right]=\mathbb{E}\left[\int_{0} ^{T}S_{t}^{*}\mathrm{d}\langle\log(S)\rangle_{t}\right].\]
+
+**Theorem 4.3**: _Let \(\Psi\) be an absolutely continuous function with derivative \(\Psi^{\prime}\) of polynomial growth. Under Conditions 2.4 and 2.6, it holds that_
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]=\int_{-\infty}^{\infty}\left\{\Psi(g_{2}(z))- \Psi^{\prime}(g_{2}(z))+\Psi^{\prime}(g_{1}(z))e^{-g_{1}(z)}\right\}\phi(z) \mathrm{d}z.\]
+
+_Proof:_ We have
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))]=\int_{-\infty}^{\infty}\phi(f_{2}(k))\left\{ \Psi(k)\frac{\mathrm{d}f_{2}}{\mathrm{d}k}(k)-\Psi^{\prime}(k)\sigma^{\prime} (k)\right\}\mathrm{d}k\]
+
+by the same argument as in Theorem 4.1. Now, notice that
+
+\[\int\Psi^{\prime}(g_{1}(z))e^{-g_{1}(z)}\phi(z)\mathrm{d}z =\int\Psi^{\prime}(k)e^{-k}\phi(f_{1}(k))\frac{\mathrm{d}f_{1}}{ \mathrm{d}k}(k)\mathrm{d}k\] \[=\int\Psi^{\prime}(k)\phi(f_{2}(k))\left\{\frac{\mathrm{d}f_{2}} {\mathrm{d}k}(k)-\sigma^{\prime}(k)\right\}\mathrm{d}k\] \[=\int\Psi^{\prime}(g_{2}(z))\phi(z)\mathrm{d}z-\int\phi(f_{2}(k) )\Psi^{\prime}(k)\sigma^{\prime}(k)\mathrm{d}k.\]
+
+**Theorem 4.4**: _Let \(\Psi\) be an absolutely continuous function with derivative \(\Psi^{\prime}\) of polynomial growth. Under Conditions 2.5 and 2.6, it holds that_
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))S_{T}/F]=\int_{-\infty}^{\infty}\left\{\Psi(g_{1 }(z))+\Psi^{\prime}(g_{1}(z))-\Psi^{\prime}(g_{2}(z))e^{\delta z(z)}\right\} \phi(z)\mathrm{d}z.\]
+
+_Proof:_ We have
+
+\[\mathbb{E}[\Psi(\log(S_{T}/F))S_{T}/F]=\int_{-\infty}^{\infty}\phi(f_{1}(k)) \left\{\Psi(k)\frac{\mathrm{d}f_{1}}{\mathrm{d}k}(k)-\Psi^{\prime}(k)\sigma^{ \prime}(k)\right\}\mathrm{d}k\]
+
+by the same argument as in Theorem 4.2. Now, notice that
+
+\[\int\Psi^{\prime}(g_{2}(z))e^{\delta(z)}\phi(z)\mathrm{d}z =\int\Psi^{\prime}(k)e^{k}\phi(f_{2}(k))\frac{\mathrm{d}f_{2}}{ \mathrm{d}k}(k)\mathrm{d}k\] \[=\int\Psi^{\prime}(k)\phi(f_{1}(k))\left\{\frac{\mathrm{d}f_{1}} {\mathrm{d}k}(k)+\sigma^{\prime}(k)\right\}\mathrm{d}k\] \[=\int\Psi^{\prime}(g_{1}(z))\phi(z)\mathrm{d}z+\int\phi(f_{1}(k) )\Psi^{\prime}(k)\sigma^{\prime}(k)\mathrm{d}k.\]
+
+**Remark 4.2**: The assumption that \(\Psi^{\prime}\) is of polynomial growth in the preceding theorems can be relaxed by assuming instead the existence of higher moments of \(S_{T}\) and \(S_{T}^{-1}\) in the light of Theorems 3.2 and 3.4 of Lee [5].
+
+**Remark 4.3**: The formulas in the preceding theorems enable us to derive directly the fair price of an European option from the implied volatility surface. The point is that no derivative of \(\sigma\) is appeared in the formulas. This is important in practice because the implied volatility \(\sigma(k)\) is discretely observed. The terms including the second derivative of \(\Psi\) in Theorems 4.1 and 4.2 are approximated by natural Riemann sums. For the integrals with respect to \(\phi(z)\mathrm{d}z\), we remark that it is not necessary to estimate the inverse functions \(g_{1}\), \(g_{2}\). For example, in order to use the formula in Theorem 4.1, it suffices to interpolate \((x_{j},y_{j})\) by a \(C^{1}\) and piecewise \(C^{2}\) function \(h\) so that \(y_{j}=h(x_{j})\), where \(x_{j}=f_{2}(k_{j})\), \(y_{j}=\Psi(k_{j})-\Psi^{\prime}(k_{j})(k_{j}+\sigma(k_{j})^{2}/2)\). In addition, if we take a piecewise polynomial function as \(h\), then no numerical integration is needed due to a well-known property of the Hermite polynomial system. The model-free bounds on \(\sigma_{1},\sigma_{2},g_{1}\) and \(g_{2}\) given in the previous section should be taken into consideration in interpolating and extrapolating those functions.
+
+## References
+
+* [1] Abramowitz, M. and Stegun, I.A. (1965): _Handbook of Mathematical Functions_, Dover Publications.
+* [2] Carr, P. and Lee, R. (2009): Volatility Derivatives, _Annu. Rev. Financ. Econ._ 1:1-21.
+* [3] Chriss, N. and Morokoff, W. (1999): Market Risk for Volatility and Variance swaps, _Risk_, October 1999.
+* [4] Gatheral, J. (2006): _The volatility surface; a practitioner's guide_, Wiley.
+* [5] Lee, R. W. (2004): The moment formula for implied volatility at extreme strikes, _Math. Finance_ 14, no. 3, 469-480.
+* [6] Morokoff, W., Akesson, Y. and Zhou, Y. (1999): Risk management of volatility and variance swaps, _Firmwide Risk Quantitative Modeling Notes_, Goldman Sachs & Co.
+* [7] Rogers, L.C.G. and Tehranchi, M.R. (2010): Can the implied volatility surface move by parallel shifts? _Finance Stoch._ 14: 235-248.
