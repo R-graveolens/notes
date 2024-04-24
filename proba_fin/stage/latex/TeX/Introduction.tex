@@ -1,0 +1,25 @@
+% TeX root = ../Main.tex
+
+\section{Introduction}
+
+Although the Black-Scholes-Merton (BSM) model's deviation from reality in its assumptions is widely recognized, 
+practitioners continue to prefer the BSM formula. This is primarily due to its 
+function as a practical mapping tool, transforming option prices into a singular 
+real scalar known as implied volatility (IV), which reveal significant market 
+information.
+
+When plotting implied volatilities against strike prices at a consistent 
+maturity, a common observation is a skew or smile pattern. 
+This pattern has been demonstrated to correlate directly with the conditional 
+non-normality of the underlying return risk-neutral distribution. 
+Specifically, a smile indicates fat tails in the return distribution, 
+while a skew signifies asymmetry in the return distribution. 
+Moreover, variations in the implied volatility smile across option maturity 
+and calendar time provide insights into how the conditional return distribution 
+non-normality changes across different conditioning horizons and over different time periods.
+
+Constructing a well-defined, arbitrage-free implied volatility surface from market price data has always been an important and pressing issue.
+The concept of arbitrage-free can be approached from two perspectives. 
+One is to examine the characteristics of the implied volatility surface obtained directly from price data and the conditions it imposes on implied volatility for arbitrage-free. 
+The other perspective involves how to impose arbitrage-free conditions in some way on the price surface to obtain a smooth and arbitrage-free surface. 
+It's important to note that we're primarily considering static arbitrage here.
