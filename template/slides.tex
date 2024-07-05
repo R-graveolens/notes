@@ -1,0 +1,186 @@
+\documentclass{beamer}
+\mode<presentation>
+{
+  \usetheme{Warsaw}      
+  \usecolortheme{default}
+\usefonttheme{professionalfonts} 
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+  % \setbeamertemplate{theorems}[numbered]
+} 
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{pgfpages}
+\pgfpagesuselayout{resize to}[%
+  physical paper width=8in, physical paper height=6in]
+
+\title[Cours name]{sujet}
+\author{AI Xiaoyun \& LIU Changqing
+}
+\date{\today}
+
+\begin{document}
+
+
+%---------------------------------------------------------------------------
+
+
+
+ % Introduction 部分 介绍背景和模型设定
+\section{Variance Swap and forward variance}
+    \subsection{Variance Swap}
+        \begin{frame}{Variance Swap}
+            \begin{block}{Definition}
+            A variance swap is a financial derivative used to exchange a realised variance for a fixed variance strike. The $\text{VS}_{t,T}$ payoff is :
+            \[\frac{1}{T-t}\sum_{i=0}^{N-1}\ln^{2}\left(\frac{S_{i+1}}{S_{i}}\right)- \widehat{\sigma}_{\text{VS},T}^{2}\left(t\right).\]
+            Here $t$ is the initial time, T is the maturity, N is the number of trading days during this period.
+            For convenience,
+            \[\frac{1}{T-t}\underset{t}{\overset{T}{\sum}}\ln^{2}\Big{(}\frac{S_{i+1}}{S_{i}} \Big{)}-\widehat{\sigma}_{\text{VS},T}^{2}\left(t\right) .\]
+            \end{block}
+        \end{frame}
+    \subsection{Forward Variance}
+        \begin{frame}{Forward Variance}
+            \begin{figure}
+                \includegraphics[scale=0.45]{figure1.png}
+                %\caption{Caption}
+                \label{fig:1}
+            \end{figure}
+        \[0 = \underset{T_{1}}{\overset{T_{2}}{\sum}}\ln^{2}\Big{(}\frac{S_{i+1}}{S_{i}} \Big{)}-\left(\left(T_{2}-t\right)\widehat{\sigma}_{\text{VS},T_{2}}^{2}\left( t\right)-\left(T_{1}-t\right)\widehat{\sigma}_{\text{VS},T_{1}}^{2}\left(t \right)\right)\]
+        \end{frame}
+
+        \begin{frame}{Forward Variance}
+        \begin{block}{Discrete Forward Variance}
+            \[\widehat{\sigma}_{\text{VS},T_{1},T_{2}}^{2}\left(t\right):=\frac{\left(T_{2}-t \right)\widehat{\sigma}_{\text{VS},T_{2}}^{2}\left(t\right)-\left(T-t \right)\widehat{\sigma}_{\text{VS},T_{1}^{2}}\left(t\right)}{T_{2}-T_{1}}\]
+        \end{block}
+            \begin{block}{Instantaneous Forward Variance}
+            \begin{align*}
+                \lim_{T_{2} \rightarrow T}\widehat{\sigma}_{\text{VS},T,T_{2}}^{2}(t) & = \frac{d}{dT}\left(\left(T-t\right)\widehat{\sigma}_{\text{VS},T}^ {2}\left(t\right)\right)\\
+                &:= \xi_{t}^{T}                 
+            \end{align*}
+
+            \end{block}
+        \end{frame}
+
+        
+        \begin{frame}{Driftless Forward Variance}
+            \begin{figure}
+                \centering
+                \includegraphics[scale=0.45]{figure2.png}
+                \label{fig:2}
+            \end{figure}
+             \[P\&L = \left(T_{2}-T_{1}\right)\left(\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2} \left(t^{\prime}\right)-\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2}\left(t \right)\right) \]  
+        \end{frame}
+
+        \begin{frame}{Driftless Forward Variance}
+        \[P\&L = \left(T_{2}-T_{1}\right)\left(\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2} \left(t^{\prime}\right)-\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2}\left(t \right)\right) \]  
+            \begin{itemize}
+                \item Independent of the realized variance of $S$.
+                \item We are able to generate a P\&L that is linear in the variation of \(\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2}\) over \(\left[t,t^{\prime}\right]\) at no cost.
+                \item  No money is needed to materialize P\&L: \(\widehat{\sigma}_{\text{VS},T_{1}T_{2}}^{2}\) has vanishing pricing drift.
+                \item The \(\xi^{T}\) are driftless as well; in a diffusive setting:\[d\xi_{t}^{T}\ =\ \bullet \ dW_{t}^{T}\]
+            \end{itemize}
+        \end{frame}
+    
+\section{Relationship of variance swaps to log contracts}
+   
+    \subsection{Determine Variance Strike}
+    \begin{frame}{Determine $\widehat{\sigma}_{\text{VS},T}^{2}\left(t\right)$}
+
+    \begin{itemize}
+        \item $(T-t)\widehat{\sigma}_{\text{VS},T}^{2}\left(t\right)$ equals to the forward price of a European payoff 
+       $\sum_{i=0}^{N-1}\ln^{2}\left(\frac{S_{i+1}}{S_{i}}\right).$
+        \item Taylor expansion of $\ln (1+\frac{S_{i+1}-S_{i}}{S_{i}})$ when $\frac{S_{i+1}-S_{i}}{S_{i}}$ is small.
+         $\sum_{i=0}^{N-1}\ln^{2}\left(\frac{S_{i+1}}{S_{i}}\right) = \sum_{i=0}^{N-1}(\frac{\delta S_{i}}{S_{i}})^{2} + o(\frac{\delta S_{i}}{S_{i}})^{2}.$
+        \item Discounted at $t=0$ and rewritten as:
+        $\sum_{i=0}^{N-1}e^{-rt_{i}}e^{-r(T-t_{i})}\Big{(}\frac{\delta S_{i}}{S_{i}} \Big{)}^{2}$ at order two in $\frac{\delta S_{i}}{S_{i}}$.
+    \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Determine $\widehat{\sigma}_{\text{VS},T}^{2}\left(t\right)$}
+    The discounted value of the payoff:
+    $\sum_{i=0}^{N-1}e^{-rt_{i}}e^{-r(T-t_{i})}\Big{(}\frac{\delta S_{i}}{S_{i}} \Big{)}^{2}.$
+    \begin{block}{Gamma-Theta approximation of P\&L of a derivative on $S$}
+        \[P\&L\ =\ -{\sum_{i}}e^{-rt_{i}}\frac{S_{i}^{2}}{2}\frac{d^{2}P_{\widehat{ \sigma}}}{dS^{2}}\left(t_{i},S_{i}\right)\left((\frac{\delta S_{i}}{S_{i}})^{2}-\widehat{\sigma}^{2} \delta t\right) \] 
+    \end{block}
+    Here, $\widehat{\sigma}$ is the vol for risk-managing.
+    The gamma-theta P\&L equals to the value above only if: \\
+    1) We choose a zero implied volatility for risk-managing the derivative.\\
+    2) The dollar-gamma of this derivative $= e^{-r(T-t)}$.
+    \end{frame}
+
+    \begin{frame}{Log contract}
+        \begin{itemize}
+            \item Payoff $-2\ln S_{T}$.
+            \item Pricing function under BS model: \[Q^{T}\left(t,S\right)\ =\ -2e^{-r(T-t)}\Big{(}\ln S+\left(r-q\right)\left(T-t \right)-\frac{\widehat{\sigma}^{2}}{2}\left(T-t\right)\Big{)}. \]
+            \item Delta, Gamma are independent of $\hat{\sigma}$:
+            \[\frac{dQ^{T}_{\widehat{\sigma}=0}}{dS}\ =\ -e^{-r(T-t)}\frac{2}{S},\ \ \ \frac{1}{2}S^{2}\frac{d^{2}Q^{T}_{\widehat{\sigma}=0}}{dS^{2}}\ =\ e^{-r(T-t)}.\]
+        \end{itemize}
+    \end{frame}
+    \begin{frame}{Determine $\widehat{\sigma}_{\text{VS},T}^{2}\left(t\right)$}
+    \begin{itemize}
+        \item Log contract - a portfolio delta-hedged with zero vol to the log contract = discounted payoff of $\sum_{i=0}^{N-1}\ln^{2}\left(\frac{S_{i+1}}{S_{i}}\right).$ 
+        \item The market price of the log contract -  the Black–Scholes price with zero vol = price of the product with the payoff.
+        \item If $t=0$, $$\widehat{\sigma}^{2}_{\text{VS},T}\ =\ \frac{e^{rT}}{T}\left(Q^{T}_{\text{market}}-Q^{T }_{\widehat{\sigma}=0}\right).$$
+    \end{itemize}
+    \end{frame}
+ \subsection{Identical Forward Variance}
+    \begin{frame}{Identical Forward Variance in BS sense}
+        \begin{itemize}
+            \item When $t=0$, $$\widehat{\sigma}^{2}_{\text{VS},T}\ =\ \frac{e^{rT}}{T}\left(Q^{T}_{\text{market}}-Q^{T }_{\widehat{\sigma}=0}\right).$$
+        \item Replace $Q^{T}_{\text{market}}$ by BS pricing function with implied volatility of log contract $\hat{\sigma}_{l,T}$, we can reduce:
+        $\hat{\sigma}^{2}_{\text{VS},T} = \hat{\sigma}^{2}_{l,T}$.
+        \item Which means:
+        \[\widehat{\sigma}_{\text{VS},T} \ =\ \widehat{\sigma}_{T} \] \[\xi^{T}_{t} =\zeta^{T}_{t} \]
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Model Free Identical Forward Variance}
+        \begin{itemize}
+            \item The log contract is replicated with a vanilla portfolio using a density proportional equal to \(\frac{2}{K^{2}}\):
+            \begin{align*}
+                -2 \ln S = & -2\ln F - \frac{2}{F}(S-F) + \int_{0}^{F} \frac{2}{K^{2}}(K-S)^{+}dK\\
+                & + \int_{F}^{\infty} \frac{2}{K^{2}}(S-K)^{+}dK
+            \end{align*}
+            \item The payoff of a VS is synthesized by delta-hedging as the portfolio above with zero implied vol.
+            \item $\widehat{\sigma}_{\text{VS},T} = \frac{e^{rT}}{T} \int_{0}^{\infty} \frac{2}{K^{2}}(P^{KT}_{mkt} - P^{KT}_{\hat{\sigma}=0})dK.$
+            \item The forward variances of log contracts and Variance Swaps are identical.
+        \end{itemize}
+    \end{frame}
+    
+\section{Stability analysis}
+    \subsection{Impact of large returns}
+    
+    \begin{frame}{Diffusive Models}
+    $\hat{\sigma_{\text{VS},T}} = \hat{\sigma_{T}}$ at order 2 in $\frac{\delta S}{S}$. How robust is it? What if returns are large? \\
+    For log contract,
+        \begin{itemize}
+            \item Assumption on $S$:
+            $dS_{t}\ =\ (r-q)S_{t}dt+\overline{\sigma}_{t}S_{t}dW_{t}$,\\ $\overline{\sigma}$ is instantaneous volatility.
+            \item  $P_{\overline{\sigma}}\left(0,S_{0}\right)\ =\ P_{\sigma}\left(0,S_{0}\right)\ +\ E_{\overline{\sigma}}\left[\int_{0}^{T}\frac{1}{2}e^{-rt}S_{t}^{2}\frac{d^ {2}P_{\sigma}}{dS^{2}}\left(\overline{\sigma}_{t}^{2}-\sigma(t,S_{t})^{2} \right)dt\right]$
+            \item For log contract, we now set \(\sigma\left(t,S\right)\equiv 0\) and use the notation: \(P_{\overline{\sigma}}^{T}\) for \(P_{\overline{\sigma}}\) and \(P_{\widehat{\sigma}=0}^{T}\) for \(P_{\sigma}\):
+            $P_{\overline{\sigma}}^{T}\ =\ P_{\widehat{\sigma}=0}^{T}+e^{-rT}E_{\overline{ \sigma}}\Big{[}\int_{0}^{T}\overline{\sigma}_{t}^{2}dt\Big{]}$.
+            \item Choosing for \(\overline{\sigma}_{t}\) the constant implied volatility \(\widehat{\sigma}_{T}\) yields:
+            $P_{\mathrm{Market}}^{T}\ =\ P_{\overline{\sigma}}^{T}\ =\ P_{\overline{\sigma}=0}^{T}+e^{-rT}T \widehat{\sigma}_{T}^{2}$.
+        \end{itemize}
+    \end{frame}
+    \begin{frame}{Diffusive Models}
+        For variance swap:
+        \begin{itemize}
+            \item $d\ln S_{t}\ =\ (r-q-\frac{1}{2}\overline{\sigma}_{t}^{2})dt\ +\ \overline{\sigma}_{t}dW_{t}$.
+            \item $\lim_{\Delta t\to 0}\sum_{i=0}^{N-1}\ln^{2}\Big{(}\frac{S_{i+1}}{S_{i}}\Big{)}\ 
+            =\Big{<}\ln S\Big{>}_{T} 
+            =\int_{0}^{T}\overline{\sigma}_{t}^{2}dt$.
+            \item $\widehat{\sigma}_{\mathrm{VS},T}^{2}\  =E\Big{[}\frac{1}{T}\int_{0}^{T}\overline{\sigma}_{t}^{2}dt\Big{]}$
+        \end{itemize}
+    Assume now that our diffusive model is calibrated to the market smile: \(P_{\overline{\sigma}}^{T}=P_{\mathrm{Market}}^{T}\),
+    $$\widehat{\sigma}_{\mathrm{VS},T}^{2} = E_{\overline{\sigma}}\Big{[}\frac{1}{T}\int_{0}^{T}\overline{ \sigma}_{t}^{2}dt\Big{]}\ \ =\ \frac{e^{rT}}{T}\left(P_{\mathrm{Market}}^{T}-P_{\overline{\sigma}=0}^{T}\right).$$
+    $\widehat{\sigma}_{\mathrm{VS},T}\ =\ \widehat{\sigma}_{T}$, VS forward variances \(\xi^{T}\) are then identical to log contract forward variances \(\zeta^{T}\) and the instantaneous variance of \(S_{t}\) is the short end of the variance curve: \(\overline{\sigma}_{t}=\sqrt{\xi_{t}^{t}}\).
+    \end{frame}
+\end{document}
