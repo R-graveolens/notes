@@ -1,7 +1,20 @@
-\chapter{Arbitrage-free calibration and MOT problem}
+\chapter{Calibration problem in MOT formulation}
 \section{Arbitrage constraints}
+Arbitrage refers to a costless trading strategy that offers a positive probability of 
+earning a risk-free profit. There are two main types: static and dynamic arbitrage. 
+Static arbitrage involves exploiting opportunities through fixed positions in options and the 
+underlying stock at the initial time, with the option to adjust the underlying position at a 
+finite number of trading times in the future. In contrast, dynamic arbitrage relies on the 
+dynamic and path-dependent properties of tradable assets, allowing continuous adjustments over 
+time. Given that our method is model-independent, we focus solely on static arbitrage, where no 
+modeling of asset dynamics is required.
 
-
+Initially, we do not incorporate the price of the CMS forward. From the perspective of linear 
+programming, by treating the swaption prices at different strikes as discrete data points, 
+we can establish the arbitrage-free shape constraints for the call price surface. This ensures 
+that the call price surface remains consistent with the principles of no-arbitrage across the 
+range of strike prices. Since there is no concern for calendar arbitrage in our context, 
+we focus on the following conditions to ensure arbitrage-freeness in our case.
 
 
 
