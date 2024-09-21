@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.18)  19 SEP 2024 21:32
+This is XeTeX, Version 3.141592653-2.6-0.999993 (TeX Live 2022/dev/Debian) (preloaded format=xelatex 2024.3.18)  21 SEP 2024 19:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -296,7 +296,8 @@ File: l3backend-xetex.def 2022-01-12 L3 backend support: XeTeX
 \g__pdf_backend_object_int=\count293
 \g__pdf_backend_annotation_int=\count294
 \g__pdf_backend_link_int=\count295
-) (./report.aux)
+)
+No file report.aux.
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
@@ -309,7 +310,7 @@ LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
 LaTeX Font Info:    ... okay on input line 16.
 LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 16.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    ... okay on input line 16.
@@ -336,11 +337,14 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 16.
 LaTeX Info: Redefining \pageref on input line 16.
 LaTeX Info: Redefining \nameref on input line 16.
- (./report.out) (./report.out)
 \@outlinefile=\write4
 \openout4 = `report.out'.
 
- (./0_title.tex
+
+
+Package hyperref Warning: Rerun to get /PageLabels entry.
+
+(./0_title.tex
 LaTeX Font Info:    Trying to load font information for U+msa on input line 13.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
@@ -355,13 +359,13 @@ File: ./SG_logo.PNG Graphic file (type bmp)
 <./SG_logo.PNG>
  [1
 
-]) (./report.toc)
+])
 \tf@toc=\write5
 \openout5 = `report.toc'.
 
  [1
 
-] (./report.lof)
+]
 \tf@lof=\write6
 \openout6 = `report.lof'.
 
@@ -387,33 +391,45 @@ Chapter 2.
 
 ] [5]) (./3_theory_variants.tex [6]
 Chapter 3.
-Excluding 'comment' comment.) (./4_numerical.tex [7
 
-]
+Overfull \hbox (10.93591pt too wide) in paragraph at lines 19--31
+[]\TU/lmr/m/n/10.95 A model $\U/msb/m/n/10.95 M$ \TU/lmr/m/n/10.95 is characterized as a filtered probability space $\OT1/cmr/m/n/10.95 (
+\OML/cmm/m/it/10.95 ; \OMS/cmsy/m/n/10.95 F\OML/cmm/m/it/10.95 ; \OMS/cmsy/m/n/10.95 fF[]g[]\OML/cmm/m/it/10.95 ; \U/msb/m/n/10.95 P\OT1/cmr/m/n/10.95 )$
+ []
+
+[7
+
+] Excluding 'comment' comment.) (./4_numerical.tex [8]
 Chapter 4.
-) (./5_results.tex [8
+) (./5_results.tex [9
 
 ]
 Chapter 5.
-Excluding 'comment' comment.) (./6_conclusion.tex [9
+Excluding 'comment' comment.) (./6_conclusion.tex [10
 
 ]
 Chapter 6.
-) [10
+) [11
 
 ]
 No file report.bbl.
 (./report.aux)
-Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: A3C1694D78391D19485EF3A48FC6BA8B;1396.
+
+Package rerunfilecheck Warning: File `report.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `report.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  3339C774B4076633207123E455E14D55;1376.
  ) 
 Here is how much of TeX's memory you used:
- 10527 strings out of 476191
- 165853 string characters out of 5812072
- 475301 words of memory out of 5000000
- 31087 multiletter control sequences out of 15000+600000
- 475300 words of font info for 63 fonts, out of 8000000 for 9000
+ 10512 strings out of 476191
+ 165645 string characters out of 5812072
+ 473556 words of memory out of 5000000
+ 31084 multiletter control sequences out of 15000+600000
+ 475292 words of font info for 62 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  60i,9n,64p,1179b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on report.pdf (13 pages).
+Output written on report.pdf (14 pages).

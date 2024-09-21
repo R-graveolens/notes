@@ -16,6 +16,34 @@ that the call price surface remains consistent with the principles of no-arbitra
 range of strike prices. Since there is no concern for calendar arbitrage in our context, 
 we focus on the following conditions to ensure arbitrage-freeness in our case.
 
+A model \(\mathbb{M}\) is characterized as a filtered probability space 
+$(\Omega,\mathcal{F},\{\mathcal{F}_{t}\}_{t\in\mathcal{T}},\mathbb{P})$
+that includes an adapted diffusion process \(\{(R_{t},\mathbf{C}_{t})\}_{t\in\mathcal{T}}\). 
+In this framework, \(\mathbf{C}_{t}\) denotes the prices of \(N = |\mathcal{K}|\) options at time \(t\), 
+and we initially observe \(\mathbf{C}_{0}\). 
+The set \(\mathcal{T}\) signifies the discrete trading times for the underlying asset, 
+which in this case is \(\mathcal{T} = \{0, T_{f}\}\).
+The First Fundamental Theorem of Asset Pricing (FFTAP) establishes a fundamental link between the 
+no-arbitrage principle (both static and dynamic) and the existence of an equivalent martingale measure (EMM). 
+Since the seminal work of Harrison and Kreps [22], different formulations of the FFTAP and broader concepts 
+of no-arbitrage have emerged. In general terms, for a given model \(\mathbb{M}\), there is no arbitrage 
+if and only if $\exists \mathbb{Q} \sim \mathbb{P}$, such that
+\[
+\forall(T,K)\in (\mathcal{T} \times \mathcal{K}),\ D(t)C_{t}(T, K)=D(s)\mathbb{E}^{\mathbb{Q}}[C_{s}(T,K)|\mathcal{F}_{t}]
+\]
+for all \(t < s \leq T\), where \(t, s \in \mathcal{T}\). 
+Consequently, static arbitrage constraints result from the relationships between terminal payoffs, 
+discounted to the present moment.
+
+Recall that, under the swap measure, the price of a payer swaption is given by: ..., and in this context, 
+the forward swap rate behaves as a martingale. Hence, our goal—constructing an arbitrage-free implied volatility 
+model—is equivalent to finding a martingale probability measure 
+\(\mu^{*} \in \mathcal{P}(\{R_{0}\} \times \mathbb{R})\) that precisely matches these market prices. 
+These probabilistic constraints can be expressed as: $...$. 
+
+Furthermore, the equivalence between the shape constraints on prices and the constraints on the 
+probabilistic measure has been established.
+ 
 
 
 
