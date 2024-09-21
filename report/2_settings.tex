@@ -1,0 +1,81 @@
+\chapter{Setting and notation}
+In this study, we operate within the multicurve interest rate market, focusing primarily on two key interest rate indices. 
+The Euro Interbank Offered Rate (Euribor, EIB) reflects the 1-month, 3-month, 6-month, and 12-month interest rates at which 
+banks lend unsecured funds to each other within the eurozone. Additionally, the eurozone's risk-free rate, the 
+Euro Short-Term Rate (ESTER, EST), will also be considered.
+
+In terms of the instruments used in this study, the Zero-Coupon bond (ZC) is an instrument that pays 1 unit of currency 
+at maturity. The ZC curve, also known as the discount curve, is currently dependent solely on the risk-free rate, 
+i.e., the EST. We denote \( B(t,T) \) as the present value at time \( t \) of a ZC bond that pays 1 unit of currency 
+at time \( T \).
+An interest rate swap is a contract between two parties in which they agree to exchange a predetermined fixed interest rate for a floating 
+interest rate (potentially based on different rate indices) at regular intervals over an agreed period, based on a notional amount. 
+The most common swap product in the market is the plain vanilla swap, typically structured as an exchange of fixed interest rate payments for 
+floating rate payments.
+For the fixed leg of the swap, all cash flows are determined at the time the swap is initiated. The cash flow at time \(T_i\) is calculated 
+by multiplying the accrual factor \(\delta_{i}^{f}\), which corresponds to the period \([T_{i-1}^{f}, T_{i}^{f}]\), by the agreed fixed rate.
+For the floating leg, cash flows are determined throughout the life of the swap. On each payment date, starting at \(T_{1}^{v}\), the cash flow 
+at \(T_i^{v}\) is calculated at \(T_{i-1}^{v}\), where the accrual factor \(\delta_{i}^{v}\) is multiplied by the floating index rate 
+\(I(T_{i-1}^{v}, T_{i-1}^{v}, T_{i}^{v})\), which represents the floating rate for the period \([T_{i-1}^{v}, T_{i}^{v}]\) as observed at 
+time \(T_{i-1}^{v}\).
+A forward swap, on the other hand, is an agreement made at time \(t\) to enter into a swap starting at \(T_0\) and ending at \(T_n\) in the 
+future. The forward swap rate is the fixed rate agreed upon between the counterparties when entering the forward swap, 
+such that the present value of the fixed and floating legs of the forward swap are equal. In other words, it is the fixed swap rate that makes 
+the present value of the swap equal to zero. For a forward swap starting at a future date \(T_0\), the forward swap rate agreed upon at present 
+(time \(t\)) is denoted as:
+$$
+R(t, T_{0}, T_{n}) = ...
+$$
+If the floating rate \(I\) and the Zero-Coupon bond \(B\) are based on the same index, i.e., if \(I\) is also based on the EST, 
+we can simplify and express the forward swap rate as:
+$$
+R(t, T_{0}, T_{n}) = ...
+$$
+
+A swaption is an option where the underlying security is a forward swap. In line with swap terminology, 
+a call swaption is also referred to as a payer swaption, while a put swaption is called a receiver swaption. 
+Even though multiple yield curves or indices may exist for the same currency, they share the same volatility surface. 
+This volatility surface is calibrated using market prices of swaptions. Using the notion of the swap rate, we can express the present value of 
+a payer swaption with a fixed strike rate \(K\) as:
+$$
+\mathbf{PV}(t) = LVL(t, T_{0}, T_{n})(R(t, T_{0}, T_{n}) - K)_{+}
+$$
+where
+$$
+LVL(t, T_{0}, T_{n}) = ...
+$$
+represents the level or PVBP (Price Value of a Basis Point) of the swap. 
+According to martingale pricing theory, using \(LVL\) as the numeraire, and after performing the appropriate probability change, 
+the price of a payer swaption with an expiry date of \(T\) and strike \(K\) is given by:
+$$
+C_{t}(K,T) = LVL(t, T_0, T_n)\mathbb{E}^{Q^{LVL}}_{t}[(R(T, T_0, T_n)-K)_{+}],
+$$
+where \(LVL(t, T_0, T_n)\) represents the level or Price Value of a Basis Point (PVBP) for the underlying swap, and \(\mathbb{E}^{Q^{LVL}}_{t}\) 
+denotes the expectation under the forward measure \(Q^{LVL}\), which corresponds to the numeraire \(LVL\).
+Additionally, under this probability measure \(Q^{LVL}\), the swap rate \(R(T, T_0, T_n)\) behaves as a martingale. 
+
+A Constant Maturity Swap (CMS) is a type of interest rate swap where the floating leg is linked to a swap rate with a fixed maturity, 
+rather than a standard money market rate like Euribor. Building on this concept, a CMS forward is a forward contract based on the future 
+value of a CMS rate. Similar to a traditional forward rate agreement (FRA), a CMS forward locks in the swap rate for a future period. 
+However, instead of focusing on short-term interest rates, a CMS forward specifically targets the constant maturity swap rate, 
+enabling market participants to hedge or speculate on the movement of long-term swap rates over a defined period.
+The price of a CMS forward encapsulates all relevant information about the payer and receiver swaptions in the market, 
+and this can be understood from two perspectives. First, the pricing formula for CMS instruments can be expressed as an integral over 
+the distribution of vanilla swaptions. Second, the CMS forward rate reflects the market's expectations of future swap rates, 
+which are influenced by the pricing of both payer and receiver swaptions. These swaptions capture the market's view on interest rate 
+volatility and directional movements, making the CMS forward price a comprehensive measure that incorporates implied volatility and 
+risk-neutral probabilities derived from swaption markets. 
+From a probabilistic perspective, the price of the CMS forward can be written as:
+$$
+\mathbb{E}^{Q_{T}}[R(T, T_0, T_n)],
+$$
+where \( Q_T \) is the forward measure associated with the maturity \( T \), and \( R(T, T_0, T_n) \) is the forward swap rate at time \( T \). 
+Under the swap measure \( Q^{LVL} \), this expression can be transformed as:
+$$
+\mathbb{E}^{Q_{T}}[R(T, T_0, T_n)] = \frac{LVL(0)}{B(0, T)} \mathbb{E}^{Q^{LVL}} \left[\frac{R(T, T_0, T_n)}{LVL(T)}\right].
+$$
+
+
+
+
+

@@ -1,0 +1,103 @@
+\chapter{Introduction}
+Developing arbitrage-free implied volatility surfaces from bid-ask price quotes is a key challenge in the financial industry, 
+especially for pricing exotic options. These surfaces are essential in risk-neutral models, 
+which rely on vanilla option prices for calibration. Without an accurate, arbitrage-free volatility surface, 
+pricing models may suffer from inconsistencies, leading to mispricing and unreliable risk management.
+\begin{comment}
+Developing arbitrage-free implied volatility surfaces from bid-ask price quotes has been a longstanding challenge in the 
+financial industry, particularly in the pricing of exotic options. These options rely on risk-neutral models, such as the 
+local volatility and local stochastic volatility models, which are calibrated to vanilla option prices. Both models require 
+accurate, arbitrage-free volatility surfaces to ensure precise pricing and effective risk management. These surfaces are 
+crucial for avoiding inconsistencies that could lead to mispricing, preserving the integrity of risk-neutral probability 
+measures, and maintaining stability in option pricing frameworks. Moreover, arbitrage-free surfaces provide reliable 
+calculations of option sensitivities (Greeks), essential for constructing hedging strategies and managing financial risks. 
+Additionally, they promote model stability by ensuring that simulations and calculations converge to meaningful results.
+\end{comment}
+To address these challenges, various methods have been proposed in the literature. In this study, we explore a non-parametric 
+calibration method based on the theory of martingale optimal transport (MOT). This method has proven effective in producing 
+arbitrage-free implied volatility surfaces, fitting market quotes within bid-ask spreads, 
+and accurately capturing complex volatility smile patterns, such as Mexican hat-shaped curves. 
+
+\vspace{.1in}
+Despite the limitations of the Black-Scholes-Merton (BSM) model in reflecting real market conditions, 
+it remains widely used due to its practicality in transforming option prices into implied volatility, 
+a single value that provides valuable market insights. Implied volatility helps practitioners assess market sentiment and risk.
+
+When implied volatilities are plotted against strike prices for a given maturity, 
+common patterns like skew or smile often appear. 
+These patterns reflect deviations from normality in the underlying return distribution: 
+a smile indicates fat tails, while a skew signals asymmetry.
+
+Variations in the implied volatility smile across different strikes and maturities provide insights into how the return 
+distribution evolves over time. This makes the collection of vanilla option prices across different strikes and maturities 
+critical for financial applications such as model calibration, pricing, and risk-neutral density (RND) estimation. 
+However, if these price data contains arbitrage, it can result in inaccurate model calibration and erroneous RND estimates. 
+Most derivative pricing models are designed to be arbitrage-free to avoid economically unrealistic outcomes. 
+For example, models like Dupire's local volatility model fail to calibrate correctly when the data contains arbitrage, 
+and arbitrage-free interpolation methods also break down under these conditions.
+
+To improve the accuracy and robustness of pricing models, it is essential to remove arbitrage from the data. 
+Two common techniques for achieving this are smoothing and filtering, and in this study, we focus on smoothing methods. 
+Significant contributions to smoothing have been made by Ait-Sahalia and Duarte, Fengler, Gatheral, and Jacquier. 
+In recent years, stochastic volatility models (SVMs) have gained a lot attention in this context. 
+In practice, smoothing typically involves calibrating models to create a smooth \(C^{1,2}\) call price function 
+\((T,K)\mapsto C(T,K)\), or equivalently, an implied volatility function \((T,K)\mapsto\sigma_{\text{imp}}(T,K)\), 
+which results in arbitrage-free surfaces.
+
+While existing calibration methods offer advantages, they also have some limitations. 
+For instance, SVM parameter calibration can be time-consuming, especially without a closed-form solution, 
+and the non-convex optimization involved may not always converge. Additionally, 
+although parametric models like SVI are easy to implement, they do not always ensure arbitrage-free surfaces across both strike prices and maturities.
+
+\vspace{.1in}
+Instead of using parametric calibration models, this study addresses the arbitrage-free calibration problem with a 
+non-parametric discrete-time model based on martingale optimal transport (MOT) theory. Optimal transport theory has 
+recently attracted significant attention. Initially introduced by Monge [20] in civil engineering, it was later formalized 
+with a mathematical foundation by Kantorovich [19], who introduced the dual problem framework. In recent years, 
+optimal transport theory has been applied to robust hedging and pricing in both discrete and continuous-time models 
+[2, 17, 21, 7]. It was discovered that pricing bounds for path-dependent derivatives using fixed European options could 
+be framed as a martingale optimal transport problem. This led to MOT becoming a field of study in its own right, 
+with the theory further applied to the non-parametric discrete-time model proposed by Guyon [14], 
+particularly to address the VIX/SPX calibration problem.
+
+This approach is equivalent to identifying an element from the non-empty set of probability measures \(\mathcal{M}\). 
+To construct this model, we begin by selecting a prior probability \(\bar{\mu} \in \mathcal{P}\) based on market information 
+and then search for the model \(\mu\) within \(\mathcal{M}\) that is closest to \(\bar{\mu}\) in terms of entropy, minimizing 
+the relative entropy with respect to \(\bar{\mu}\), using the Kullback-Leibler divergence in the objective function. 
+Several dual versions of the problem can be formulated, and Guyon demonstrated that one of these has a clear financial 
+interpretation through exponential utility indifference pricing. He also proved there is no duality gap between the primal 
+and dual problems. The minimum entropy model is explicitly characterized by the minimizers of the dual problem.
+
+More specifically, the minimum entropy model is described non parametrically by its Radon-Nikodym derivative with respect to 
+\(\bar{\mu}\), expressed as the exponential of a combination of payoffs from the underlying instruments. In the context of 
+equities, this portfolio consists of the same hedging instruments used in the super-replication problem. To numerically solve 
+the dual problem, we applied the Sinkhorn algorithm [81], which was revived by Cuturi [24] for classical optimal transport 
+and later adapted by De March and Henry-Labordère [26] for fast construction of arbitrage-free smile interpolations. 
+The algorithm iteratively optimizes in different directions until it converges at the global optimum, where the gradient of 
+the dual objective function vanishes.
+
+It is worth noting that the dual formulation and another numerical method were explored much earlier in [1] 
+within the context of uncertain volatility calibration using entropy minimization. Additionally, calibration within 
+bid-ask spreads was investigated through the introduction of an \(L^{2}\) weighted penalization [2]. 
+However, at that time, the connection to optimal transport and the proof of the duality result were not considered.
+
+\vspace{.1in}
+Our study is largely inspired by the work of De March, Henry-Labordère, and Guyon. However, neither De March nor 
+Henry-Labordère mentioned the property of eliminating arbitrage. Regardless of the input data, the posterior density, 
+if it exists, is truly arbitrage-free due to the positivity ensured by the minimum entropy probability formula. In Guyon's 
+study, he applied strict equity constraints on prices and showed that if there are arbitrages in the price data, 
+the objective function value will approach infinity and the algorithm will not converge. However, similar to the work of 
+Allenaveda, De March, and Henry-Labordère, if we consider bid-ask quotes and apply \(L^{2}\) penalization, 
+a solution can still be found even if some arbitrage exists in the input price data.
+
+Another difference is that we applied this approach in the realm of interest rate derivatives, rather than equities, 
+where calendar arbitrage is not considered. Towards the end of our study, we explored joint calibration using both vanilla 
+swaption prices and CMS forwards, where the latter product's price depends on the entire market distribution, making the 
+calibration problem more complex.
+
+The rest of this paper is structured as follows: After introducing our discrete-time setting in Section 2, 
+we discuss how to formulate the arbitrage-free calibration problem in Section 3. In Section 4, we derive 
+the Sinkhorn algorithm used to numerically solve these problems, along with some implementation tricks. 
+Section 6 presents the results of several experiments, and Section 7 concludes.
+
+

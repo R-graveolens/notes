@@ -1,0 +1,46 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage{graphicx} %for embedding images
+\usepackage{subfigure}
+\usepackage{url} %for proper url entries
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{comment}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage[bookmarks, colorlinks=false, pdfborder={0 0 0}, pdftitle={<pdf title here>}, pdfauthor={<author's name here>}, pdfsubject={<subject here>}, pdfkeywords={<keywords here>}]{hyperref} %for creating links in the pdf version and other additional pdf attributes, no effect on the printed document
+%\usepackage[final]{pdfpages} %for embedding another pdf, remove if not required
+%\usepackage{geometry}
+%\geometry{a4paper,scale=0.9}
+\begin{document}
+	\renewcommand\bibname{References} %Renames "Bibliography" to "References" on ref page
+	
+	%include other pages
+	\input{./0_title.tex}
+	
+	%\normalsize
+	%\input{./0_1_abstract.tex}
+	%\input{./2_notions.tex} %objective changed to problem definition
+	\pagenumbering{roman} %numbering before main content starts
+	\normalsize
+	\tableofcontents
+	\listoffigures
+	
+	\newpage
+	\pagenumbering{arabic} %reset numbering to normal for the main content
+	
+	\normalsize
+	\input{./1_intro.tex} %literature survey included in this
+	\input{./2_settings.tex}
+	\input{./3_theory_variants.tex}
+	\input{./4_numerical.tex}
+	\input{./5_results.tex}
+	\input{./6_conclusion.tex}
+	%\input{./7_acknow.tex}
+        \newpage
+        \bibliographystyle{siam}
+        \bibliography{ref}
+        %\printbibliography
+\end{document} 
+
