@@ -29,7 +29,8 @@ Since the seminal work of Harrison and Kreps [22], different formulations of the
 of no-arbitrage have emerged. In general terms, for a given model \(\mathbb{M}\), there is no arbitrage 
 if and only if $\exists \mathbb{Q} \sim \mathbb{P}$, such that
 \[
-\forall(T,K)\in (\mathcal{T} \times \mathcal{K}),\ D(t)C_{t}(T, K)=D(s)\mathbb{E}^{\mathbb{Q}}[C_{s}(T,K)|\mathcal{F}_{t}]
+\forall(T,K)\in (\mathcal{T} \times \mathcal{K}),\ D(t)C_{t}(T, K)=D(s)\mathbb{E}^{\mathbb{Q}}[C_{s}(T,K)|\mathcal
+{F}_{t}]
 \]
 for all \(t < s \leq T\), where \(t, s \in \mathcal{T}\). 
 Consequently, static arbitrage constraints result from the relationships between terminal payoffs, 
@@ -43,11 +44,60 @@ These probabilistic constraints can be expressed as: $...$.
 
 Furthermore, the equivalence between the shape constraints on prices and the constraints on the 
 probabilistic measure has been established.
- 
 
+Another criterion for checking arbitrage involves plotting the RND. 
+According to Breeden and Litzenberger, the second partial derivative of the call price with respect to the 
+strike price represents the RND of \( R_1 \), up to a discount factor. 
+Specifically, it can be expressed as:
+$$
+\text{pdf}(R_1) = \frac{1}{LVL(0)}\frac{\partial^{2} C_{t}}{\partial K^{2}},
+$$
+To ensure the absence of arbitrage, the RND must be a true probability density function, 
+meaning it should not take on negative values. 
+We will further present this as existence of arbitrages in the experiments chapter.
 
+\section{MOT problem formulation}
+
+To build such an element belonging to \(\mathcal{M}\), we begin by selecting a prior probability measure \(m_0\) 
+on \(\mathcal{P}(R_{0} \times \mathbb{R})\), which represents the space of all possible measures on the pair 
+\((R_0, R_1)\). We then seek a measure \(\mu \in \mathcal{M}\) that minimizes the "distance" to \(m_0\), 
+as illustrated in the accompanying graph. 
+
+The "distance", in more rigorous mathematical expression, is the objective function $\mathcal{F}$, so our objective
+is to solve the optimization problem $inf_{\mu \in \mathcal{M} \mathcal{F}_{m_0}}(\mu) = \mathcal{F}_{m_0}(\mu^{*})$.
 
 \section{CMS forward joint calibration problem}
+Now, we study the joint calibration problem by incorporating the price of the CMS forward into our considerations. 
+From this point on, we assume that the floating interest rate in the swaptions we handle is based on the risk-free rate, EST. 
+This allows us to use the simplified formula for the swap rate and related calculations. Additionally, we assume that the payment date \(T_p\) 
+coincides with the expiry date \(T_f\).
+
+The first challenge is that the price of the CMS forward is evaluated under the risk-neutral forward measure \(Q_{T}\), 
+rather than the swap measure \(Q_{LVL}\). Therefore, we begin by changing the probability measure from the numeraire \(B(t, T_f)\) 
+to the numeraire \(LVL_t\). According to the change of numeraire theory, \( \ldots \). 
+
+However, the dependency of formula 1 with respect to \(R_1\) is not immediately clear, so by applying the conditional expectation tower 
+property, we can express it as \( \ldots \). We will denote this as \(G(R_1) = \ldots \). The function \(G\) depends on the assumptions we 
+make regarding the dynamics of the rate curve.
+
+Here, we introduce the Ho-Lee model, where the dynamics of Zero-Coupon bonds (ZCs) are as follows:
+\[ \ldots \]
+In this model, \(r_t\) represents the instantaneous short-term rate, \(W\) is a Brownian motion under the risk-neutral measure, \(\lambda\) 
+is the mean reversion parameter, and \(\sigma\) is the volatility function.
+
+
+\begin{algorithm}[H]
+    \SetAlgoLined
+    \KwData{Input data}
+    \KwResult{Output result}
+    Initialization\;
+    \For{$i \gets 1$ \KwTo $n$}{
+        \If{$x < i$}{
+            $x \gets x + i$\;
+        }
+    }
+    \caption{Example Algorithm}
+\end{algorithm}
 
 \begin{comment}
     \chapter{Theoretical analysis and methodology }
