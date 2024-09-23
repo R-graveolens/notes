@@ -110,17 +110,14 @@ where
 
 Following the same derivations as outlined in above section, we arrive at the following final optimization problem:
 
+As for the equation system to cancelling the gradient of this strictly convex function, there is an additional equation for $V_{CMS}$.
 
-\begin{algorithm}[H]
-    \SetAlgoLined
-    \KwData{Input data}
-    \KwResult{Output result}
-    Initialization\;
-    \For{$i \gets 1$ \KwTo $n$}{
-        \If{$x < i$}{
-            $x \gets x + i$\;
-        }
-    }
-    \caption{Example Algorithm}
-\end{algorithm}
+\subsection{Equality constraint}
+The second approach is to take the CMS forward price as a equality constraint. Recall the significantion of the weights, the smaller is, the 
+more important the correspond swaption is, and when the $\omega$ goes to 0, the contracts required between the bid-ask spreads becomes to 
+a more strong equality constraint on mid prices. And here we directly apply the equality constraint on CMS forward price. 
+In this way, the constrained probability set is written as $...$. During the similar deducation of the final optimization problem, 
+notice that the new equality constraint will introduced a new lagrange multiplier $g_0$. And the problem is as follows:...
+
+The second approach put more emphasis 
 
