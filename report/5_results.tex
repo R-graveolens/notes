@@ -111,8 +111,12 @@ The table below shows the absolute errors in CMS prices after using the new \(\s
 
 The following graph presents the implied volatilities from both rounds of the process. We observe that the volatilities remain almost unchanged. Therefore, we can conclude that the model is relatively insensitive to the constant volatilities used in our projection method.
 
+\section{conclusion}
+Based on all the experiments conducted so far, we can conclude that the original calibration algorithm is capable of quickly fitting an arbitrage-free implied volatility curve using swaptions, even for complex structures. Furthermore, in the extension applied to the joint calibration with CMS, the algorithm, adapted to the newly derived problem, successfully fits both CMS and swaption prices while eliminating arbitrage.
 
+While the method using equality constraints produces a negligible error in CMS pricing, Method II proves to be more effective in this calibration problem, as it strikes a better balance between maintaining both swaption prices and the CMS forward price.
 
+Moving forward, we can explore using historical distributions as a prior and investigate methods for optimizing hyperparameters such as \(\alpha\) and \(\sigma\).
 
 
 
