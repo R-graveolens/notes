@@ -1,4 +1,12 @@
 \chapter{Experiments and Results}
+Regarding the data source, we did not use actual market prices for this analysis. Instead, we generated swaption prices using the Ho-Lee model and introduced volatility shocks at six points of moneyness \((-2, -1, 0, 1, 2, 10)\). This process allowed us to reprice the swaptions and derive the bid, mid, and ask quotes for our study.
+
+As shown in Figure \ref{...}, the algorithm effectively captures even highly complex smile structures. Throughout this chapter, the graphs display several colorful curves: the purple curve represents the original market swaption prices, while the yellow, blue, and green curves correspond to the ask, mid, and bid quotes after applying the market shocks. The red curve represents the results produced by our model, demonstrating its ability to align with and adapt to various market conditions, even in the presence of significant volatility shifts.
+
+There is also an interesting observation worth mentioning here. As noted earlier, we can solve the original optimization problem using the Newton method, and we conducted tests with various tolerance parameters. The results indicate that with a smaller tolerance, the Newton method produces outcomes similar to those obtained from the Sinkhorn algorithm, but with a longer execution time. Conversely, when a larger tolerance is set, the execution time decreases, albeit with a slight deterioration in accuracy. One of the result comparisons, along with the execution time analysis, is included in the Appendix.
+
+Additionally, after conducting several experiments with both weight choices, we observed that even with spread weights, the algorithm can achieve good results, maintaining control across the entire range of strikes. However, in some cases, control in the deep out-of-the-money region is not always necessary, and focusing on all strike ranges can sometimes introduce numerical instability. Therefore, in the following experiments, we primarily use vega weights, although spread weights remain effective in these scenarios as well.
+
 
 This chapter is divided into two main sections. In the first section, 
 we present the results of the original arbitrage-free calibration. 
